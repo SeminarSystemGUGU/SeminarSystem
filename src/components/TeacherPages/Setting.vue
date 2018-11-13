@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import AppBar from '../components/AppBar'
+  import AppBar from '../ReuseComponents/AppBar'
     export default {
         name: "Setting",
       components:{

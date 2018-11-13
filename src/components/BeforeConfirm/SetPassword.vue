@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import AppBar from '../AppBar'
+  import AppBar from '../ReuseComponents/AppBar'
     export default {
         name: "SetPassword",
       components:{
