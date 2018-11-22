@@ -2,29 +2,34 @@
   <div id="LogIn">
     <div class="login-metal">
       <div class="main-content">
-        <div class="fonts-panel">
-          <!--<span>Hello!</span><br/>-->
-          <span>欢迎回来！</span>
+        <div class="animated fadeIn">
+          <div class="fonts-panel">
+            <span>厦门大学讨论课管理系统</span><br/>
+            <span>欢迎您！</span>
+          </div>
         </div>
-        <div class="login-panel">
+        <div class="login-panel animated fadeInUp">
           <div class="input-panel">
             <div class="input-account">
               <label>账号</label><br/>
-              <input  class="login-input"  placeholder="请输入账号" />
+              <input  class="login-input"  placeholder="请输入账号" v-model="account" />
             </div>
             <div class="input-password">
               <label>密码</label><br/>
-              <input class="login-input" type="password" placeholder="请输入密码" />
+              <input class="login-input" type="password" placeholder="请输入密码" v-model="password" />
             </div>
           </div>
           <div class="button-panel">
-            <button>登录</button>
+            <button class="login-button" ref="loginButton">登录</button>
           </div>
           <div class="button-panel">
             <span>忘记密码</span>
           </div>
 
         </div>
+      </div>
+      <div class="fixed-notice">
+        <span>初始密码为123456</span>
       </div>
     </div>
   </div>
@@ -35,8 +40,19 @@
         name: "NewLogIn",
       data(){
           return{
-            visibility:false,
-            value7:''
+           account:'',
+           password:''
+          }
+      },
+      watch:{
+          password(curValue,oldValue){
+            if(curValue!==''){
+              this.$refs.loginButton.style.backgroundColor='DodgerBlue'
+              this.$refs.loginButton.style.color='white';
+            }else{
+              this.$refs.loginButton.style.backgroundColor='rgba(190,190,190,0.35)'
+              this.$refs.loginButton.style.color='color: rgba(255,255,255,0.6)';
+            }
           }
       }
     }
@@ -63,6 +79,14 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0,0,0,0.45);
+  }
+
+  .fixed-notice{
+    width: 100%;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    position: fixed;
+    bottom: 3vh;
   }
 
   .main-content{
@@ -146,17 +170,19 @@
         margin-right: auto;
         margin-left: auto;
 
-        button{
+        .login-button{
           width: 100%;
           max-width: 480px;
-
+          font-size: 16px;
           height: 10vw;
           max-height: 50px;
           outline: none;
           border: none;
           border-radius: 5px;
           color: rgba(255,255,255,0.6);
+          /*color: white;*/
           background-color: rgba(190,190,190,0.35);
+          transition: all 0.5s;
         }
       }
     }

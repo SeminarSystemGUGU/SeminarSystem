@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
+import animate from 'animate.css'
 import 'element-ui/lib/theme-chalk/index.css';
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
