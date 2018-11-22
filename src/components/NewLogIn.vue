@@ -20,10 +20,10 @@
             </div>
           </div>
           <div class="button-panel">
-            <button class="login-button" ref="loginButton">登录</button>
+            <button class="login-button" ref="loginButton" @click="linkTo">登录</button>
           </div>
           <div class="button-panel">
-            <span>忘记密码</span>
+            <span @click="forgetPassword" >忘记密码</span>
           </div>
 
         </div>
@@ -53,6 +53,14 @@
               this.$refs.loginButton.style.backgroundColor='rgba(190,190,190,0.35)'
               this.$refs.loginButton.style.color='color: rgba(255,255,255,0.6)';
             }
+          }
+      },
+      methods:{
+          linkTo(){
+            this.$router.push('/ConfirmAccount');
+          },
+          forgetPassword(){
+            this.$router.push('/forgetPassword');
           }
       }
     }
