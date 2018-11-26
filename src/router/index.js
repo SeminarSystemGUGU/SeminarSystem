@@ -6,6 +6,8 @@ import ForgetPassword from '../components/ForgetPassword'
 import ForgetPasswordSet from '../components/ForgetPasswordSet'
 import TeacherMainPage from '../components/MainPage'
 import MyAccount from '../components/MyAccount'
+import ResetPassword from '../components/ResetPassword'
+import ResetEmail from '../components/ResetEmail'
 
 Vue.use(Router);
 
@@ -35,6 +37,14 @@ export default new Router({
     {
       path:'/MyAccount',
       component:MyAccount
+    },
+    {
+      path:'/ResetPassword',
+      component:ResetPassword
+    },
+    {
+      path:'/ResetEmail',
+      component:ResetEmail
     }
   ]
 })

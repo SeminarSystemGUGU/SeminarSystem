@@ -18,7 +18,7 @@
           <span>{{account}}</span><br/>
           <span style="font-weight: bold;display: inline-block;margin-top: 1.3vw">邮箱：</span>
           <span>{{email}}</span>
-          <span style="color: dodgerblue">&nbsp;修改</span>
+          <span style="color: dodgerblue" @click="linkToEmail">&nbsp;修改</span>
         </div>
       </el-card>
     </div>
@@ -35,7 +35,7 @@
             </div>
           </el-col>
           <el-col style="width: 50%;">
-            <div style="margin-top: 3vw">
+            <div style="margin-top: 3vw" @click="linkToPassword">
               <span>修改密码</span>
             </div>
           </el-col>
@@ -90,7 +90,13 @@
       methods:{
           backTo(){
             this.$router.push('/TeacherMainPage');
-          }
+          },
+        linkToPassword(){
+          this.$router.push('/ResetPassword');
+        },
+        linkToEmail(){
+            this.$router.push('/ResetEmail');
+        }
       }
     }
 </script>

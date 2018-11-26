@@ -24,7 +24,7 @@
             </div>
           </el-col>
           <el-col style="width: 50%;">
-            <div style="margin-top: 3vw">
+            <div style="margin-top: 3vw" >
               <span>我的课程</span>
             </div>
           </el-col>
@@ -42,7 +42,7 @@
             </div>
           </el-col>
           <el-col style="width: 50%;">
-            <div style="margin-top: 3vw">
+            <div style="margin-top: 3vw" @click="linkTo">
               <span>账户与设置</span>
             </div>
           </el-col>
@@ -55,7 +55,13 @@
 
 <script>
     export default {
-        name: "MainPage"
+        name: "MainPage",
+      methods:{
+          linkTo(){
+            this.$router.push('/MyAccount');
+          },
+
+      }
     }
 </script>
 
