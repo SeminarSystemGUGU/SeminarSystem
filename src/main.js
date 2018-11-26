@@ -9,6 +9,10 @@ import animate from 'animate.css'
 import 'element-ui/lib/theme-chalk/index.css';
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
+import $ from 'jquery';
+
+import 'bootstrap3/dist/css/bootstrap.min.css';
+import 'bootstrap3/dist/js/bootstrap.min.js';
 
 
 Vue.use(MuseUI);

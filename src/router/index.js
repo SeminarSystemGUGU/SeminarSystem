@@ -9,6 +9,14 @@ import MyAccount from '../components/MyAccount'
 import ResetPassword from '../components/ResetPassword'
 import ResetEmail from '../components/ResetEmail'
 
+import StuMyCourses from '../components/StudentPages/MyCourses'
+import StuMainSeminars from '../components/Studentpages/MainSeminars'
+import StuMyGrades from '../components/Studentpages/MyGrades'
+import StuMyTeam from '../components/Studentpages/MyTeam'
+import StuMainPage from '../components/StudentPages/StuMainPage'
+import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
+
+
 Vue.use(Router);
 
 export default new Router({
@@ -45,6 +53,33 @@ export default new Router({
     {
       path:'/ResetEmail',
       component:ResetEmail
+    },
+
+    //学生端组件
+    {
+      path:'/StuMyCourses',
+      component:StuMyCourses
+    },
+    {
+      path:'/StuMainSeminars',
+      component:StuMainSeminars,
+    },
+    {
+      path:'/StuMyGrades',
+      component:StuMyGrades
+    },
+    {
+      path:'/StuMyTeam',
+      component:StuMyTeam,
+    },
+    {
+      path:'/StuMainPage',
+      component:StuMainPage
+    },
+    {
+      path:'/SeminarSelectCourse',
+      component:SeminarSelectCourse
     }
+
   ]
 })

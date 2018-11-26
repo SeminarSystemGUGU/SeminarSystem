@@ -1,0 +1,172 @@
+<template>
+  <div align="center">
+    <div class="bar animated bounce fadeIn">
+      <div class="reset-app-bar">
+        <div class="app-button" @click="backTo">
+          <i class="el-icon-back"></i>
+        </div>
+        <div class="app-bar-title">
+          <span>{{title}}</span>
+        </div>
+      </div>
+    </div>
+
+   <div class="animated bounceInRight">
+    <div class="panel-group" id="accordion" align="left">
+      <div class="title">
+        我的队伍
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne">
+          {{teamName}}
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" >
+          <div class="panel-body" style="padding:1vh 0;">
+            <div class="subContent">
+              <span class="subItem"  data-toggle="collapse"  data-target="#demo11"></span>
+              <div id="demo11" class="collapse in" style="margin-top: 1vh;">
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>相关课程</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>组长</td>
+                    <td>{{leaderID}}</td>
+                    <td>{{leaderName}}</td>
+                    <td>J2EE</td>
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--其他队伍-->
+      <div class="title" style="border-bottom: 1px solid palegoldenrod;">
+        其他队伍
+      </div>
+      <div class="panel panel-default" style="border: 0;">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo">
+          {{teamName}}
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+          <div class="panel-body" style="padding:1vh 0;">
+            <div class="subContent">
+              <span class="subItem"  data-toggle="collapse"  data-target="#demo21"></span>
+              <div id="demo21" class="collapse in">
+                Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                vice lomo.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--未组队学生-->
+      <div class="title" style="width:40vw;border-bottom: 1px solid coral;">
+        未组队学生
+      </div>
+
+
+      <div class="subContent">
+        <span class="subItem"  data-toggle="collapse"  data-target="#demo31">asdasdas</span>
+        <div id="demo31" class="collapse in">
+          Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+          cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+          vice lomo.
+        </div>
+      </div>
+
+    </div>
+
+   </div>
+  </div>
+</template>
+
+<script>
+
+  export default {
+    name: "MyTeam",
+    components:{
+
+    },
+    data(){
+      return{
+        title:"OOAD",
+        teamName:"1-6  咕咕鸟",
+        leaderName:'Li',
+        leaderID:'110',
+      }
+    },
+    methods:{
+      backTo(){
+        this.$router.push('/StuMyCourses')
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  #accordion{
+    margin-top: 13vh;
+    width:90%;
+  }
+  .title{
+    width:31vw;
+    color:#96c4e6;
+    font-size: 30px;
+    border-bottom: 1px solid #67C23A;
+    margin-bottom: 2vh;
+  }
+  .panel-heading{
+    border-radius: 5px;
+    width: 100%;
+    height:6vh;
+    font-size: 20px;
+    background-color:#96c4e6;
+  }
+  .panel-body{
+    border:0;
+  }
+  .panel{
+    border:0;
+    margin-bottom: 2vh ;
+  }
+  .subContent{
+    margin-top: 1vh;
+    padding: 2vh 3vw 1px;
+    width: 100%;
+    background-color: #c7e1f0;
+    border-radius: 5px;
+    min-height: 6vh;
+  }
+  .subItem{
+    color:gray;
+    font-size: 14px;
+  }
+  .exportGrades{
+    width:90%;
+    height:6vh;
+    color: white;
+    opacity: 0.7;
+    margin-top: 10vh;
+    background-color: #67C23A;
+    border: 0;
+    border-radius: 5px;
+    font-size: 22px;
+  }
+  @media screen and (min-width: 481px ){
+
+  }
+
+</style>
