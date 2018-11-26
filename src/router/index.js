@@ -15,7 +15,7 @@ import StuMyGrades from '../components/Studentpages/MyGrades'
 import StuMyTeam from '../components/Studentpages/MyTeam'
 import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
-
+import TeacherMyCourses from '../components/TeahcerMyCourses'
 
 Vue.use(Router);
 
@@ -53,6 +53,10 @@ export default new Router({
     {
       path:'/ResetEmail',
       component:ResetEmail
+    },
+    {
+      path:'/TeacherMyCourses',
+      component:TeacherMyCourses
     },
 
     //学生端组件

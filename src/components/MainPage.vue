@@ -24,7 +24,7 @@
             </div>
           </el-col>
           <el-col style="width: 50%;">
-            <div style="margin-top: 3vw" >
+            <div style="margin-top: 3vw"  @click="linkToCourses">
               <span>我的课程</span>
             </div>
           </el-col>
@@ -60,6 +60,9 @@
           linkTo(){
             this.$router.push('/MyAccount');
           },
+          linkToCourses(){
+            this.$router.push('/TeacherMyCourses');
+          }
 
       }
     }
