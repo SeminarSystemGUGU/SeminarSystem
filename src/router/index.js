@@ -4,10 +4,10 @@ import NewLogIn from '../components/NewLogIn'
 import ConfirmAccount from '../components/ConfrimAccount'
 import ForgetPassword from '../components/ForgetPassword'
 import ForgetPasswordSet from '../components/ForgetPasswordSet'
-import TeacherMainPage from '../components/MainPage'
-import MyAccount from '../components/MyAccount'
-import ResetPassword from '../components/ResetPassword'
-import ResetEmail from '../components/ResetEmail'
+import TeacherMainPage from '../components/TeacherPages/MainPage'
+import MyAccount from '../components/TeacherPages/MyAccount'
+import ResetPassword from '../components/TeacherPages/ResetPassword'
+import ResetEmail from '../components/TeacherPages/ResetEmail'
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -15,7 +15,8 @@ import StuMyGrades from '../components/Studentpages/MyGrades'
 import StuMyTeam from '../components/Studentpages/MyTeam'
 import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
-import TeacherMyCourses from '../components/TeahcerMyCourses'
+import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
+import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
 
 Vue.use(Router);
 
@@ -57,6 +58,10 @@ export default new Router({
     {
       path:'/TeacherMyCourses',
       component:TeacherMyCourses
+    },
+    {
+      path:'/TeacherCourseGrades',
+      component:TeacherCourseGrades
     },
 
     //学生端组件

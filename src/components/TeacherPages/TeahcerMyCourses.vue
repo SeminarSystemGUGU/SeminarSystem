@@ -7,7 +7,7 @@
       <div slot="header" class="panel-header">{{item.name}}<span v-if="item.isMainCourse">（主）</span>
         <span v-else>（从）</span></div>
       <div class="divider"></div>
-      <div class="table-item">
+      <div class="table-item" @click="linkToGrades(item)">
         <span class="item-title">学生成绩</span>
         <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
       </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import AppBar from '../components/ReuseComponents/AppBar'
+  import AppBar from '../ReuseComponents/AppBar'
     export default {
         name: "TeahcerMyCourses",
       components:{
@@ -61,6 +61,11 @@
                 isMainCourse:false
               }
             ]
+          }
+      },
+      methods:{
+          linkToGrades(item){
+            this.$router.push('/TeacherCourseGrades');
           }
       }
     }

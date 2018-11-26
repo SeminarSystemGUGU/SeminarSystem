@@ -3,7 +3,7 @@
     <div class="title" style="height: 35px;">
       <i style="color: dodgerblue" @click="linkBack" class="el-icon-back"/>&nbsp;
       {{titleName}}</div>
-    <div class="icon-button1" style="display: inline-block;float: right;margin-right: 20px;">
+    <div class="icon-button1" style="display: inline-block;float: right;margin-right: 20px;" v-if="showMessages">
       <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/消息.png"/>
       <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
       <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/讨论课.png"/>
@@ -14,7 +14,7 @@
 <script>
     export default {
         name: "AppBar",
-      props:['titleName'],
+      props:['titleName','showMessages'],
       methods:{
           linkBack(){
             this.$router.push('/TeacherMainPage');
