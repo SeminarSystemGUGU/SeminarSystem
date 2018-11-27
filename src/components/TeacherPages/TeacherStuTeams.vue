@@ -5,18 +5,30 @@
       <mu-expansion-panel v-for="item in seminars" :key="item.name">
         <div slot="header" class="panel-header">{{item.name}}</div>
         <div class="divider"></div>
-        <div class="table-item" @click="linkToGrades(item)">
-          <span class="item-title">学生成绩</span>
-          <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
+        <div class="table-item">
+          <span class="item-title"></span>
+          <span class="left-title">组长：</span>
+          <span>24320162202906 &nbsp;&nbsp;&nbsp;谭源杰&nbsp;&nbsp;</span>
+          <span class="item-course">J2EE</span>
+        </div>
+        <div class="divider"></div>
+        <div class="table-item">
+          <span class="item-title"></span>
+          <span class="left-title" style="float: left">组员：</span>
+          <span>24320162202917 &nbsp;&nbsp;&nbsp;王圣哲&nbsp;&nbsp;</span>
+        </div>
+        <div class="divider"></div>
+        <div class="table-item">
+          <span class="item-title"></span>
+          <span class="left-title" style="float: left;visibility: hidden">组员：</span>
+          <span>24320162202906 &nbsp;&nbsp;&nbsp;任剑鹏&nbsp;&nbsp;</span>
+          <span class="item-course">J2EE</span>
         </div>
         <div class="divider"></div>
 
       </mu-expansion-panel>
     </div>
     <div style="height: 8vh"></div>
-    <div class="footer-new-course">
-      <mu-button class="new-course-button" color="info"><i class="el-icon-plus"/>新建课程</mu-button>
-    </div>
   </div>
 </template>
 
@@ -76,8 +88,19 @@
       .table-item{
         height: 8vh;
         line-height: 8vh;
-        font-size: 20px;
+        font-size: 16px;
         text-align: left;
+
+        .item-course{
+          font-weight: bold;
+          color: dodgerblue
+        }
+
+        .left-title{
+          float: left;
+          color: dodgerblue;
+          font-weight: bold
+        }
 
         .item-title{
           margin-left: 6vw;

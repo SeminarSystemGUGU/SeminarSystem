@@ -1,6 +1,6 @@
 <template>
   <div id="TeacherMyCourses">
-    <app-bar titleName="我的课程"></app-bar>
+    <app-bar titleName="我的课程" :show-messages="true"></app-bar>
 
     <div class="main-content">
     <mu-expansion-panel v-for="item in courses" :key="item.name">
@@ -12,7 +12,12 @@
         <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
       </div>
       <div class="divider"></div>
-      <div class="table-item">
+      <div class="table-item" @click="linkToTeams(item)">
+        <span class="item-title">学生组队</span>
+        <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
+      </div>
+      <div class="divider"></div>
+      <div class="table-item"  @click="linkToDetails(item)">
         <span class="item-title">课程信息</span>
         <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
       </div>
@@ -64,9 +69,15 @@
           }
       },
       methods:{
-          linkToGrades(item){
-            this.$router.push('/TeacherCourseGrades');
-          }
+        linkToGrades(item){
+          this.$router.push('/TeacherCourseGrades');
+        },
+        linkToTeams(item){
+          this.$router.push('/TeacherStuTeams');
+        },
+        linkToDetails(item){
+          this.$router.push('/TeacherCourseDetails');
+        }
       }
     }
 </script>

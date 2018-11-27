@@ -1,6 +1,6 @@
 <template>
   <div id="TeacherCourseGrades">
-    <app-bar titleName="OOAD-学生成绩" :showMessages="false"></app-bar>
+    <app-bar titleName="OOAD-学生成绩" :showMessages="true"></app-bar>
     <div class="main-content">
       <mu-expansion-panel v-for="item in seminars" :key="item.name">
         <div slot="header" class="panel-header">{{item.name}}</div>
