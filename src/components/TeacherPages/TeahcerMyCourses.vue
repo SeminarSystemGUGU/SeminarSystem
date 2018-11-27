@@ -22,7 +22,7 @@
         <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
       </div>
       <div class="divider"></div>
-      <div class="table-item">
+      <div class="table-item" @click="linkToClass(item)">
         <span class="item-title">班级信息</span>
         <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
       </div>
@@ -77,6 +77,9 @@
         },
         linkToDetails(item){
           this.$router.push('/TeacherCourseDetails');
+        },
+        linkToClass(item){
+          this.$router.push('/TeacherClassInfos')
         }
       }
     }
