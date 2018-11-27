@@ -12,11 +12,12 @@
     </div>
 
    <div class="animated bounceInRight">
-    <div class="panel-group" id="accordion" align="left">
+    <div class="panel-group" id="accordion" align="left" >
       <div class="title">
         我的队伍
       </div>
-      <div class="panel panel-default">
+      <div v-if="!createFlag">当前未组队</div>
+      <div class="panel panel-default" v-if="createFlag">
         <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne">
           {{teamName}}
         </div>
@@ -87,6 +88,7 @@
         </div>
       </div>
 
+      <mu-button class="butnCT" color="success" @click="createTeam">创建小组<i class="el-icon-circle-plus-outline" style="margin-left: 3vw;"/></mu-button>
     </div>
 
    </div>
@@ -103,6 +105,7 @@
     data(){
       return{
         title:"OOAD",
+        createFlag:false,    //是否有组
         teamName:"1-6  咕咕鸟",
         leaderName:'Li',
         leaderID:'110',
@@ -110,7 +113,10 @@
     },
     methods:{
       backTo(){
-        this.$router.push('/StuMyCourses')
+        this.$router.push('/StuMyCourses');
+      },
+      createTeam(){
+        this.$router.push('/CreateTeam');
       }
     }
   }
@@ -124,9 +130,10 @@
   .title{
     width:31vw;
     color:#96c4e6;
-    font-size: 30px;
+    font-size: 22px;
     border-bottom: 1px solid #67C23A;
     margin-bottom: 2vh;
+    margin-top: 1vh;
   }
   .panel-heading{
     border-radius: 5px;
@@ -154,16 +161,12 @@
     color:gray;
     font-size: 14px;
   }
-  .exportGrades{
-    width:90%;
-    height:6vh;
-    color: white;
-    opacity: 0.7;
+  .butnCT{
+    font-size: 18px;
     margin-top: 10vh;
-    background-color: #67C23A;
-    border: 0;
-    border-radius: 5px;
-    font-size: 22px;
+    width: 100%;
+    height:6vh;
+    opacity: 0.9;
   }
   @media screen and (min-width: 481px ){
 

@@ -15,7 +15,7 @@
       <div class="container" style="margin-top: 13vh">
         <div class="parent1">
           <div >
-            <div class="itemTitle"> {{courseName}}&emsp;{{startDate}}</div>
+            <div class="itemTitle"> <i class="el-icon-document"/> {{courseName}}&emsp;{{startDate}}</div>
             <div class="parent3">
               <!-- Content  -->
               <div class="subList" @click="linkToMyGrades">
@@ -34,7 +34,7 @@
       <div class="container">
         <div class="parent1">
           <div >
-            <div class="itemTitle"> {{courseName}}&emsp;{{startDate}}</div>
+            <div class="itemTitle"> <i class="el-icon-document"/> {{courseName}}&emsp;{{startDate}}</div>
             <div class="parent3">
               <!-- Content  -->
               <div class="subList" >

@@ -13,7 +13,7 @@
 
     <div  class="animated bounceInRight" align="left">
       <div class="container" style="margin-top: 13vh">
-            <div class="itemTitle">
+            <div class="itemTitle" @click="linkToSeminars">
               <i class="el-icon-document"/>
               {{courseName}}&emsp;{{startDate}}
               <i class="el-icon-arrow-right" style="margin-left:40%; "/>
@@ -46,8 +46,8 @@
         backTo(){
           this.$router.push('/StuMainPage')
         },
-        linkTo(){
-          // this.$router.push('/StuMyGrades');
+        linkToSeminars(){
+          this.$router.push('/StuMainSeminars');
         }
 
       }

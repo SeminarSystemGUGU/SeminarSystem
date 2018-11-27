@@ -94,7 +94,7 @@
       </div>
     </div>
 
-    <button class="exportGrades">导出成绩</button>
+      <mu-button class="exportGrades" color="success" >导出成绩</mu-button>
 
     </div>
   </div>
@@ -132,7 +132,7 @@
   .title{
     width:31vw;
     color:#96c4e6;
-    font-size: 30px;
+    font-size: 22px;
     border-bottom: 1px solid #67C23A;
     margin-bottom: 2vh;
   }
@@ -162,15 +162,11 @@
     font-size: 14px;
   }
   .exportGrades{
-    width:90%;
-    height:6vh;
-    color: white;
-    opacity: 0.7;
+    font-size: 18px;
     margin-top: 10vh;
-    background-color: #67C23A;
-    border: 0;
-    border-radius: 5px;
-    font-size: 22px;
+    width: 90%;
+    height:6vh;
+    opacity: 0.9;
   }
   @media screen and (min-width: 481px ){
 
