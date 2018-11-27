@@ -12,7 +12,7 @@
     </div>
 
     <div  class="animated bounceInRight" align="left">
-      <div class="container" style="margin-top: 13vh">
+      <div class="container" style="margin-top: 6vh">
         <div class="parent1">
           <div >
             <div class="itemTitle"> <i class="el-icon-document"/> {{courseName}}&emsp;{{startDate}}</div>
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-
+  import AppBar from '../ReuseComponents/AppBar'
   export default {
     name: "MyCourses",
     components:{
-
+      AppBar,
     },
     data(){
       return{
@@ -105,9 +105,6 @@
     color: #409EFF;
     margin-top: 2vw;
   }
-
-
-
 
   .container  {
     width: 100%;

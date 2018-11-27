@@ -12,6 +12,11 @@ import TeacherStuTeams from '../components/TeacherPages/TeacherStuTeams'
 import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
 import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
 import TeacherCourseDetails from '../components/TeacherPages/TeacherCourseDetails'
+import TeacherClassInfos from '../components/TeacherPages/TeacherClassInfos'
+import NewClassPage from '../components/TeacherPages/NewClassPage'
+
+
+import CreateTeam from '../components/StudentPages/CreateTeam'
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -19,10 +24,7 @@ import StuMyGrades from '../components/Studentpages/MyGrades'
 import StuMyTeam from '../components/Studentpages/MyTeam'
 import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
-import CreateTeam from '../components/StudentPages/CreateTeam'
 
-import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
-import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
 
 
 Vue.use(Router);
@@ -78,11 +80,23 @@ export default new Router({
       path:'/TeacherCourseDetails',
       component:TeacherCourseDetails
     },
+    {
+      path:'/TeacherClassInfos',
+      component:TeacherClassInfos
+    },
+    {
+      path:'/NewClass',
+      component:NewClassPage
+    },
 
     //学生端组件
     {
       path:'/StuMyCourses',
       component:StuMyCourses
+    },
+    {
+      path:'/CreateTeam',
+      component:CreateTeam
     },
     {
       path:'/StuMainSeminars',
@@ -103,12 +117,7 @@ export default new Router({
     {
       path:'/SeminarSelectCourse',
       component:SeminarSelectCourse
-    },
-    {
-      path:'/CreateTeam',
-      component:CreateTeam
     }
-
 
   ]
 })

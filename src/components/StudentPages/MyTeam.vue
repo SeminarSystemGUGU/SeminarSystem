@@ -96,11 +96,11 @@
 </template>
 
 <script>
-
+  import AppBar from '../ReuseComponents/AppBar'
   export default {
     name: "MyTeam",
     components:{
-
+      AppBar
     },
     data(){
       return{
