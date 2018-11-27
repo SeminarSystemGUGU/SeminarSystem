@@ -30,7 +30,7 @@
             <span>&nbsp;</span>
           </el-col>
           <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3.7vw;">
+            <div style="margin-top: 3vw;">
               <img src="../../assets/修改密码.png" class="menu-image"/>
             </div>
           </el-col>
@@ -40,7 +40,7 @@
             </div>
           </el-col>
           <el-col style="width: 27%">
-            <div style="line-height: 12vw;text-align: right">
+            <div style="line-height: 9vw;text-align: right">
               <i class="el-icon-arrow-right" style="width: 25px;height: 25px;"></i>
             </div>
           </el-col>
@@ -53,7 +53,7 @@
             <span>&nbsp;</span>
           </el-col>
           <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3.7vw;">
+            <div style="margin-top: 3vw;">
               <img src="../../assets/通知时间.png" class="menu-image"/>
             </div>
           </el-col>
@@ -63,7 +63,7 @@
             </div>
           </el-col>
           <el-col style="width: 33%" >
-            <el-select size="mini" style="margin-top: 12px;width: 26vw" v-model="timeInterval">
+            <el-select size="mini" style="" class="the-select" v-model="timeInterval">
               <el-option value="3h"></el-option>
             </el-select>
           </el-col>
@@ -106,6 +106,16 @@
   width: 98vw;
   padding:1px;
 
+  .the-select{
+    margin-top: 12px;
+    width: 26vw;
+
+    @media screen and(min-width: 700px){
+      margin-top: 20px;
+    }
+
+  }
+
   .my-info-card{
     width: 85%;
     margin-left: auto;
@@ -137,7 +147,7 @@
     font-family: "PingFang SC";
     width: 100vw;
     height: 12vw;
-    max-height: 49.15px;
+    max-height: 68px;
     /*background-color: gray;*/
     text-align: left;
     font-size: 18px;

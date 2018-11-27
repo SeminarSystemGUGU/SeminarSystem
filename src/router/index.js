@@ -9,6 +9,9 @@ import MyAccount from '../components/TeacherPages/MyAccount'
 import ResetPassword from '../components/TeacherPages/ResetPassword'
 import ResetEmail from '../components/TeacherPages/ResetEmail'
 import TeacherStuTeams from '../components/TeacherPages/TeacherStuTeams'
+import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
+import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
+import TeacherCourseDetails from '../components/TeacherPages/TeacherCourseDetails'
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -16,8 +19,8 @@ import StuMyGrades from '../components/Studentpages/MyGrades'
 import StuMyTeam from '../components/Studentpages/MyTeam'
 import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
-import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
-import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
+
+
 
 Vue.use(Router);
 
@@ -67,6 +70,10 @@ export default new Router({
     {
       path:'/TeacherStuTeams',
       component:TeacherStuTeams
+    },
+    {
+      path:'/TeacherCourseDetails',
+      component:TeacherCourseDetails
     },
 
     //学生端组件
