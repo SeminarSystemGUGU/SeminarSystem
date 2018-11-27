@@ -5,11 +5,44 @@
       <mu-expansion-panel v-for="item in seminars" :key="item.name">
         <div slot="header" class="panel-header">{{item.name}}</div>
         <div class="divider"></div>
-        <div class="table-item" @click="linkToGrades(item)">
-          <span class="item-title">学生成绩</span>
-          <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
-        </div>
-        <div class="divider"></div>
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item name="1">
+            <template slot="title">
+              <div class="group-grades">
+                <span class="left-grades">小组1-1</span>
+                <span class="right-grades">4.5</span>
+              </div>
+            </template>
+            <!--<div class="divider"></div>-->
+            <div class="group-seminar-grades">
+              <div class="seminar-name">
+                <span>用例分析</span>
+              </div>
+              <div class="seminar-grades">
+                <el-row>
+                  <el-col class="row-col">
+                    <span>展示：</span><span class="grade-mark">5</span>
+                  </el-col>
+                  <el-col class="row-col">
+                    <span>提问：</span><span class="grade-mark">5</span>
+                  </el-col>
+                  <el-col class="row-col">
+                    <span>报告：</span><span class="grade-mark">5</span>
+                  </el-col>
+                </el-row>
+              </div>
+
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="反馈 Feedback" name="2">
+            <template slot="title">
+              <div class="group-grades">
+                <span class="left-grades">小组1-1</span>
+                <span class="right-grades">4.5</span>
+              </div>
+            </template>
+          </el-collapse-item>
+        </el-collapse>
 
       </mu-expansion-panel>
     </div>
@@ -53,6 +86,14 @@
   #TeacherCourseGrades{
     width: 100vw;
 
+    .divider{
+      margin-top: 1.5vh;
+      width: 100%;
+      height: 3px;
+      background-color: lightgray;
+    }
+
+
     .title{
       margin-top: 20px;
       text-align: left;
@@ -71,6 +112,41 @@
       margin-top: 3vh;
       .panel-header{
         font-size: 20px;
+      }
+
+      .group-seminar-grades{
+        margin-top: 1.5vh;
+        .seminar-name{
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .seminar-grades{
+          margin-top: 3vh;
+          .row-col{
+            width: 30%;
+            font-size: 16px;
+            .grade-mark{
+              color: dodgerblue;
+              font-weight: bold;
+            }
+          }
+
+        }
+      }
+
+      .group-grades{
+        width: 80%;
+        margin-left: 0;
+        font-size: 18px;
+
+        .left-grades{
+          float: left;
+          margin-left: 10%
+        }
+
+        .right-grades{
+          float: right;
+        }
       }
 
       .table-item{

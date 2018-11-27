@@ -147,7 +147,7 @@
 
 
     .my-course-card{
-      font-family: "PingFang SC";
+      font-family: "Hiragino Sans GB";
       width: 100vw;
       height: 12vw;
       max-height: 68px;
