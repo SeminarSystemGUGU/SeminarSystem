@@ -8,6 +8,7 @@ import TeacherMainPage from '../components/TeacherPages/MainPage'
 import MyAccount from '../components/TeacherPages/MyAccount'
 import ResetPassword from '../components/TeacherPages/ResetPassword'
 import ResetEmail from '../components/TeacherPages/ResetEmail'
+import TeacherStuTeams from '../components/TeacherPages/TeacherStuTeams'
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -62,6 +63,10 @@ export default new Router({
     {
       path:'/TeacherCourseGrades',
       component:TeacherCourseGrades
+    },
+    {
+      path:'/TeacherStuTeams',
+      component:TeacherStuTeams
     },
 
     //学生端组件
