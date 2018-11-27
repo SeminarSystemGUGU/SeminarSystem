@@ -1,24 +1,16 @@
 <template>
   <div>
-    <div class="bar animated bounce fadeIn">
-      <div class="reset-app-bar">
-        <div class="app-button" @click="backTo">
-          <i class="el-icon-back"></i>
-        </div>
-        <div class="app-bar-title">
-          <span>{{title}}</span>
-        </div>
-      </div>
-    </div>
+    <back-bar titleName="讨论课" :showMessages="false" backUrl="/SeminarSelectCourse"></back-bar>
 
-    <div  class="animated bounceInRight" align="left">
-      <div class="container" style="margin-top: 13vh">
+    <div  class="animated fadeInRight" align="left" >
+      <div class="container" style="margin-top: 13vh;">
+        讨论课信息<br/>
         <div class="parent1">
           <div >
             <div class="itemTitle"> {{round[0]}}</div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" @click="">
+              <div class="subList" @click="linkToDetails">
                 <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[0]}}</span>
                 <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
               </div>
@@ -28,6 +20,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -49,17 +42,59 @@
           </div>
         </div>
       </div>
+
+
+      <div class="container" style="margin-top: 13vh;">
+        已报名讨论课<br/>
+        <div class="parent1">
+          <div >
+            <div class="itemTitle"> {{round[0]}}</div>
+            <div class="parent3">
+              <!-- Content  -->
+              <div class="subList" @click="">
+                <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[0]}}</span>
+                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+              </div>
+              <div class="subList"  @click="">
+                <span class="subItem"> <i class="el-icon-document"/>{{seminarName[1]}}</span>
+                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="parent1">
+          <div >
+            <div class="itemTitle"> {{round[1]}}</div>
+            <div class="parent3">
+              <!-- Content  -->
+              <div class="subList" >
+                <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[2]}}</span>
+                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+              </div>
+              <div class="subList">
+                <span class="subItem" > <i class="el-icon-document"/>{{seminarName[3]}}</span>
+                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
 </template>
 
 <script>
-
+  import BackBar from '../ReuseComponents/BackBar'
   export default {
     name: "MainSeminars",
     components:{
-
+      BackBar,
     },
     data(){
       return{
@@ -69,48 +104,25 @@
       }
     },
     methods:{
-      backTo(){
-        this.$router.push('/SeminarSelectCourse')
+      linkToDetails(){
+        this.$router.push('/StuSeminarDetails');
       }
-
     }
   }
 </script>
 
 <style scoped>
-  .reset-app-bar{
-    width: 100vw;
-    height: 13vw;
-    position: fixed;
-    z-index: 1000;
-    top:0;
-    color: #409EFF;
-    box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
-  }
-  .app-bar-title{
-    margin-top: 3.5vw;
-    font-size: 5.2vw;
-    color: #409EFF;
-  }
-  .app-button{
-    font-size: 30px;
-    position: fixed;
-    left: 2vw;
-    color: #409EFF;
-    margin-top: 2vw;
-  }
-
-
-
 
   .container  {
     width: 100%;
     /*height: 20vh;*/
     position: relative;
     border-radius: 5px;
+    color: grey;
+    font-size: 18px;
   }
   .parent1    {
-    height: 7vh;
+    height: 9vh;
     overflow: hidden;
 
     transition-property: height;
@@ -119,26 +131,36 @@
     transform-style: preserve-3d;
   }
   .parent3    {
-    height: 7vh;
+    height: 9vh;
     transition-property: all;
     transition-duration: 1s;
     transform: rotateX(-90deg);
     transform-origin: top;
   }
   .container:hover .parent1   {
-    height: 20vh;
+    height: 22vh;
   }
   .container:hover .parent3   {
     transform: rotateX(0deg);
-    height: 20vh;
+    height: 22vh;
   }
 
   .itemTitle{
-    padding-top: 1vh;
-    padding-left: 3vw;
+    padding-top: 2vh;
+    padding-left: 4vw;
     border-radius: 5px;
     width: 100%;
-    height:6vh;
+    height:8vh;
+    font-size: 25px;
+    background-color:#96c4e6;
+  }
+
+  .itemTitle{
+    padding-top: 2vh;
+    padding-left: 4vw;
+    border-radius: 5px;
+    width: 100%;
+    height:8vh;
     font-size: 20px;
     background-color:#96c4e6;
   }

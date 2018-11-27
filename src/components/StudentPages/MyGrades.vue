@@ -1,17 +1,8 @@
 <template>
   <div align="center">
-    <div class="bar animated bounce fadeIn">
-      <div class="reset-app-bar">
-        <div class="app-button" @click="backTo">
-          <i class="el-icon-back"></i>
-        </div>
-        <div class="app-bar-title">
-          <span>{{title}}</span>
-        </div>
-      </div>
-    </div>
+    <back-bar titleName="我的成绩" :showMessages="false" backUrl="/StuMyCourses"></back-bar>
 
-    <div class="animated bounceInRight">
+    <div class="animated fadeInRight">
     <div class="panel-group " id="accordion" align="left">
       <div class="title">
         我的成绩
@@ -101,12 +92,11 @@
 </template>
 
 <script>
-
-
+  import BackBar from '../ReuseComponents/BackBar'
   export default {
     name: "MyGrades",
     components:{
-
+      BackBar,
     },
     data(){
       return{

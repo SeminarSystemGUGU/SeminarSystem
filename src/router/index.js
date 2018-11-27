@@ -16,16 +16,15 @@ import TeacherClassInfos from '../components/TeacherPages/TeacherClassInfos'
 import NewClassPage from '../components/TeacherPages/NewClassPage'
 
 
-import CreateTeam from '../components/StudentPages/CreateTeam'
-
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
 import StuMyGrades from '../components/Studentpages/MyGrades'
 import StuMyTeam from '../components/Studentpages/MyTeam'
 import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
-
-
+import CreateTeam from '../components/StudentPages/CreateTeam'
+import StuSeminarDetails from '../components/StudentPages/SeminarDetails'
+import StuMyAccount from '../components/StudentPages/MyAccount'
 
 Vue.use(Router);
 
@@ -34,7 +33,7 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: NewLogIn
+      component: TeacherMainPage
     },
     {
       path:'/ConfirmAccount',
@@ -117,6 +116,14 @@ export default new Router({
     {
       path:'/SeminarSelectCourse',
       component:SeminarSelectCourse
+    },
+    {
+      path:'/StuSeminarDetails',
+      component:StuSeminarDetails
+    },
+    {
+      path:'StuMyAccount',
+      component:StuMyAccount
     }
 
   ]

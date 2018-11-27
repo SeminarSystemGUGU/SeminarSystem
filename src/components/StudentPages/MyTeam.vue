@@ -1,17 +1,8 @@
 <template>
   <div align="center">
-    <div class="bar animated bounce fadeIn">
-      <div class="reset-app-bar">
-        <div class="app-button" @click="backTo">
-          <i class="el-icon-back"></i>
-        </div>
-        <div class="app-bar-title">
-          <span>{{title}}</span>
-        </div>
-      </div>
-    </div>
+    <back-bar titleName="我的组队" :showMessages="false" backUrl="/StuMyCourses"></back-bar>
 
-   <div class="animated bounceInRight">
+    <div class="animated fadeInRight">
     <div class="panel-group" id="accordion" align="left" >
       <div class="title">
         我的队伍
@@ -96,11 +87,11 @@
 </template>
 
 <script>
-  import AppBar from '../ReuseComponents/AppBar'
+  import BackBar from '../ReuseComponents/BackBar'
   export default {
     name: "MyTeam",
     components:{
-      AppBar
+      BackBar,
     },
     data(){
       return{
@@ -112,9 +103,6 @@
       }
     },
     methods:{
-      backTo(){
-        this.$router.push('/StuMyCourses');
-      },
       createTeam(){
         this.$router.push('/CreateTeam');
       }
