@@ -16,6 +16,8 @@ import StuMyGrades from '../components/Studentpages/MyGrades'
 import StuMyTeam from '../components/Studentpages/MyTeam'
 import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
+import CreateTeam from '../components/StudentPages/CreateTeam'
+
 import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
 import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
 
@@ -93,7 +95,12 @@ export default new Router({
     {
       path:'/SeminarSelectCourse',
       component:SeminarSelectCourse
+    },
+    {
+      path:'/CreateTeam',
+      component:CreateTeam
     }
+
 
   ]
 })
