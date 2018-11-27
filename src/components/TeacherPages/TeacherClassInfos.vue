@@ -37,7 +37,7 @@
                 </el-row>
               </div>
               <div class="button-panel">
-                <mu-button color="error" class="the-button">删除班级</mu-button>
+                <el-button class="the-button">删除班级</el-button>
               </div>
             </div>
           </el-collapse-item>
@@ -117,7 +117,9 @@
       }
       .the-button{
         width: 160px;
-        background-color: orangered;
+        /*background-color: orangered;*/
+        border-color: orangered;
+        color: orangered;
       }
       .row-col-left{
         width: 50%;
