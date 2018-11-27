@@ -32,7 +32,7 @@
                   </el-col>
                   <el-col class="row-col-right">
                     <span class="link-class">周三78节.xlsx</span>
-                    <el-button type="primary" size="small">选择文件</el-button>
+                    <el-button type="text" size="small" class="choose-file-button">选择文件</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -101,6 +101,12 @@
   .main-content{
     margin-top: 3vh;
 
+    .choose-file-button{
+      /*background-color: white;*/
+      /*border-color: dodgerblue;*/
+      /*color: dodgerblue;*/
+    }
+
     .item-content{
       margin-top: 3vh;
       width: 80%;
@@ -109,6 +115,7 @@
 
       .link-class{
         color: dodgerblue;
+        font-weight: normal;
       }
 
       .button-panel{
@@ -117,6 +124,7 @@
       }
       .the-button{
         width: 160px;
+        height: 40px;
         /*background-color: orangered;*/
         border-color: orangered;
         color: orangered;
