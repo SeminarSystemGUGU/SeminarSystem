@@ -27,22 +27,22 @@
           </mu-list-item>
           <mu-divider></mu-divider>
 
-          <mu-list-item button :ripple="false" nested :open="open === 'drafts'" @toggle-nested="open = arguments[0] ? 'drafts' : ''">
+          <mu-list-item  textline="two-line" button :ripple="false" nested :open="open === 'drafts'" @toggle-nested="open = arguments[0] ? 'drafts' : ''">
             <mu-list-item-title>课程要求</mu-list-item-title>
             <mu-list-item-action>
             <i class="el-icon-arrow-down"></i>
-          </mu-list-item-action>
-            <mu-list-item button :ripple="false" slot="nested">
-              <mu-list-item-title>{{seminarDetails.requiement}}</mu-list-item-title>
-            </mu-list-item>
+            </mu-list-item-action >
+            <mu-list-item-content button :ripple="false" slot="nested" class="requirContent">
+              <mu-list-item-content >{{seminarDetails.requiement}}</mu-list-item-content>
+            </mu-list-item-content>
 
           </mu-list-item>
 
           <mu-divider class="" style="height: 5px;"></mu-divider>
           <mu-list-item avatar :ripple="false" button>
-            <mu-list-item-content>
+            <mu-list-item-content >
               <mu-list-item-title>课程情况</mu-list-item-title>
-              <mu-list-item-sub-title>
+              <mu-list-item-sub-title >
                 {{seminarDetails.status}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
@@ -50,6 +50,7 @@
           </mu-list-item>
         </mu-list>
 
+        <mu-button class="inSeminar" color="success"  @click="inSeminar">进入讨论课</mu-button>
       </div>
     </div>
 </template>
@@ -70,7 +71,7 @@
                 roundID:2,
                 classOrder:'第二次',
                 requiement:'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
-                status:'已完成',
+                status:'正在进行',
 
               }
           }
@@ -78,12 +79,15 @@
       methods:{
           showStatusDetails(){
             this.$router.push('/StuStatusDetails');
-          }
+          },
+        inSeminar(){
+            this.$router.push('/StuAskQuestion');
+        }
       }
     }
 </script>
 
-<style scoped>
+<style lang="less">
   .seminarDetailsBack{
     margin-top: 12vh;
   }
@@ -91,6 +95,17 @@
     margin-top: 2vh;
     border-top:5px solid lightgray;
     border-bottom: 0.5px solid lightgray;
+  }
+  .requirContent{
+    margin: 5px 20px;
+    height:auto;
+  }
+  .inSeminar{
+    font-size: 18px;
+    margin-top: 22vh;
+    width: 100%;
+    height:6vh;
+    opacity: 0.9;
   }
 
 </style>

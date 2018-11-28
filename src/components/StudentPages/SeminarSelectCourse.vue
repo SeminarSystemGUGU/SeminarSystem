@@ -60,10 +60,12 @@
     padding-top: 10px;
     padding-left: 4vw;
     width: 100%;
-    height:8vh;
-    font-size: 27px;
-    border: 1px solid black;
-    border-radius: 10px;
+    height:7vh;
+    font-size: 22px;
+    box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+
+    /*border: 1px solid black;*/
+    /*border-radius: 10px;*/
   }
 
   @media screen and (min-width: 481px ){

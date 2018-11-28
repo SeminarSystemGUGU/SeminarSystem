@@ -36,7 +36,7 @@
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   #ResetEmail{
     width: 100vw;
     padding:1px;

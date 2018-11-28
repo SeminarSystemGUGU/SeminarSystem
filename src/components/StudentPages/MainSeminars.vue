@@ -51,7 +51,7 @@
             <div class="itemTitle"> {{round[0]}}</div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" @click="">
+              <div class="subList" @click="linkToRegisteredDetails">
                 <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[0]}}</span>
                 <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
               </div>
@@ -106,6 +106,9 @@
     methods:{
       linkToDetails(){
         this.$router.push('/StuSeminarDetails');
+      },
+      linkToRegisteredDetails(){
+        this.$router.push('/StuRegisteredSeminarDetails')
       }
     }
   }
@@ -152,8 +155,10 @@
     height:7vh;
     color: #000;
     font-size: 22px;
-    border: 1px solid black;
-    border-radius: 10px;
+    box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+
+    /*border: 1px solid black;*/
+    /*border-radius: 10px;*/
     /*background-color:#96c4e6;*/
   }
 

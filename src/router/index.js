@@ -16,6 +16,10 @@ import TeacherClassInfos from '../components/TeacherPages/TeacherClassInfos'
 import NewClassPage from '../components/TeacherPages/NewClassPage'
 import TeacherCourseRounds from '../components/TeacherPages/TeacherCourseRounds'
 import TeacherCourseShareSetting from '../components/TeacherPages/TeacherCourseShareSetting'
+import TeacherNewShare from '../components/TeacherPages/TeacherNewShare'
+import TeacherNewCourse from '../components/TeacherPages/TeacherNewCourse'
+import TeacherSeminar from '../components/TeacherPages/TeacherSeminar'
+
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -29,6 +33,14 @@ import StuMyAccount from '../components/StudentPages/StuMyAccount'
 import StuStatusDetails from '../components/StudentPages/StatusDetails'
 import StuResetEmail from '../components/StudentPages/ResetEmail'
 import StuResetPassword from '../components/StudentPages/ResetPassword'
+import StuAskQuestion from '../components/StudentPages/AskQuestion'
+import StuRegisteredSeminarDetails from '../components/StudentPages/RegisteredSeminarDetails'
+import StuChangeRegister from '../components/StudentPages/ChangeRegister'
+
+
+
+
+
 
 
 Vue.use(Router);
@@ -100,6 +112,18 @@ export default new Router({
       path:'/TeacherCourseShareSetting',
       component:TeacherCourseShareSetting
     },
+    {
+      path:'/TeacherNewShare',
+      component:TeacherNewShare
+    },
+    {
+      path:'/TeacherSeminar',
+      component:TeacherSeminar
+    },
+    {
+      path:'/TeacherNewCourse',
+      component:TeacherNewCourse
+    },
 
     //学生端组件
     {
@@ -130,6 +154,7 @@ export default new Router({
       path:'/SeminarSelectCourse',
       component:SeminarSelectCourse
     },
+
     {
       path:'/StuSeminarDetails',
       component:StuSeminarDetails
@@ -149,7 +174,21 @@ export default new Router({
     {
       path:'/StuResetPassword',
       component:StuResetPassword
+    },
+    {
+      path:'/StuAskQuestion',
+      component:StuAskQuestion
+    },
+    {
+      path:'/StuRegisteredSeminarDetails',
+      component:StuRegisteredSeminarDetails,
+    },
+    {
+      path:'/StuChangeRegister',
+      component:StuChangeRegister
     }
+
+
 
   ]
 })
