@@ -16,6 +16,7 @@ import TeacherClassInfos from '../components/TeacherPages/TeacherClassInfos'
 import NewClassPage from '../components/TeacherPages/NewClassPage'
 import TeacherCourseRounds from '../components/TeacherPages/TeacherCourseRounds'
 import TeacherCourseShareSetting from '../components/TeacherPages/TeacherCourseShareSetting'
+import TeacherNewShare from '../components/TeacherPages/TeacherNewShare'
 
 import CreateTeam from '../components/StudentPages/CreateTeam'
 
@@ -96,6 +97,10 @@ export default new Router({
     {
       path:'/TeacherCourseShareSetting',
       component:TeacherCourseShareSetting
+    },
+    {
+      path:'/TeacherNewShare',
+      component:TeacherNewShare
     },
 
     //学生端组件
