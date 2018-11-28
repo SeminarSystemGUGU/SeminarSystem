@@ -36,7 +36,7 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: TeacherMainPage
+      component: NewLogIn
     },
     {
       path:'/ConfirmAccount',
@@ -133,11 +133,11 @@ export default new Router({
       component:StuSeminarDetails
     },
     {
-      path:'StuMyAccount',
+      path:'/StuMyAccount',
       component:StuMyAccount
     },
     {
-      path:'StuStatusDetails',
+      path:'/StuStatusDetails',
       component:StuStatusDetails,
     }
 
