@@ -15,6 +15,7 @@ import TeacherCourseDetails from '../components/TeacherPages/TeacherCourseDetail
 import TeacherClassInfos from '../components/TeacherPages/TeacherClassInfos'
 import NewClassPage from '../components/TeacherPages/NewClassPage'
 import TeacherCourseRounds from '../components/TeacherPages/TeacherCourseRounds'
+import TeacherCourseShareSetting from '../components/TeacherPages/TeacherCourseShareSetting'
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -92,6 +93,10 @@ export default new Router({
     {
       path:'/TeacherCourseRounds',
       component:TeacherCourseRounds
+    },
+    {
+      path:'/TeacherCourseShareSetting',
+      component:TeacherCourseShareSetting
     },
 
     //学生端组件
