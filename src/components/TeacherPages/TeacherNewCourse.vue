@@ -6,6 +6,9 @@
 				<el-form-item>
 					<el-input class="new-course-input" placeholder="请输入课程名"></el-input>
 				</el-form-item>
+				<el-form-item>
+					<el-input class="new-course-input" type="textarea" placeholder="请输入课程详情"></el-input>
+				</el-form-item>
 			</el-form>
 		</div>
 	</div>
