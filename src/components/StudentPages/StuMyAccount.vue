@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="middle-card">
-          <span style="font-weight: bold">工号:</span>
+          <span style="font-weight: bold">学号:</span>
           <span>{{account1}}</span><br/>
           <span style="font-weight: bold;display: inline-block;margin-top: 1.3vw">邮箱：</span>
           <span>{{email1}}</span>
@@ -92,10 +92,10 @@
         this.$router.push('/StuMainPage');
       },
       linkToPassword(){
-        // this.$router.push('/ResetPassword');
+        this.$router.push('/StuResetPassword');
       },
       linkToEmail(){
-        // this.$router.push('/ResetEmail');
+        this.$router.push('/StuResetEmail');
       }
     }
   }

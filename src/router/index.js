@@ -27,6 +27,8 @@ import CreateTeam from '../components/StudentPages/CreateTeam'
 import StuSeminarDetails from '../components/StudentPages/SeminarDetails'
 import StuMyAccount from '../components/StudentPages/StuMyAccount'
 import StuStatusDetails from '../components/StudentPages/StatusDetails'
+import StuResetEmail from '../components/StudentPages/ResetEmail'
+import StuResetPassword from '../components/StudentPages/ResetPassword'
 
 
 Vue.use(Router);
@@ -139,6 +141,14 @@ export default new Router({
     {
       path:'/StuStatusDetails',
       component:StuStatusDetails,
+    },
+    {
+      path:'/StuResetEmail',
+      component:StuResetEmail
+    },
+    {
+      path:'/StuResetPassword',
+      component:StuResetPassword
     }
 
   ]
