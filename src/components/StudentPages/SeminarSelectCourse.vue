@@ -7,7 +7,7 @@
             <div class="itemTitle" @click="linkToSeminars">
               <i class="el-icon-document"/>
               {{courseName}}&emsp;{{startDate}}
-              <i class="el-icon-arrow-right" style="margin-left:40%; "/>
+              <i class="el-icon-arrow-right" style="margin-left:14%; "/>
             </div>
       </div>
 
@@ -15,7 +15,7 @@
             <div class="itemTitle">
               <i class="el-icon-document"/>
               {{courseName}}&emsp;{{startDate}}
-              <i class="el-icon-arrow-right" style="margin-left:40%; "/>
+              <i class="el-icon-arrow-right" style="margin-left:14%; "/>
             </div>
           </div>
     </div>
@@ -57,13 +57,13 @@
   }
 
   .itemTitle{
-    padding-top: 2vh;
+    padding-top: 10px;
     padding-left: 4vw;
-    border-radius: 5px;
     width: 100%;
     height:8vh;
-    font-size: 20px;
-    background-color:#96c4e6;
+    font-size: 27px;
+    border: 1px solid black;
+    border-radius: 10px;
   }
 
   @media screen and (min-width: 481px ){

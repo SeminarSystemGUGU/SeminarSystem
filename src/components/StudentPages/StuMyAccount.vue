@@ -79,12 +79,12 @@
 
 <script>
   export default {
-    name: "MyAccount",
+    name: "StuMyAccount",
     data(){
       return{
         account1:'24320162202917',
         email1:'1005709383@qq.com',
-        timeInterval1:''
+        timeInterval1:'',
       }
     },
     methods:{

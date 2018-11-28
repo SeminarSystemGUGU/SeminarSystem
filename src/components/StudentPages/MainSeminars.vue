@@ -119,10 +119,10 @@
     position: relative;
     border-radius: 5px;
     color: grey;
-    font-size: 18px;
+    font-size: 20px;
   }
   .parent1    {
-    height: 9vh;
+    height: 8vh;
     overflow: hidden;
 
     transition-property: height;
@@ -131,38 +131,30 @@
     transform-style: preserve-3d;
   }
   .parent3    {
-    height: 9vh;
+    height: 8vh;
     transition-property: all;
     transition-duration: 1s;
     transform: rotateX(-90deg);
     transform-origin: top;
   }
   .container:hover .parent1   {
-    height: 22vh;
+    height: 21vh;
   }
   .container:hover .parent3   {
     transform: rotateX(0deg);
-    height: 22vh;
+    height: 21vh;
   }
 
   .itemTitle{
-    padding-top: 2vh;
+    padding-top: 10px;
     padding-left: 4vw;
-    border-radius: 5px;
     width: 100%;
-    height:8vh;
-    font-size: 25px;
-    background-color:#96c4e6;
-  }
-
-  .itemTitle{
-    padding-top: 2vh;
-    padding-left: 4vw;
-    border-radius: 5px;
-    width: 100%;
-    height:8vh;
-    font-size: 20px;
-    background-color:#96c4e6;
+    height:7vh;
+    color: #000;
+    font-size: 22px;
+    border: 1px solid black;
+    border-radius: 10px;
+    /*background-color:#96c4e6;*/
   }
 
   .subList {
@@ -171,7 +163,7 @@
     margin-top: 10px;
     width: 100%;
     height: 5vh;
-    background-color: #c7e1f0;
+    /*background-color: #c7e1f0;*/
     border-radius: 5px;
   }
   .subItem{

@@ -1,8 +1,54 @@
 <template>
     <div>
-      <back-bar titleName="我的课程" :showMessages="false" backUrl="/StuMainPage"></back-bar>
+      <back-bar :titleName="seminarDetails.title" :showMessages="false" backUrl="/StuMainSeminars"></back-bar>
 
-      <div>
+      <div class="seminarDetailsBack animated fadeInRight" align="left">
+        <span style="margin-left: 2vw;font-size: 25px;">{{seminarDetails.name}}</span>
+        <mu-list  toggle-nested class="infoList">
+          <mu-list-item avatar :ripple="false" button>
+            <mu-list-item-content>
+              <mu-list-item-title>轮次</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                {{seminarDetails.roundID}}
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+          </mu-list-item>
+          <mu-divider></mu-divider>
+
+          <mu-list-item avatar :ripple="false" button>
+            <mu-list-item-content>
+              <mu-list-item-title>课次序号</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                {{seminarDetails.classOrder}}
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+          </mu-list-item>
+          <mu-divider></mu-divider>
+
+          <mu-list-item button :ripple="false" nested :open="open === 'drafts'" @toggle-nested="open = arguments[0] ? 'drafts' : ''">
+            <mu-list-item-title>课程要求</mu-list-item-title>
+            <mu-list-item-action>
+            <i class="el-icon-arrow-down"></i>
+          </mu-list-item-action>
+            <mu-list-item button :ripple="false" slot="nested">
+              <mu-list-item-title>{{seminarDetails.requiement}}</mu-list-item-title>
+            </mu-list-item>
+
+          </mu-list-item>
+
+          <mu-divider class="" style="height: 5px;"></mu-divider>
+          <mu-list-item avatar :ripple="false" button>
+            <mu-list-item-content>
+              <mu-list-item-title>课程情况</mu-list-item-title>
+              <mu-list-item-sub-title>
+                {{seminarDetails.status}}
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
+          </mu-list-item>
+        </mu-list>
 
       </div>
     </div>
@@ -17,12 +63,34 @@
       },
       data(){
           return{
+            open:'send',
+              seminarDetails:{
+                title:"OOAD-讨论课",
+                name:'业务流程分析',
+                roundID:2,
+                classOrder:'第二次',
+                requiement:'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
+                status:'已完成',
 
+              }
+          }
+      },
+      methods:{
+          showStatusDetails(){
+            this.$router.push('/StuStatusDetails');
           }
       }
     }
 </script>
 
 <style scoped>
+  .seminarDetailsBack{
+    margin-top: 12vh;
+  }
+  .infoList{
+    margin-top: 2vh;
+    border-top:5px solid lightgray;
+    border-bottom: 0.5px solid lightgray;
+  }
 
 </style>

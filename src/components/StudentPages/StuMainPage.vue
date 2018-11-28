@@ -55,6 +55,11 @@
 <script>
   export default {
     name: "StuMainPage",
+    data(){
+      return{
+
+      }
+    },
     methods:{
       linkToMyCourses(){
         this.$router.push('/StuMyCourses');

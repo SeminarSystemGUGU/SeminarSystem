@@ -24,7 +24,9 @@ import StuMainPage from '../components/StudentPages/StuMainPage'
 import SeminarSelectCourse from '../components/StudentPages/SeminarSelectCourse'
 import CreateTeam from '../components/StudentPages/CreateTeam'
 import StuSeminarDetails from '../components/StudentPages/SeminarDetails'
-import StuMyAccount from '../components/StudentPages/MyAccount'
+import StuMyAccount from '../components/StudentPages/StuMyAccount'
+import StuStatusDetails from '../components/StudentPages/StatusDetails'
+
 
 Vue.use(Router);
 
@@ -128,6 +130,10 @@ export default new Router({
     {
       path:'StuMyAccount',
       component:StuMyAccount
+    },
+    {
+      path:'StuStatusDetails',
+      component:StuStatusDetails,
     }
 
   ]

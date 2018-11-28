@@ -117,21 +117,24 @@
 <style scoped>
   #accordion{
     margin-top: 13vh;
-    width:90%;
+    width:100%;
   }
   .title{
     width:31vw;
-    color:#96c4e6;
+    /*color:#96c4e6;*/
     font-size: 22px;
-    border-bottom: 1px solid #67C23A;
+    /*border-bottom: 1px solid ;*/
     margin-bottom: 2vh;
+    margin-left:3vw ;
   }
   .panel-heading{
-    border-radius: 5px;
+    /*border-radius: 10px;*/
+    border-bottom: 0.5px solid gray;
     width: 100%;
     height:6vh;
     font-size: 20px;
-    background-color:#96c4e6;
+    background-color: white;
+    /*background-color:#96c4e6;*/
   }
   .panel-body{
     border:0;
@@ -140,10 +143,11 @@
     border:0;
   }
   .subContent{
+    width:90%;
     margin-top: 1vh;
     padding: 2vh 3vw 1px;
     width: 100%;
-    background-color: #c7e1f0;
+    /*background-color: #c7e1f0;*/
     border-radius: 5px;
     min-height: 6vh;
   }

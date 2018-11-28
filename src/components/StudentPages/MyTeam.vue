@@ -43,7 +43,7 @@
       </div>
 
       <!--其他队伍-->
-      <div class="title" style="border-bottom: 1px solid palegoldenrod;">
+      <div class="title">
         其他队伍
       </div>
       <div class="panel panel-default" style="border: 0;">
@@ -65,7 +65,7 @@
       </div>
 
       <!--未组队学生-->
-      <div class="title" style="width:40vw;border-bottom: 1px solid coral;">
+      <div class="title" >
         未组队学生
       </div>
 
@@ -117,9 +117,7 @@
   }
   .title{
     width:31vw;
-    color:#96c4e6;
     font-size: 22px;
-    border-bottom: 1px solid #67C23A;
     margin-bottom: 2vh;
     margin-top: 1vh;
   }
@@ -136,6 +134,7 @@
   .panel{
     border:0;
     margin-bottom: 2vh ;
+    border-bottom: 0.5px solid gray;
   }
   .subContent{
     margin-top: 1vh;

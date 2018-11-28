@@ -104,13 +104,14 @@
   }
 
   .itemTitle{
-    padding-top: 2vh;
+    padding-top: 10px;
     padding-left: 4vw;
-    border-radius: 5px;
     width: 100%;
     height:8vh;
-    font-size: 25px;
-    background-color:#96c4e6;
+    font-size: 27px;
+    border: 1px solid black;
+    border-radius: 10px;
+    /*background-color:#96c4e6;*/
   }
 
   .subList {
@@ -119,12 +120,13 @@
     margin-top: 10px;
     width: 100%;
     height: 5vh;
-    background-color: #c7e1f0;
+    /*border-bottom: 1px solid gray;*/
+    /*background-color: #c7e1f0;*/
     border-radius: 5px;
   }
   .subItem{
     color:gray;
-    font-size: 14px;
+    font-size: 18px;
   }
 
   @media screen and (min-width: 481px ){
