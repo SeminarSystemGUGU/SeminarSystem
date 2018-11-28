@@ -57,7 +57,7 @@
 			</div>
 			<div class="divider"></div>
 			<div class="button-panel another">
-				<el-button type="primary">确定提交</el-button>
+				<el-button type="primary" @click="confirm">确定提交</el-button>
 			</div>
 		</div>
 	</div>
@@ -68,6 +68,11 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		name:'TeacherNewShare',
 		components:{
 			AppBar
+		},
+		methods:{
+			confirm(){
+				
+			}
 		}
 	}
 </script>
