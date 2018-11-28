@@ -42,7 +42,7 @@
     </div>
     <div style="height: 8vh"></div>
     <div class="footer-new-course">
-      <mu-button class="new-course-button" color="info"><i class="el-icon-plus"/>新建课程</mu-button>
+      <mu-button class="new-course-button" @click="linkToNewCourse" color="info"><i class="el-icon-plus"/>新建课程</mu-button>
     </div>
   </div>
 </template>
@@ -86,6 +86,9 @@
         },
         linkToShare(item){
           this.$router.push('/TeacherCourseShareSetting');
+        },
+        linkToNewCourse(){
+          this.$router.push('/TeacherNewCourse');
         }
       }
     }

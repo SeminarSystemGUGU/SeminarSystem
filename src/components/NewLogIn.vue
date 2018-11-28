@@ -19,6 +19,11 @@
               <input class="login-input" type="password" placeholder="请输入密码" v-model="password" />
             </div>
           </div>
+          <div class="radio-select">
+              <mu-radio v-model="value1" style="margin-right: 16px;colro:white" value="top" label="教师">
+              </mu-radio>
+              <mu-radio v-model="value1" style="margin-right: 16px;" value="left" label="学生"></mu-radio>
+          </div>
           <div class="button-panel">
             <button class="login-button" ref="loginButton" @click="linkTo">登录</button>
           </div>
@@ -41,7 +46,8 @@
       data(){
           return{
            account:'',
-           password:''
+           password:'',
+           value1:''
           }
       },
       watch:{
@@ -66,7 +72,7 @@
     }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   @base-input-color:rgba(255,255,255,0.75);
   @base-input-size:18px;
   @base-placeholder-size:17px;
@@ -81,6 +87,18 @@
   background-size: cover;
   padding: 1px;
   color: whitesmoke;
+  
+  .radio-select{
+    margin-top:3vh;
+  }
+  .mu-radio-wrapper{
+  .mu-radio-label{
+    font-size:17px;
+    color:white;
+    /* background-color:white; */
+  }
+}
+
 
   .login-metal{
     padding: 0.1px;
