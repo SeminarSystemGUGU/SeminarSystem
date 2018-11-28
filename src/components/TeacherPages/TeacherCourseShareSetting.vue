@@ -31,7 +31,7 @@
 			</el-card>
 		</div>
 		<div class="new-share-button-panel">
-			<mu-button class="the-button" color="primary">新建共享</mu-button>
+			<mu-button class="the-button" color="primary" @click="linkNewShare">新建共享</mu-button>
 		</div>
 	</div>
 </template>
@@ -41,6 +41,11 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		name:'TeacherCourseShareSetting',
 		components:{
 			AppBar
+		},
+		methods:{
+			linkNewShare(){
+				this.$router.push('/TeacherNewShare');
+			}
 		}
 	}
 </script>
