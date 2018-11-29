@@ -31,6 +31,8 @@
     max-height: 50px;
     /*background-color: gray;*/
     text-align: left;
+    /*position: fixed;*/
+    /*top:0;*/
 
   .title{
     display: inline-block;
