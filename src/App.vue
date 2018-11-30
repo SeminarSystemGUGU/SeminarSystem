@@ -14,7 +14,14 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created(){
+    // let platform=navigator.platform;
+    //
+    // if(platform.indexOf('W')!==-1){
+    //   this.$router.push('/');
+    // }
+  }
 }
 </script>
 

@@ -36,6 +36,7 @@ import StuResetPassword from '../components/StudentPages/ResetPassword'
 import StuAskQuestion from '../components/StudentPages/AskQuestion'
 import StuRegisteredSeminarDetails from '../components/StudentPages/RegisteredSeminarDetails'
 import StuChangeRegister from '../components/StudentPages/ChangeRegister'
+import StuCheckGrades from '../components/StudentPages/CheckGrades'
 
 
 
@@ -186,6 +187,10 @@ export default new Router({
     {
       path:'/StuChangeRegister',
       component:StuChangeRegister
+    },
+    {
+      path:'/StuCheckGrades',
+      component:StuCheckGrades
     }
 
 

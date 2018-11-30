@@ -4,7 +4,7 @@
 
     <div class="changeRegisterBack animated fadeInRight" >
       <mu-paper :z-depth="1" class="demo-list-wrap" >
-        <mu-list v-for="option,index in registerOrder">
+        <mu-list v-for="option in registerOrder" :key = "option.order">
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
               {{option.order}}

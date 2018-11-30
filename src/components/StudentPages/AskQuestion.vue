@@ -5,7 +5,7 @@
       <div class="statusDetailsBack animated fadeInRight" >
       <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentTeam}}</div>
         <mu-paper :z-depth="1" class="demo-list-wrap">
-          <mu-list v-for="option,index in registerOrder">
+          <mu-list v-for="option in registerOrder" :key = "option.teamid">
             <mu-list-item class="listItem" button ripple="true" style="font-size: 18px;">
               <mu-list-item-action>
                 {{option.order}}

@@ -77,6 +77,8 @@
 
         <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport">报告提交</mu-button>
         <mu-button class="submit" color="success"  @click="submitPPT">PPT提交</mu-button>
+
+        <mu-button class="submit" color="success"  @click="showGrades">查看成绩</mu-button>
       </div>
 
       <mu-dialog title="上传PPT" width="360" :open.sync="pptFlag">
@@ -146,6 +148,9 @@
           submitPPT(){
             this.$data.pptFlag=true;
           },
+        showGrades(){
+          this.$router.push('/StuCheckGrades');
+        },
 
         submitReport(){
             this.$data.reportFlag=true;
@@ -186,7 +191,7 @@
     margin: 5px 20px;
     height:auto;
   }
-  mu-list-item:nth-child(even){
+  .mu-list-item:nth-child(even){
     background-color: black;
 
   }
