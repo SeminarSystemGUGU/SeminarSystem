@@ -2,7 +2,8 @@
   <div align="center">
     <back-bar titleName="创建队伍" :showMessages="false" backUrl="/StuMyTeam"></back-bar>
 
-    <div class="animated fadeInRight" style="margin-top: 13vh;width:100%;" align="left" >
+    <!--未组队时显示  inTeamOrNot==false  -->
+    <div class="animated fadeInRight" style="margin-top: 5vh;width:100%;" align="left" v-if="inTeamOrNot==false" >
       <mu-form label-position="left">
         <mu-form-item  label="组名">
           <mu-text-field v-model="newTeam.class"></mu-text-field>
@@ -32,7 +33,7 @@
               <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action style="margin-left: -4vh;">
-              <mu-button icon>
+              <mu-button icon v-if="option.identify=='组员'">
                <i style="margin-top: -1vh;" class="el-icon-circle-close-outline"/>
               </mu-button>
             </mu-list-item-action>
@@ -60,7 +61,7 @@
               <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action>
-              <mu-button icon>
+              <mu-button icon >
                 <i style="margin-top: -1vh;"  class="el-icon-circle-plus-outline"/>
               </mu-button>
             </mu-list-item-action>
@@ -70,6 +71,103 @@
       <mu-button class="submit" color="success" >提交申请</mu-button>
     </div>
 
+    <!--组队后 队长界面 leaderOrNot==true  -->
+    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="leaderOrNot==true " >
+      <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
+      <mu-divider inset ></mu-divider>
+      <mu-list textline="two-line" style="margin-bottom: 5vh;">
+        <mu-sub-header inset>已有成员</mu-sub-header>
+        <mu-list-item avatar button :ripple="false"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+          <mu-list-item-action>
+            <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.identify=='组长'">
+              <!--头像图标-->
+              {{option.identify}}
+            </mu-avatar>
+            <mu-tooltip content="选了J2EE">
+            <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" v-if="option.identify=='组员'">
+              <!--头像图标-->
+              {{option.identify}}
+            </mu-avatar>
+            </mu-tooltip>
+          </mu-list-item-action>
+          <mu-list-item-content>
+            <mu-list-item-title style=" display: inline"> &emsp;{{option.name}}</mu-list-item-title>
+            <mu-button v-if="option.identify=='组员'" style="margin-left: 15%;display: inline"  flat color="error">移出</mu-button>
+            <mu-list-item-sub-title >&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+          </mu-list-item-content>
+        </mu-list-item>
+      </mu-list>
+
+      <span style="font-size: 22px;margin-left: 1vh; ">添加成员</span>
+      <mu-divider inset ></mu-divider>
+      <mu-form label-position="left" style="margin-top: 5vh;">
+        <mu-form-item  label="搜索" >
+          <mu-text-field v-model="tempNumber" placeholder="输入学号">
+            <mu-button color="primary" flat small> <img src="../../assets/search.svg" style="size: 25px;"></mu-button>
+          </mu-text-field>
+        </mu-form-item>
+      </mu-form>
+
+      <mu-list textline="two-line" style="margin-top: -2vh;">
+        <mu-sub-header >搜索结果:</mu-sub-header>
+        <mu-list-item avatar button :ripple="false"  v-for="option in tempMembers" style="margin-left: -2vh;">
+          <mu-list-item-action>
+            <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.identify==''">
+              <!--头像图标-->
+            </mu-avatar>
+            <mu-tooltip content="选了J2EE">
+              <mu-avatar color="bisque" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" >
+                <!--头像图标-->
+                <img style="width: 20px;height: 20px;" src="../../assets/头像.png"   />
+              </mu-avatar>
+            </mu-tooltip>
+          </mu-list-item-action>
+          <mu-list-item-content>
+            <mu-list-item-title style="margin-top:-2vh; display: inline"> &emsp;{{option.name}}</mu-list-item-title>
+            <mu-button  style="margin-left: 15%;display: inline"  flat color="success">添加</mu-button>
+            <mu-list-item-sub-title >&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+          </mu-list-item-content>
+        </mu-list-item>
+      </mu-list>
+      <mu-button class="dissolve" color="error"  @click="dissolve">解散小组</mu-button>
+    </div>
+
+    <!--组队后 队长界面 leaderOrNot==true  -->
+    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="leaderOrNot==false " >
+      <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
+      <mu-divider inset ></mu-divider>
+      <mu-list textline="two-line" style="margin-bottom: 5vh;">
+        <mu-sub-header inset>已有成员</mu-sub-header>
+        <mu-list-item avatar button :ripple="false"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+          <mu-list-item-action>
+            <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.identify=='组长'">
+              <!--头像图标-->
+              {{option.identify}}
+            </mu-avatar>
+            <mu-tooltip content="选了J2EE">
+              <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" v-if="option.identify=='组员'">
+                <!--头像图标-->
+                {{option.identify}}
+              </mu-avatar>
+            </mu-tooltip>
+          </mu-list-item-action>
+          <mu-list-item-content>
+            <mu-list-item-title style=" display: inline"> &emsp;{{option.name}}</mu-list-item-title>
+            <!--<mu-button v-if="option.identify=='组员'" style="margin-left: 15%;display: inline"  flat color="error">移出</mu-button>-->
+            <mu-list-item-sub-title >&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+          </mu-list-item-content>
+        </mu-list-item>
+      </mu-list>
+
+
+      <mu-button class="dissolve" color="error"  @click="dropout">退出小组</mu-button>
+    </div>
+
+
+
+
+
+
   </div>
 </template>
 
@@ -77,16 +175,16 @@
   import BackBar from '../ReuseComponents/BackBar'
     export default {
       name: "CreateTeam",
-      inTeamOrNot:false,
-      leaderOrNot:true,
       components:{
         BackBar,
       },
       data(){
         return{
+          inTeamOrNot:true,
+          leaderOrNot:true,
           newTeam:{
-            teamName:'',
-            class:'',
+            teamName:'咕咕鸟',
+            class:'1',
             members:[
               {
                 name:'LiMing',
@@ -115,8 +213,12 @@
         }
       },
       methods:{
-
-      }
+        dissolve(){
+          //组长解散小组
+        },
+        dropout(){}
+         //组员退出小组
+       }
     }
 </script>
 
@@ -145,5 +247,12 @@
   .mu-form-item{
     margin-left: 3vh;
     width: 80%;
+  }
+  .dissolve{
+    font-size: 18px;
+    margin-top: 5vh;
+    width: 100%;
+    height:6vh;
+    opacity: 0.9;
   }
 </style>
