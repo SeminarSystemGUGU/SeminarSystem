@@ -3,9 +3,10 @@
     <back-bar titleName="OOAD-讨论课" :showMessages="false" backUrl="/StuSeminarDetails"></back-bar>
 
     <div class="statusDetailsBack animated fadeInRight" >
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="false">
+      <!--讨论课已经结束-->
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status==3">
         <mu-list v-for="option in registerOrder" :key = "option.teamid">
-          <mu-list-item class="listItem" button ripple="true" style="font-size: 18px;">
+          <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
             <mu-list-item-action>
               {{option.order}}
             </mu-list-item-action>
@@ -15,8 +16,8 @@
         <mu-divider></mu-divider>
       </mu-paper>
 
-
-      <mu-paper :z-depth="1" class="demo-list-wrap">
+      <!--正在进行讨论课-->
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status==2">
         <mu-list v-for="option in ppt" :key = "option.order">
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
@@ -36,6 +37,29 @@
         <mu-button slot="actions" flat color="primary" @click="downloadFlag=!downloadFlag">Close</mu-button>
       </mu-dialog>
 
+      <!--报名阶段-->
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status==1">
+        <mu-list v-for="option in registerOrder" :key = "option.order">
+          <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
+            <mu-list-item-action>
+              {{option.order}}
+            </mu-list-item-action>
+            <mu-list-item-title style="margin-left:35%;font-size: 20px;">{{option.teamid}}
+              <mu-button flat color="success" style="margin-top:-2vh;margin-left: -10%;"large @click="register" v-if="option.teamid==''">可报名</mu-button>
+            </mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+        <mu-divider></mu-divider>
+      </mu-paper>
+
+      <mu-dialog title="提示" width="360" :open.sync="registerFlag">
+        确认报名？
+        <mu-button slot="actions" flat color="success" @click="registerFlag=!registerFlag">Sure</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="registerFlag=!registerFlag">Close</mu-button>
+      </mu-dialog>
+
+
+
     </div>
   </div>
 </template>
@@ -49,7 +73,9 @@
       },
       data(){
           return {
+            status:1,
             downloadFlag:false,
+            registerFlag:false,
             registerOrder:[
               {
                 order:"第一组",
@@ -101,6 +127,32 @@
                 order:"第六组",
                 pptName:"1-6业务流程.ppt",
               },
+            ],
+            registerOrder:[
+              {
+                order:"第一组",
+                teamid:"",
+              },
+              {
+                order:"第二组",
+                teamid:"1-2",
+              },
+              {
+                order:"第三组",
+                teamid:"1-3",
+              },
+              {
+                order:"第四组",
+                teamid:"1-4",
+              },
+              {
+                order:"第五组",
+                teamid:"",
+              },
+              {
+                order:"第六组",
+                teamid:"1-6",
+              },
             ]
 
           }
@@ -108,6 +160,9 @@
       methods: {
           download(){
             this.$data.downloadFlag=true;
+          },
+          register(){
+            this.$data.registerFlag=true;
           }
 
       }

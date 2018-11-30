@@ -73,13 +73,13 @@
 
         <mu-button class="inSeminar" color="success"  @click="inSeminar" v-if="status==2">进入讨论课</mu-button>
 
-        <mu-paper class="paper" :z-depth="3"  v-if="status==1">
-          <img style="width: 25px;height: 25px;margin-left: 3vh;margin-top: 1vh;" src="../../assets/schedule.svg"   />
-          开始报名时间：{{seminarDetails.regieterStartTime}}<br/>
-          <img style="width: 25px;height: 25px;margin-left: 3vh;margin-top: 1vh;" src="../../assets/schedule.svg"   />
-          结束报名时间：{{seminarDetails.reportEndTime}}
-          <mu-button class="inSeminar" color="success"  @click="inSeminar">报名</mu-button>
-        </mu-paper>
+        <div class="dateRemind">
+          <img style="width: 25px;height: 25px;" src="../../assets/schedule.svg"   />
+          开始报名时间：{{seminarDetails.regieterStartTime}}
+          <img style="width: 25px;height: 25px;margin-left: 3vh;" src="../../assets/schedule.svg"   />
+          结束报名时间：{{seminarDetails.registerEndTime}}
+        </div>
+          <mu-button class="inSeminar" color="success"  @click="showStatusDetails">报名</mu-button>
       </div>
     </div>
 </template>
@@ -138,10 +138,10 @@
     height:6vh;
     opacity: 0.9;
   }
-  .paper{
-    margin-top: 5vh;
-    /*width:90%;*/
-    /*margin-left: 5%;*/
+  .dateRemind{
+    margin-top: 10vh;
+    color:darkred;
+    width: 100%;
   }
 
 </style>

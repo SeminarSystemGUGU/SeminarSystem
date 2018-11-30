@@ -2,29 +2,70 @@
   <div align="center">
     <back-bar titleName="创建队伍" :showMessages="false" backUrl="/StuMyTeam"></back-bar>
 
-    <div class="animated fadeInRight" style="margin-top: 13vh;width:90%;" align="left">
-      <mu-text-field v-model="teamName" label="小组名" class="enter" label-float></mu-text-field>
-      <mu-select label="班级" v-model="newTeam.class" class="enter" label-float>
-        <mu-option v-for=""  :value="newTeam.class" > </mu-option>
-      </mu-select>
+    <div class="animated fadeInRight" style="margin-top: 13vh;width:100%;" align="left" >
+      <mu-form label-position="left">
+        <mu-form-item  label="组名">
+          <mu-text-field v-model="newTeam.class"></mu-text-field>
+        </mu-form-item>
+        <mu-form-item label="班级">
+          <mu-select v-model="newTeam.class" ></mu-select>
+        </mu-form-item>
+      </mu-form>
 
       <div class="newMember">
-        添加成员<br/><br/>
-        <mu-text-field v-model="tempNumber" placeholder="输入学号" class="enter" ><i class="el-icon-search"/></mu-text-field>
-        <br/>搜索结果
-        <div style="width: 90%;" >
-          <div class="member">
-            {{tempMamber.name}}&emsp;{{tempMamber.stuNo}}
-            <i class="el-icon-plus" style="float:right;margin-right: 5vw;margin-top: 5px;" @click=""/>
-          </div>
-        </div>
-        <br/>当前成员
-        <div style="width: 90%;" v-for="option in newTeam.members">
-          <div class="member">
-            {{option.identify}}&emsp;{{option.name}}&emsp;{{option.stuNo}}
-            <i class="el-icon-circle-close-outline" style="float:right;margin-right: 5vw;margin-top: 5px; "@click=""/>
-          </div>
-        </div>
+        <mu-divider inset></mu-divider>
+        <mu-list textline="two-line">
+          <mu-sub-header inset>已有成员</mu-sub-header>
+          <mu-list-item avatar button :ripple="false"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+            <mu-list-item-action>
+              <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.identify=='组长'">
+                <!--头像图标-->
+                {{option.identify}}
+              </mu-avatar>
+              <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;" v-if="option.identify=='组员'">
+               <!--头像图标-->
+                {{option.identify}}
+              </mu-avatar>
+            </mu-list-item-action>
+            <mu-list-item-content>
+              <mu-list-item-title style="margin-top:-2vh; "> &emsp;{{option.name}}</mu-list-item-title>
+              <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-list-item-action style="margin-left: -4vh;">
+              <mu-button icon>
+               <i style="margin-top: -1vh;" class="el-icon-circle-close-outline"/>
+              </mu-button>
+            </mu-list-item-action>
+          </mu-list-item>
+        </mu-list>
+
+        <mu-form label-position="left" style="margin-top: 5vh;">
+          <mu-form-item  label="搜索">
+            <mu-text-field v-model="tempNumber" placeholder="输入学号查找"><i class="el-icon-search"/></mu-text-field>
+          </mu-form-item>
+        </mu-form>
+
+        <mu-divider inset></mu-divider>
+        <mu-list textline="two-line">
+          <mu-sub-header inset>搜索结果</mu-sub-header>
+          <mu-list-item avatar button :ripple="false"  v-for="option in tempMembers" >
+            <mu-list-item-action>
+              <mu-avatar color="snow" style="font-size: 18px;" >
+                <!--头像图标-->
+                <img style="width: 23px;height: 23px;" src="../../assets/头像.png"   />
+              </mu-avatar>
+            </mu-list-item-action>
+            <mu-list-item-content>
+              <mu-list-item-title style=" "> &emsp;{{option.name}}</mu-list-item-title>
+              <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-list-item-action>
+              <mu-button icon>
+                <i style="margin-top: -1vh;"  class="el-icon-circle-plus-outline"/>
+              </mu-button>
+            </mu-list-item-action>
+          </mu-list-item>
+        </mu-list>
       </div>
       <mu-button class="submit" color="success" >提交申请</mu-button>
     </div>
@@ -36,6 +77,8 @@
   import BackBar from '../ReuseComponents/BackBar'
     export default {
       name: "CreateTeam",
+      inTeamOrNot:false,
+      leaderOrNot:true,
       components:{
         BackBar,
       },
@@ -55,13 +98,20 @@
                 stuNo:'11112',
                 identify:'组员',
               },
+              {
+                name:'WangQIan',
+                stuNo:'11112',
+                identify:'组员',
+              },
             ]
           },
           tempNumber:'',
-          tempMamber:{
-            name:'LiMing',
-            stuNo:'11111',
-        },
+          tempMembers:[
+            {
+              name:'LiMing',
+              stuNo:'11111',
+            },
+          ],
         }
       },
       methods:{
@@ -70,9 +120,10 @@
     }
 </script>
 
-<style scoped>
+<style lang="less">
   .enter{
     width:80%;
+    margin-left: 3vh;
     margin-top: -1vh;
     font-size: 18px;
   }
@@ -82,23 +133,17 @@
     font-size: 25px;
     margin-top: 5vh;
     padding-top: 1vh;
-    border-top: 0.5px solid gray;
-  }
-  .member{
-    padding-top: 1vh;
-    padding-left: 3vw;
-    border-radius: 5px;
-    width: 100%;
-    height:6vh;
-    font-size: 18px;
-    background-color:#96c4e6;
-    margin-top: 1vh;
+    /*border-top: 0.5px solid gray;*/
   }
   .submit{
     font-size: 18px;
-    margin-top: 10vh;
-    width: 90%;
+    margin-top: 7vh;
+    width: 100%;
     height:6vh;
     opacity: 0.9;
+  }
+  .mu-form-item{
+    margin-left: 3vh;
+    width: 80%;
   }
 </style>
