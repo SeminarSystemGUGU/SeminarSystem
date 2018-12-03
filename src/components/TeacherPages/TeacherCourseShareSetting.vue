@@ -2,10 +2,10 @@
 	<div id="TeacherCourseShareSetting">
 		<app-bar titleName="OOAD-共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
 		<div class="main-content">
-			<el-card class="course-share-card">
+			<el-card class="course-share-card" v-for="course in shareCourse">
 				<template slot="header">
-					<span class="share-course-title">J2EE</span>
-					<span class="share-course-teacher">邱明老师</span>
+					<span class="share-course-title">{{course.courseName}}</span>
+					<span class="share-course-teacher">{{course.teacherName}}</span>
 				</template>
 				<div class="course-share-card-content">
 					<el-row class="content-row">
@@ -13,7 +13,7 @@
 							<span class="col-title">共享类型：</span>
 						</el-col>
 						<el-col class="row-col">
-							<span class="col-content">共享讨论课</span>
+							<span class="col-content">{{course.shareType}}</span>
 						</el-col>
 					</el-row>
 					<el-row class="content-row">
@@ -21,7 +21,7 @@
 							<span class="col-title">共享情况：</span>
 						</el-col>
 						<el-col class="row-col">
-							<span class="col-content">主课程</span>
+							<span class="col-content">{{course.shareStatus}}</span>
 						</el-col>
 					</el-row>
 				</div>
@@ -42,10 +42,47 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		components:{
 			AppBar
 		},
+    created(){
+		  this.loadCourseShareInfo();
+    },
+    data(){
+		  return{
+        shareCourse:[
+          {
+            courseName:'',
+            teacherName:'',
+            shareType:'',
+            shareStatus:'',
+          }
+        ]
+      }
+    },
 		methods:{
 			linkNewShare(){
 				this.$router.push('/TeacherNewShare');
-			}
+			},
+      //获取共享信息
+      loadCourseShareInfo(){
+        let _this=this;
+        _this.$axios({
+          method:'get',
+          url:'/course/1/shareCourse',
+        }).then(function (response) {
+          console.log(response.data);
+          _this.$data.shareCourse=[];//先清空静态数据
+          let responseData=response.data;
+          for(var i=0;i<responseData.length;i++){
+            _this.$data.shareCourse.push({
+              courseName:responseData[i].courseName,
+              teacherName:responseData[i].teacherName,
+              shareType:responseData[i].shareType,
+              shareStatus:(responseData[i].shareSituation.toString()==="1")?"主课程":"从课程",
+            })
+          }
+        }).catch(function (error) {
+          console.log(error.response.data);
+        });
+      }
 		}
 	}
 </script>
@@ -57,7 +94,7 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		position:fixed;
 		width:100vw;
 		bottom:0;
-		
+
 		.the-button{
 			width:100%;
 			height:7vh;
