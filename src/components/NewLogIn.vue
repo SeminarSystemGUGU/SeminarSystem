@@ -111,7 +111,7 @@
     width: 100%;
     color: rgba(255,255,255,0.7);
     text-align: center;
-    position: fixed;
+    position: absolute;
     bottom: 3vh;
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="TeacherMyCourses">
-    <app-bar titleName="我的课程" :show-messages="true"></app-bar>
+    <app-bar titleName="我的课程" :show-messages="true" backPath="/TeacherMainPage"></app-bar>
 
     <div class="main-content">
     <mu-expansion-panel v-for="item in courses" :key="item.name">
@@ -56,6 +56,7 @@
       },
       data(){
           return{
+            backPath:'/TeacherMainPage',
             courses:[
               {
                 name:'OOAD',

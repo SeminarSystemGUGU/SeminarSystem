@@ -1,6 +1,6 @@
 <template>
 	<div id="TeacherCourseShareSetting">
-		<app-bar titleName="OOAD-共享设置" :showMessages="true"></app-bar>
+		<app-bar titleName="OOAD-共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
 		<div class="main-content">
 			<el-card class="course-share-card">
 				<template slot="header">

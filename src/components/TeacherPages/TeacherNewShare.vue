@@ -1,6 +1,6 @@
 <template>
 	<div id="TeacherNewShare">
-		<app-bar titleName="新建共享" :showMessages="false"></app-bar>
+		<app-bar titleName="新建共享" :showMessages="false" backPath="/TeacherCourseShareSetting"></app-bar>
 		<div class="main-content">
 			<div class="col-content">
 				<el-row>
