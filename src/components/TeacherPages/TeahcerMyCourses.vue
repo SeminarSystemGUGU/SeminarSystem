@@ -59,10 +59,12 @@
             backPath:'/TeacherMainPage',
             courses:[
               {
+                id:0,
                 name:'OOAD',
                 isMainCourse:true,
               },
               {
+                id:0,
                 name:'软件工程',
                 isMainCourse:false
               }
@@ -90,7 +92,31 @@
         },
         linkToNewCourse(){
           this.$router.push('/TeacherNewCourse');
+        },
+
+        //加载教师所选课程
+        loadTeacherCourse(){
+          let _this=this;
+          _this.$axios({
+            method:'get',
+            url:'/course/teacherCourse',
+          }).then(function (response) {
+            _this.$data.courses=[];//先清空静态数据
+            let responseData=response.data;
+            for(var i=0;i<responseData.length;i++){
+              _this.$data.courses.push({
+                id:responseData[i].courseId,
+                name:responseData[i].courseName,
+                isMainCourse:(responseData[i].status.toString()==="1")?true:false,
+              })
+            }
+          }).catch(function (error) {
+            console.log(error.response.data);
+          });
         }
+      },
+      created(){
+        this.loadTeacherCourse();
       }
     }
 </script>

@@ -14,19 +14,22 @@ import $ from 'jquery';
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';
 
+Vue.prototype.$axios = axios;
 
 Vue.use(MuseUI);
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.prototype.$axios=axios
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   created () {
-    this.$axios.defaults.baseURL='http://wxadra.natappfree.cc'
+    // this.$axios.defaults.baseURL='http://wxadra.natappfree.cc'
+    // created(){
+    this.$axios.defaults.baseURL = 'http://47.94.174.82:8081/';
   },
+  // },
   components: { App },
   template: '<App/>'
 })

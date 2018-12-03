@@ -12,9 +12,9 @@
             <span>成绩计算规则：</span>
           </el-col>
           <el-col class="row-col">
-            <span>课堂展示：50%</span><br/>
-            <span>课堂提问：10%</span><br/>
-            <span>课后报告：10%</span>
+            <span>课堂展示：{{preProportion}}%</span><br/>
+            <span>课堂提问：{{questionProportion}}%</span><br/>
+            <span>课后报告：{{reportProportion}}%</span>
           </el-col>
         </el-row>
       </div>
@@ -24,7 +24,7 @@
             <span>小组人数：</span>
           </el-col>
           <el-col class="row-col">
-            <span>6-8人</span>
+            <span>{{teamMinNumber}} ~ {{teamMaxNumber}}人</span>
           </el-col>
         </el-row>
       </div>
@@ -34,7 +34,7 @@
             <span>组队开始时间：</span>
           </el-col>
           <el-col class="row-col">
-            <span>2018.10.11</span>
+            <span>{{teamStartTime}}</span>
           </el-col>
         </el-row>
       </div>
@@ -44,7 +44,7 @@
             <span>组队结束时间：</span>
           </el-col>
           <el-col class="row-col">
-            <span>2018.10.18</span>
+            <span>{{teamEndTime}}</span>
           </el-col>
         </el-row>
       </div>
@@ -61,11 +61,48 @@
   import AppBar from '../../components/ReuseComponents/AppBar'
   import App from "../../App";
     export default {
-        name: "TeacherCourseDetails",
+      name: "TeacherCourseDetails",
       components:{
         App,
-          AppBar
+        AppBar
+      },
+      data(){
+        return {
+          preProportion:'',
+          questionProportion:'',
+          reportProportion:'',
+          teamMinNumber:0,
+          teamMaxNumber:0,
+          teamStartTime:'',
+          teamEndTime:''
+        }
+      },
+      methods:{
+        //加载课程详情
+        loadCourseDetails(){
+          let _this=this;
+          _this.$axios({
+            method:'get',
+            url:'/course/1',
+          }).then(function (response) {
+            console.log(response.data);
+            _this.$data.preProportion=response.data.presentationProportion*100;
+            _this.$data.questionProportion=response.data.questionProportion*100;
+            _this.$data.reportProportion=response.data.reportProportion*100;
+            _this.$data.teamMinNumber=response.data.minMember;
+            _this.$data.teamMaxNumber=response.data.maxMember;
+            _this.$data.teamStartTime=response.data.teamStartTime;
+            _this.$data.teamEndTime=response.data.teamEndTime;
+          }).catch(function (error) {
+            console.log(error.response.data);
+          });
+        }
+      },
+
+      created(){
+        this.loadCourseDetails();
       }
+
     }
 </script>
 
