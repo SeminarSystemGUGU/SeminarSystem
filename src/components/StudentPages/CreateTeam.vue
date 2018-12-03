@@ -3,7 +3,7 @@
     <back-bar titleName="创建队伍" :showMessages="false" backUrl="/StuMyTeam"></back-bar>
 
     <!--未组队时显示  inTeamOrNot==false  -->
-    <div class="animated fadeInRight" style="margin-top: 5vh;width:100%;" align="left" v-if="inTeamOrNot==false" >
+    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==0" >
       <mu-form label-position="left">
         <mu-form-item  label="组名">
           <mu-text-field v-model="newTeam.class"></mu-text-field>
@@ -72,7 +72,7 @@
     </div>
 
     <!--组队后 队长界面 leaderOrNot==true  -->
-    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="leaderOrNot==true " >
+    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==1 " >
       <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
       <mu-divider inset ></mu-divider>
       <mu-list textline="two-line" style="margin-bottom: 5vh;">
@@ -133,7 +133,7 @@
     </div>
 
     <!--组队后 队长界面 leaderOrNot==true  -->
-    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="leaderOrNot==false " >
+    <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==2 " >
       <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
       <mu-divider inset ></mu-divider>
       <mu-list textline="two-line" style="margin-bottom: 5vh;">
@@ -180,8 +180,7 @@
       },
       data(){
         return{
-          inTeamOrNot:true,
-          leaderOrNot:true,
+          teamState:0,  //0-未组队   1-队长组队中  2-队员组队中
           newTeam:{
             teamName:'咕咕鸟',
             class:'1',

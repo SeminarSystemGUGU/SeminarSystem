@@ -2,8 +2,8 @@
   <div align="center">
     <back-bar titleName="我的成绩" :showMessages="false" backUrl="/StuMyCourses"></back-bar>
 
-    <div class="animated fadeInRight">
-    <div class="panel-group " id="accordion" align="left">
+    <div class="animated fadeInRight" style="z-index:1;" >
+    <div class="panel-group " id="accordion" align="left" >
       <div class="title">
         我的成绩
       </div>

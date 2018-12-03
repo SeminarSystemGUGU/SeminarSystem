@@ -32,7 +32,7 @@
     width: 100vw;
     height: 13vw;
     position: fixed;
-    z-index: 1000;
+    z-index: 999;
     top:0;
     color: #409EFF;
     background-color: white;

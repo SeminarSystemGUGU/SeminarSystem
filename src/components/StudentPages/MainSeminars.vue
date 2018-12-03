@@ -3,7 +3,7 @@
     <back-bar titleName="讨论课" :showMessages="false" backUrl="/SeminarSelectCourse"></back-bar>
 
     <div  class="animated fadeInRight" align="left" >
-      <div class="container" style="margin-top: 13vh;">
+      <div class="container" >
         讨论课信息<br/>
         <div class="parent1">
           <div >
@@ -12,11 +12,11 @@
               <!-- Content  -->
               <div class="subList" @click="linkToDetails">
                 <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[0]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
               <div class="subList"  @click="">
                 <span class="subItem"> <i class="el-icon-document"/>{{seminarName[1]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
             </div>
           </div>
@@ -124,6 +124,9 @@
     color: grey;
     font-size: 20px;
   }
+  .container:nth-child(1){
+    margin-top: 10vh;
+  }
   .parent1    {
     height: 8vh;
     overflow: hidden;
@@ -177,6 +180,32 @@
   }
 
   @media screen and (min-width: 481px ){
+    .container  {
+      font-size: 38px;
+    }
+    .container:nth-child(1){
+      margin-top: 13vh;
+    }
+    .itemTitle{
+      padding-top: 10px;
+      padding-left: 4vw;
+      height:7vh;
+      font-size: 38px;
+    }
+
+    .subList {
+      padding-top: 1vh;
+      padding-left: 3vw;
+      margin-top: 10px;
+      width: 100%;
+      height: 5vh;
+      /*background-color: #c7e1f0;*/
+      border-radius: 5px;
+    }
+    .subItem{
+      color:gray;
+      font-size: 18px;
+    }
 
   }
 
