@@ -16,14 +16,17 @@ import 'bootstrap3/dist/js/bootstrap.min.js';
 
 
 Vue.use(MuseUI);
-
 Vue.use(ElementUI);
 Vue.config.productionTip = false
+Vue.prototype.$axios=axios
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  created () {
+    this.$axios.defaults.baseURL='http://wxadra.natappfree.cc'
+  },
   components: { App },
   template: '<App/>'
 })

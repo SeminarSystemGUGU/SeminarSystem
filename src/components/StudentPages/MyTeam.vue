@@ -3,45 +3,12 @@
     <back-bar titleName="我的组队" :showMessages="false" backUrl="/StuMyCourses"></back-bar>
 
     <div class="animated fadeInRight">
+    <div  v-if="teamState==0" >
     <div class="panel-group" id="accordion" align="left" >
       <div class="title">
         我的队伍
       </div>
       <div v-if="!createFlag">当前未组队</div>
-      <div class="panel panel-default" v-if="createFlag">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne">
-          {{teamName}}
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse in" >
-          <div class="panel-body" style="padding:1vh 0;">
-            <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo11"></span>
-              <div id="demo11" class="collapse in" style="margin-top: 1vh;">
-                <table class="table table-bordered">
-                  <thead>
-                  <tr>
-                    <th></th>
-                    <th>学号</th>
-                    <th>姓名</th>
-                    <th>相关课程</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>组长</td>
-                    <td>{{leaderID}}</td>
-                    <td>{{leaderName}}</td>
-                    <td>J2EE</td>
-                  </tr>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!--其他队伍-->
       <div class="title">
         其他队伍
@@ -63,13 +30,10 @@
           </div>
         </div>
       </div>
-
       <!--未组队学生-->
       <div class="title" >
         未组队学生
       </div>
-
-
       <div class="subContent">
         <span class="subItem"  data-toggle="collapse"  data-target="#demo31">asdasdas</span>
         <div id="demo31" class="collapse in">
@@ -78,9 +42,97 @@
           vice lomo.
         </div>
       </div>
-
       <mu-button class="butnCT" color="success" @click="createTeam">创建小组<i class="el-icon-circle-plus-outline" style="margin-left: 3vw;"/></mu-button>
     </div>
+    </div>
+
+      <!--组队后 队长界面 leaderOrNot==true  -->
+      <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==1 " >
+        <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
+        <mu-divider inset ></mu-divider>
+        <mu-list textline="two-line" style="margin-bottom: 5vh;">
+          <mu-sub-header inset>已有成员</mu-sub-header>
+          <mu-list-item avatar button :ripple="false"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+            <mu-list-item-action>
+              <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.identify=='组长'">
+                <!--头像图标-->
+                {{option.identify}}
+              </mu-avatar>
+              <mu-tooltip content="选了J2EE">
+                <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" v-if="option.identify=='组员'">
+                  <!--头像图标-->
+                  {{option.identify}}
+                </mu-avatar>
+              </mu-tooltip>
+            </mu-list-item-action>
+            <mu-list-item-content>
+              <mu-list-item-title style=" display: inline"> &emsp;{{option.name}}</mu-list-item-title>
+              <mu-button v-if="option.identify=='组员'" style="margin-left: 15%;display: inline"  flat color="error">移出</mu-button>
+              <mu-list-item-sub-title >&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+            </mu-list-item-content>
+          </mu-list-item>
+        </mu-list>
+        <span style="font-size: 22px;margin-left: 1vh; ">添加成员</span>
+        <mu-divider inset ></mu-divider>
+        <mu-form label-position="left" style="margin-top: 5vh;">
+          <mu-form-item  label="搜索" >
+            <mu-text-field v-model="tempNumber" placeholder="输入学号">
+              <mu-button color="primary" flat small> <img src="../../assets/search.svg" style="size: 25px;"></mu-button>
+            </mu-text-field>
+          </mu-form-item>
+        </mu-form>
+        <mu-list textline="two-line" style="margin-top: -2vh;">
+          <mu-sub-header >搜索结果:</mu-sub-header>
+          <mu-list-item avatar button :ripple="false"  v-for="option in tempMembers" style="margin-left: -2vh;">
+            <mu-list-item-action>
+              <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.identify==''">
+                <!--头像图标-->
+              </mu-avatar>
+              <mu-tooltip content="选了J2EE">
+                <mu-avatar color="bisque" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" >
+                  <!--头像图标-->
+                  <img style="width: 20px;height: 20px;" src="../../assets/头像.png"   />
+                </mu-avatar>
+              </mu-tooltip>
+            </mu-list-item-action>
+            <mu-list-item-content>
+              <mu-list-item-title style="margin-top:-2vh; display: inline"> &emsp;{{option.name}}</mu-list-item-title>
+              <mu-button  style="margin-left: 15%;display: inline"  flat color="success">添加</mu-button>
+              <mu-list-item-sub-title >&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+            </mu-list-item-content>
+          </mu-list-item>
+        </mu-list>
+        <mu-button class="dissolve" color="error"  @click="dissolve">解散小组</mu-button>
+      </div>
+      <!--组队后 队员界面  -->
+      <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==2 " >
+        <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
+        <mu-divider inset ></mu-divider>
+        <mu-list textline="two-line" style="margin-bottom: 5vh;">
+          <mu-sub-header inset>已有成员</mu-sub-header>
+          <mu-list-item avatar button :ripple="false"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+            <mu-list-item-action>
+              <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.identify=='组长'">
+                <!--头像图标-->
+                {{option.identify}}
+              </mu-avatar>
+              <mu-tooltip content="选了J2EE">
+                <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" v-if="option.identify=='组员'">
+                  <!--头像图标-->
+                  {{option.identify}}
+                </mu-avatar>
+              </mu-tooltip>
+            </mu-list-item-action>
+            <mu-list-item-content>
+              <mu-list-item-title style=" display: inline"> &emsp;{{option.name}}</mu-list-item-title>
+              <!--<mu-button v-if="option.identify=='组员'" style="margin-left: 15%;display: inline"  flat color="error">移出</mu-button>-->
+              <mu-list-item-sub-title >&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+            </mu-list-item-content>
+          </mu-list-item>
+        </mu-list>
+
+        <mu-button class="dissolve" color="error"  @click="dropout">退出小组</mu-button>
+      </div>
 
    </div>
   </div>
@@ -100,12 +152,47 @@
         teamName:"1-6  咕咕鸟",
         leaderName:'Li',
         leaderID:'110',
+
+        teamState:1,
+        newTeam:{
+          teamName:'咕咕鸟',
+          class:'1',
+          members:[
+            {
+              name:'LiMing',
+              stuNo:'11111',
+              identify:'组长',
+            },
+            {
+              name:'WangQIan',
+              stuNo:'11112',
+              identify:'组员',
+            },
+            {
+              name:'WangQIan',
+              stuNo:'11112',
+              identify:'组员',
+            },
+          ]
+        },
+        tempNumber:'',
+        tempMembers:[
+          {
+            name:'LiMing',
+            stuNo:'11111',
+          },
+        ],
       }
     },
     methods:{
       createTeam(){
         this.$router.push('/CreateTeam');
-      }
+      },
+      dissolve(){
+        //组长解散小组
+      },
+      dropout(){}
+      //组员退出小组
     }
   }
 </script>

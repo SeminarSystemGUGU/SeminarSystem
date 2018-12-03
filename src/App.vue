@@ -1,12 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" >
     <!--<mu-appbar style="width: 100%;position: absolute;top:0" color="primary">-->
       <!--<mu-button icon slot="left">-->
       <!--</mu-button>-->
       <!--Title-->
       <!--<mu-button flat slot="right">LOGIN</mu-button>-->
     <!--</mu-appbar>-->
-    <div>
+    <div ontouchstart>
     <router-view/>
     </div>
   </div>
@@ -17,7 +17,7 @@ export default {
   name: 'App',
   created(){
     // let platform=navigator.platform;
-    //
+
     // if(platform.indexOf('W')!==-1){
     //   this.$router.push('/');
     // }

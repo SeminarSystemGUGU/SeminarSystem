@@ -9,24 +9,25 @@
           </div>
         </div>
         <div class="login-panel animated fadeInUp">
-          <div class="input-panel">
+          <form class="input-panel" action="http://wxadra.natappfree.cc/security/login" method="post" >
             <div class="input-account">
               <label>账号</label><br/>
-              <input  class="login-input"  placeholder="请输入账号" v-model="account" />
+              <input  class="login-input"  name="username" id="username" placeholder="请输入账号" v-model="account" />
             </div>
             <div class="input-password">
               <label>密码</label><br/>
-              <input class="login-input" type="password" placeholder="请输入密码" v-model="password" />
+              <input class="login-input" name="password" type="password"  id="password" placeholder="请输入密码" v-model="password" />
             </div>
-          </div>
+
           <div class="radio-select">
               <mu-radio v-model="value1" style="margin-right: 16px;colro:white" value="top" label="教师">
               </mu-radio>
               <mu-radio v-model="value1" style="margin-right: 16px;" value="left" label="学生"></mu-radio>
           </div>
           <div class="button-panel">
-            <button class="login-button" ref="loginButton" @click="linkTo">登录</button>
+            <button class="login-button" ref="loginButton" @click="linkTo" type="submit">登录</button>
           </div>
+          </form>
           <div class="button-panel">
             <span @click="forgetPassword" >忘记密码</span>
           </div>
@@ -47,8 +48,11 @@
           return{
            account:'',
            password:'',
-           value1:''
+           value1:'',
+            success:'',
+          firstLogin:'',
           }
+
       },
       watch:{
           password(curValue,oldValue){
@@ -63,12 +67,33 @@
       },
       methods:{
           linkTo(){
-            this.$router.push('/ConfirmAccount');
+            let _this=this;
+            this.$axios({
+              method: 'post',
+              url: '/user/account/login',
+              data: {
+                password:_this.$data.password
+              }
+              }).then(function (response) {
+                _this.$data.success=response.data.success;
+                _this.$data.firstLogin=response.data.firstLogin;
+              }, function (error) {
+              alert("请求失败",error);
+              });
+
+            //初次登陆
+            if(this.$data.firstLogin==true )
+            {
+              this.$router.push('/ConfirmAccount');
+            }
+
           },
-          forgetPassword(){
-            this.$router.push('/forgetPassword');
-          }
-      }
+
+        forgetPassword(){
+          this.$router.push('/forgetPassword');
+        }
+    },
+
     }
 </script>
 
@@ -87,7 +112,7 @@
   background-size: cover;
   padding: 1px;
   color: whitesmoke;
-  
+
   .radio-select{
     margin-top:3vh;
   }

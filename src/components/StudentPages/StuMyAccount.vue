@@ -87,6 +87,17 @@
         timeInterval1:'',
       }
     },
+    created(){
+      let _this=this;
+      this.$axios({
+        method: 'get',
+        url: '/student/studentInfo',
+      }).then(function (response) {
+        // _this.$data.=response.data.;
+      }, function (error) {
+        alert("请求失败",error);
+      });
+    },
     methods:{
       backTo(){
         this.$router.push('/StuMainPage');

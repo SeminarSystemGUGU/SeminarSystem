@@ -4,12 +4,20 @@
       <div class="app-button" @click="linkBack(backUrl)" v-if="!showMessages">
         <i class="el-icon-back"></i>
       </div>
-      <div class="app-bar-title">
+      <div class="app-bar-title" >
         <span>{{titleName}}</span>
       </div>
-      <div class="icon-button1" style="display: inline-block;float: right;" v-if="showMessages">
-        <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
-        <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png"/>
+      <div style="float:right;margin-right:4vw;margin-top: 15px;" v-if="showMessages">
+        <el-dropdown @command="handleCommand">
+            <div class="el-dropdown-link" >
+              <i class="el-icon-menu"/>
+            </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item  command="selectCourse" >讨论课</el-dropdown-item>
+            <el-dropdown-item command="newNews">新消息</el-dropdown-item>
+            <el-dropdown-item command="settings">设置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
   </div>
@@ -22,12 +30,21 @@
     methods:{
       linkBack(backurl){
         this.$router.push(backurl);
+      },
+      // linkToSelectCourse(){
+      //   this.$router.push('/SeminarSelectCourse');
+      // },
+      handleCommand(command) {
+       if(command=="selectCourse")
+       {
+         this.$router.push('/SeminarSelectCourse');
+       }
       }
     }
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   .reset-app-bar{
     width: 100vw;
     height: 13vw;
@@ -41,6 +58,7 @@
   .app-bar-title{
     margin-top: 3.5vw;
     font-size: 5.2vw;
+    display: inline-block;
     color: #409EFF;
   }
   .app-button{
@@ -49,6 +67,15 @@
     left: 2vw;
     color: #409EFF;
     margin-top: 2vw;
+  }
+  .el-dropdown-link{
+    display:inline-block;
+    height:35px;
+    line-height:35px;
+  }
+  .el-icon-menu{
+    font-size: 25px;
+    color:#409EFF;
   }
 
 </style>

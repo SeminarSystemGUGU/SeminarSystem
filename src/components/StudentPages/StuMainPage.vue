@@ -1,17 +1,17 @@
 <template>
   <div id="MainPage">
-    <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray">
+    <!-- <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray">
       <div class="title" style="width: 35px;height: 35px;">我</div>
       <div class="icon-button1" style="display: inline-block;float: right;">
+        <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/消息.png"/>
         <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
-        <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png" @click="linkToSelectCourse" />
+        <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png"/>
       </div>
-    </div>
+    </div> -->
+    <back-bar titleName=" " :showMessages="true" backUrl="/StuMyTeam"></back-bar>
+    <div style="position: fixed;top:2vh;left:4vw;font-size: 20px;">我</div>
     <div class="main-content">
-      <el-card class="func-card" >
-
-      </el-card>
-      <div class="my-course-card" style="margin-top: 4vw">
+      <div class="my-course-card" style="margin-top: 16vh">
         <el-row :gutter="10" style="height: 100%">
           <el-col style="width: 3%">
             <span>&nbsp;</span>
@@ -52,9 +52,12 @@
 </template>
 
 <script>
+  import BackBar from '../ReuseComponents/BackBar'
   export default {
     name: "StuMainPage",
-
+    components:{
+      BackBar
+    },
     methods:{
       linkToMyCourses(){
         this.$router.push('/StuMyCourses');
@@ -62,9 +65,6 @@
       linkToMyAccount(){
         this.$router.push('/StuMyAccount');
       },
-      linkToSelectCourse(){
-       this.$router.push('/SeminarSelectCourse');
-      }
     }
   }
 </script>
