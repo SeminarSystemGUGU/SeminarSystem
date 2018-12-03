@@ -90,7 +90,13 @@
         },
         linkToNewCourse(){
           this.$router.push('/TeacherNewCourse');
+        },
+        loadTeacherCourse(){
+
         }
+      },
+      created(){
+
       }
     }
 </script>

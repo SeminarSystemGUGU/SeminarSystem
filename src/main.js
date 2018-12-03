@@ -14,9 +14,9 @@ import $ from 'jquery';
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';
 
+Vue.prototype.$axios = axios;
 
 Vue.use(MuseUI);
-
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 
@@ -24,6 +24,10 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  created(){
+    //axios.defaults.baseURL='http://47.94.174.82:8081/'
+    axios.defaults.baseURL='http://localhost:8081/'
+  },
   components: { App },
   template: '<App/>'
 })
