@@ -1,13 +1,13 @@
 <template>
 	<div id="TeacherNewCourse">
-		<app-bar titleName="新建课程" :showMessages="true"></app-bar>
+		<app-bar titleName="新建课程" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
 		<div class="main-content">
 			<el-form :model="formNewCourse" ref="formNewCourse" class="new-course-form">
 				<el-form-item>
-					<el-input class="new-course-input" placeholder="请输入课程名"></el-input>
+					<el-input class="new-course-input" placeholder="请输入课程名" v-model="formNewCourse.courseName" ></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input class="new-course-input-textarea" type="textarea"  placeholder="请输入课程详情"></el-input>
+					<el-input class="new-course-input-textarea" type="textarea"  placeholder="请输入课程详情" v-model="formNewCourse.courseDetails"></el-input>
 				</el-form-item>
 			</el-form>
       <div class="second-form-title">
@@ -15,17 +15,17 @@
       </div>
       <el-form :model="formNewCourse" ref="formNewCourse" class="course-grade-form">
         <el-form-item label="课堂展示：" class="form-item" label-width="120">
-          <el-select size="small" class="the-select">
+          <el-select size="small" class="the-select" v-model="formNewCourse.scoreRate.preRate">
             <el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="课堂提问：" class="form-item">
-          <el-select size="small" class="the-select">
+          <el-select size="small" class="the-select" v-model="formNewCourse.scoreRate.quesRate">
             <el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="课后报告：" class="form-item">
-          <el-select size="small" class="the-select">
+          <el-select size="small" class="the-select" v-model="formNewCourse.scoreRate.repRate">
             <el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>
           </el-select>
         </el-form-item>
@@ -35,16 +35,16 @@
       </div>
       <el-form :model="formNewCourse" ref="formNewCourse" class="team-rule-form" label-width="120px">
         <el-form-item label="小组人数上限：" class="form-item">
-          <el-input-number size="small"></el-input-number>
+          <el-input-number size="small" v-model="formNewCourse.teamMaxNum"></el-input-number>
         </el-form-item>
         <el-form-item label="小组人数下限：" class="form-item">
-          <el-input-number size="small"></el-input-number>
+          <el-input-number size="small" v-model="formNewCourse.teamMinNum" ></el-input-number>
         </el-form-item>
         <el-form-item label="组队开始时间：" class="form-item">
-          <el-date-picker size="small"></el-date-picker>
+          <el-date-picker size="small" v-model="formNewCourse.teamStartDate" ></el-date-picker>
         </el-form-item>
         <el-form-item label="组队截止时间：" class="form-item">
-          <el-date-picker size="small"></el-date-picker>
+          <el-date-picker size="small" v-model="formNewCourse.teamEndDate"></el-date-picker>
         </el-form-item>
       </el-form>
       <div class="button-panel">
@@ -63,7 +63,17 @@ import AppBar from '../ReuseComponents/AppBar'
 		data(){
 			return{
 				formNewCourse:{
-
+          courseName:'',
+          courseDetails:'',
+          scoreRate:{
+            preRate:'',
+            quesRate:'',
+            repRate:'',
+          },
+          teamMinNum:0,
+          teamMaxNum:0,
+          teamStartDate:'',
+          teamEndDate:'',
 				}
 			}
 		}

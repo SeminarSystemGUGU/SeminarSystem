@@ -1,6 +1,6 @@
 <template>
 	<div id="TeacherCourseRounds">
-		<app-bar titleName="OOAD-讨论课" :showMessages="true"></app-bar>
+		<app-bar titleName="OOAD-讨论课" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
 		<div class="main-content">
 			<mu-expansion-panel>
     			<div slot="header" class="panel-title">第一轮</div>

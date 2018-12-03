@@ -1,6 +1,6 @@
 <template>
     <div id="TeacherClassInfos">
-      <app-bar :show-messages="true" title-name="OOAD-班级信息"></app-bar>
+      <app-bar :show-messages="true" title-name="OOAD-班级信息" backPath="/TeacherMyCourses"></app-bar>
       <div class="main-content">
         <el-collapse v-model="activeName">
           <el-collapse-item title="2016级1班" name="1">

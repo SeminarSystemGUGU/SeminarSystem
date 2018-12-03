@@ -1,6 +1,6 @@
 <template>
   <div id="TeacherCourseDetails">
-    <app-bar :show-messages="true" title-name="OOAD-课程详情"></app-bar>
+    <app-bar :show-messages="true" title-name="OOAD-课程详情" backPath="TeacherMyCourses"></app-bar>
     <div class="main-content">
       <div class="course-title">
         <span>课程要求</span>
