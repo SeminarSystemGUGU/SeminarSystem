@@ -14,6 +14,9 @@ import $ from 'jquery';
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';
 
+axios.defaults.withCredentials=true;//让ajax携带cookie
+
+
 Vue.prototype.$axios = axios;
 
 Vue.use(MuseUI);
@@ -25,9 +28,7 @@ new Vue({
   el: '#app',
   router,
   created () {
-    // this.$axios.defaults.baseURL='http://wxadra.natappfree.cc'
-    // created(){
-    this.$axios.defaults.baseURL = 'http://47.94.174.82:8081/';
+    this.$axios.defaults.baseURL='http://9e4mc5.wxadra.natappfree.cc'
   },
   // },
   components: { App },
