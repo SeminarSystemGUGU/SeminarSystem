@@ -8,16 +8,16 @@
     <div class="my-info-card">
       <el-card>
         <div class="top-card">
-          <span style="font-size: 20px;font-weight: bold">王圣哲</span>
+          <span style="font-size: 20px;font-weight: bold">{{stuName}}</span>
           <div class="top-image">
-            <span style="color: white">圣哲</span>
+            <span style="color: white">{{stuName.substring(1)}}</span>
           </div>
         </div>
         <div class="middle-card">
-          <span style="font-weight: bold">学号:</span>
-          <span>{{account1}}</span><br/>
+          <span style="font-weight: bold">学号：</span>
+          <span>{{account}}</span><br/>
           <span style="font-weight: bold;display: inline-block;margin-top: 1.3vw">邮箱：</span>
-          <span>{{email1}}</span>
+          <span>{{email}}</span>
           <span style="color: dodgerblue" @click="linkToEmail">&nbsp;修改</span>
         </div>
       </el-card>
@@ -25,8 +25,8 @@
     <div style="height: 8px;background-color: whitesmoke;width: 100vw;margin-top: 5vw"></div>
     <div class="modify-menu">
       <div class="my-course-card">
-        <el-row :gutter="10">
-          <el-col style="width: 3%">
+        <el-row :gutter="10" >
+          <el-col style="width: 3%" @click="linkToPassword">
             <span>&nbsp;</span>
           </el-col>
           <el-col style="width: 10%;text-align: right;">
@@ -34,13 +34,13 @@
               <img src="../../assets/修改密码.png" class="menu-image"/>
             </div>
           </el-col>
-          <el-col style="width: 50%;">
-            <div style="margin-top: 3vw" @click="linkToPassword">
+          <el-col style="width: 50%;" >
+            <div style="margin-top: 3vw" @click="linkToPassword" >
               <span>修改密码</span>
             </div>
           </el-col>
           <el-col style="width: 27%">
-            <div style="line-height: 9vw;text-align: right">
+            <div style="line-height: 9vw;text-align: right" @click="linkToPassword">
               <i class="el-icon-arrow-right" style="width: 25px;height: 25px;"></i>
             </div>
           </el-col>
@@ -63,7 +63,7 @@
             </div>
           </el-col>
           <el-col style="width: 33%" >
-            <el-select size="mini" style="" class="the-select" v-model="timeInterval1">
+            <el-select size="mini" style="" class="the-select" v-model="timeInterval">
               <el-option value="3h"></el-option>
             </el-select>
           </el-col>
@@ -82,9 +82,10 @@
     name: "StuMyAccount",
     data(){
       return{
-        account1:'24320162202917',
-        email1:'1005709383@qq.com',
-        timeInterval1:'',
+        stuName:'',
+        account:'',
+        email:'',
+        timeInterval:'',
       }
     },
     created(){
@@ -93,7 +94,10 @@
         method: 'get',
         url: '/student/studentInfo',
       }).then(function (response) {
-        // _this.$data.=response.data.;
+         _this.$data.stuName=response.data.name;
+         _this.$data.account=response.data.account;
+         _this.$data.email=response.data.email;
+         _this.$data.timeInterval=response.data.timeInterval;
       }, function (error) {
         alert("请求失败",error);
       });

@@ -3,14 +3,14 @@
       <back-bar :titleName="seminarDetails.title" :showMessages="false" backUrl="/StuMainSeminars"></back-bar>
 
       <div class="seminarDetailsBack animated fadeInRight" align="left">
-        <span style="margin-left: 2vw;font-size: 25px;">{{seminarDetails.name}}</span>
+        <span style="margin-left: 2vw;font-size: 25px;">{{seminarDetails.seminarTopic}}</span>
         <mu-list  toggle-nested class="infoList">
           <mu-list-item avatar :ripple="false" button>
             <mu-list-item-content>
               <mu-list-item-title>轮次</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.roundID}}
+                {{seminarDetails.roundId}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
           </mu-list-item>
@@ -33,7 +33,7 @@
             <i class="el-icon-arrow-down"></i>
             </mu-list-item-action >
             <mu-list-item-content button :ripple="false" slot="nested" class="requirContent">
-              <mu-list-item-content >{{seminarDetails.requiement}}</mu-list-item-content>
+              <mu-list-item-content >{{seminarDetails.seminarContent}}</mu-list-item-content>
             </mu-list-item-content>
 
           </mu-list-item>
@@ -91,20 +91,41 @@
       components:{
           BackBar,
       },
+      created(){
+        this.$data.seminarDetails.seminarId=this.$route.query.seminarId;
+        this.$data.seminarDetails.roundId=this.$route.query.roundId;
+
+
+        let _this=this;    //根据courseId获取该课程讨论课列表
+         this.$axios({
+          method:'get',
+          url:'/seminar/seminarId',
+        }).then(function(response){
+          _this.$data.seminarDetails.seminarTopic=response.data.seminarTopic;
+           _this.$data.seminarDetails.seminarContent=response.data.seminarContent;
+           _this.$data.seminarDetails.status=response.data.status;
+           _this.$data.seminarDetails.regieterStartTime=response.data.signStartTime;
+           _this.$data.seminarDetails.registerEndTime=response.data.signEndTime;
+
+        },function(error){
+          alert(error);
+        });
+      },
       data(){
           return{
             open:'send',
             status:1,
-              seminarDetails:{
-                title:"OOAD-讨论课",
-                name:'业务流程分析',
-                roundID:2,
-                classOrder:'第二次',
-                requiement:'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
-                status:'正在进行',
-                registerEndTime:"2018-10-1",
-                regieterStartTime:'2018-1-1',
-              }
+            seminarDetails:{
+              seminarId:"",
+              title:"OOAD-讨论课",
+              seminarTopic:'业务流程分析',
+              roundId:2,
+              classOrder:'第二次',
+              seminarContent:'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
+              status:'正在进行',
+              registerEndTime:"2018-10-1",
+              regieterStartTime:'2018-1-1',
+            }
           }
       },
       methods:{

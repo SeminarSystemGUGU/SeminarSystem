@@ -3,21 +3,13 @@
     <back-bar titleName="课程列表" :showMessages="false" backUrl="/StuMainPage"></back-bar>
 
     <div  class="animated fadeInRight" align="left">
-      <div class="container" >
-            <div class="itemTitle" @click="linkToSeminars">
+      <div class="container" v-for="option in courses">
+            <div class="itemTitle" @click="linkToSeminars(option.courseId)">
               <i class="el-icon-document"/>
-              {{courseName}}&emsp;{{startDate}}
+              {{option.courseName}}&emsp;{{option.courseId}}
               <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 1vh "/>
             </div>
       </div>
-
-      <div class="container">
-            <div class="itemTitle">
-              <i class="el-icon-document"/>
-              {{courseName}}&emsp;{{startDate}}
-              <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 1vh  "/>
-            </div>
-          </div>
     </div>
 
   </div>
@@ -30,16 +22,27 @@
       components:{
         BackBar,
       },
+      created(){
+        let _this=this;
+        this.$axios({
+          method: 'get',
+          url: '/course/studentCourse',
+        }).then(function (response) {
+          _this.$data.courses=response.data;
+        }, function (error) {
+          alert("请求失败",error);
+        });
+      },
       data(){
         return{
+          courses:[],
           title:"讨论课",
-          courseName:"OOAD",
-          startDate:'2016(1)',
         }
       },
+
       methods:{
-        linkToSeminars(){
-          this.$router.push('/StuMainSeminars');
+        linkToSeminars(courseId){
+          this.$router.push({path:'/StuMainSeminars',query:{courseId:courseId}});
         }
 
       }

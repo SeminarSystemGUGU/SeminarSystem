@@ -1,89 +1,43 @@
 <template>
   <div>
-    <back-bar titleName="讨论课" :showMessages="false" backUrl="/SeminarSelectCourse"></back-bar>
+    <back-bar :titleName="title" :showMessages="false" backUrl="/SeminarSelectCourse"></back-bar>
 
     <div  class="animated fadeInRight" align="left" >
-      <div class="container" >
-        讨论课信息<br/>
+      <div class="con">
+        <span class="tit">讨论课信息</span><br/>
+      <div class="container" v-for="option in  rounds">
         <div class="parent1">
           <div >
-            <div class="itemTitle"> {{round[0]}}</div>
+            <div class="itemTitle"> {{option.roundName}}</div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" @click="linkToDetails">
-                <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[0]}}</span>
-                <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
-              </div>
-              <div class="subList"  @click="">
-                <span class="subItem"> <i class="el-icon-document"/>{{seminarName[1]}}</span>
+              <div class="subList" @click="linkToDetails(item.seminarId,option.roundId)" v-for="item in option.list">
+                <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarTopic}}</span>
                 <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
             </div>
           </div>
-
         </div>
       </div>
+      </div>
 
-      <div class="container">
+      <div class="con">
+        <span class="tit">已报名讨论课</span><br/>
+        <div class="container"  v-for="option in roundsSigned">
         <div class="parent1">
           <div >
-            <div class="itemTitle"> {{round[1]}}</div>
+            <div class="itemTitle"> {{option.roundName}}</div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" >
-                <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[2]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-              <div class="subList">
-                <span class="subItem" > <i class="el-icon-document"/>{{seminarName[3]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+              <div class="subList" @click="linkToRegisteredDetails" v-for="item in option.list">
+                <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarTopic}}</span>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-
-      <div class="container" style="margin-top: 13vh;">
-        已报名讨论课<br/>
-        <div class="parent1">
-          <div >
-            <div class="itemTitle"> {{round[0]}}</div>
-            <div class="parent3">
-              <!-- Content  -->
-              <div class="subList" @click="linkToRegisteredDetails">
-                <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[0]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-              <div class="subList"  @click="">
-                <span class="subItem"> <i class="el-icon-document"/>{{seminarName[1]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-            </div>
-          </div>
-
-        </div>
       </div>
-
-      <div class="container">
-        <div class="parent1">
-          <div >
-            <div class="itemTitle"> {{round[1]}}</div>
-            <div class="parent3">
-              <!-- Content  -->
-              <div class="subList" >
-                <span class="subItem"  > <i class="el-icon-document"/>{{seminarName[2]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-              <div class="subList">
-                <span class="subItem" > <i class="el-icon-document"/>{{seminarName[3]}}</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
   </div>
@@ -96,16 +50,43 @@
     components:{
       BackBar,
     },
+    created(){
+      this.$data.courseId=this.$route.query.courseId;
+
+      let _this=this;    //根据courseId获取该课程讨论课列表
+      this.$axios({
+        method:'get',
+        url:'course/courseId/round',
+      }).then(function(response){
+        _this.$data.rounds=response.data;
+      },function(error){
+        alert(error);
+      });
+
+
+      let  _th=this;    //根据courseId获取该课程讨论课列表
+      this.$axios({
+        method:'get',
+        url:'/course/courseId/roundSigned',
+      }).then(function(response){
+        _th.$data.roundsSigned=response.data;
+      },function(error){
+        alert(error);
+      });
+
+    },
     data(){
       return{
-        title:"OOAD",
-        round:['第一轮','第二轮'],
-        seminarName:["业务流程","界面原型","领域模型","需求分析"],
+        title:"讨论课",
+        courseId:1,
+
+        rounds:[],  //发布的讨论课所在round
+        roundsSigned:[], //已经报名的讨论课所在round
       }
     },
     methods:{
-      linkToDetails(){
-        this.$router.push('/StuSeminarDetails');
+      linkToDetails(seminarId,roundId){
+        this.$router.push({path:'/StuSeminarDetails',query:{ seminarId:seminarId,roundId:roundId} });
       },
       linkToRegisteredDetails(){
         this.$router.push('/StuRegisteredSeminarDetails')
@@ -115,17 +96,20 @@
 </script>
 
 <style scoped>
-
+  .con{
+    color: grey;
+    font-size: 20px;
+    margin-top: 10vh;
+  }
+  .tit{
+    /*font-size: ;*/
+    margin-left: 4vw;
+  }
   .container  {
     width: 100%;
     /*height: 20vh;*/
     position: relative;
     border-radius: 5px;
-    color: grey;
-    font-size: 20px;
-  }
-  .container:nth-child(1){
-    margin-top: 10vh;
   }
   .parent1    {
     height: 8vh;
@@ -180,10 +164,8 @@
   }
 
   @media screen and (min-width: 481px ){
-    .container  {
+    .con  {
       font-size: 38px;
-    }
-    .container:nth-child(1){
       margin-top: 13vh;
     }
     .itemTitle{
