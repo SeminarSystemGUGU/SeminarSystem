@@ -82,26 +82,26 @@
     name: "StuMyAccount",
     data(){
       return{
-        stuName:'',
-        account:'',
-        email:'',
-        timeInterval:'',
+        stuName:'李大海',
+        account:'24320162202999',
+        email:'123124@qq.com',
+        timeInterval:'3h',
       }
     },
-    created(){
-      let _this=this;
-      this.$axios({
-        method: 'get',
-        url: '/student/studentInfo',
-      }).then(function (response) {
-         _this.$data.stuName=response.data.name;
-         _this.$data.account=response.data.account;
-         _this.$data.email=response.data.email;
-         _this.$data.timeInterval=response.data.timeInterval;
-      }, function (error) {
-        alert("请求失败",error);
-      });
-    },
+    // created(){
+    //   let _this=this;
+    //   this.$axios({
+    //     method: 'get',
+    //     url: '/student/studentInfo',
+    //   }).then(function (response) {
+    //      _this.$data.stuName=response.data.name;
+    //      _this.$data.account=response.data.account;
+    //      _this.$data.email=response.data.email;
+    //      _this.$data.timeInterval=response.data.timeInterval;
+    //   }, function (error) {
+    //     alert("请求失败",error);
+    //   });
+    // },
     methods:{
       backTo(){
         this.$router.push('/StuMainPage');
@@ -204,5 +204,10 @@
     margin-top: 3vw;
     color: dodgerblue;
     font-weight: bold
+  }
+  @media screen and (min-width: 481px ){
+    .logout-button{
+      height:6vh;
+    }
   }
 </style>

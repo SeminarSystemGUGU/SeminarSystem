@@ -1,6 +1,6 @@
 <template>
     <div>
-      <back-bar :titleName="title" :showMessages="false" backUrl="/StuSeminarDetails"> </back-bar>
+      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" backUrl="/StuSeminarDetails"> </back-bar>
 
       <div class="statusDetailsBack animated fadeInRight" >
       <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentTeam}}</div>

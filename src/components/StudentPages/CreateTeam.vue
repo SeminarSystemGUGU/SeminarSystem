@@ -1,6 +1,6 @@
 <template>
   <div align="center">
-    <back-bar titleName="创建队伍" :showMessages="false" backUrl="/StuMyTeam"></back-bar>
+    <back-bar titleName="创建队伍" :showMessages="true" :showBackBar="true" backUrl="/StuMyTeam"></back-bar>
 
     <div class="back animated fadeInRight" align="left" >
       <mu-form label-position="left">
@@ -16,6 +16,7 @@
         <mu-divider inset></mu-divider>
         <mu-list textline="two-line">
           <mu-sub-header inset>已有成员</mu-sub-header>
+          <mu-sub-header style="margin-top: -3vh;" inset>(人数限制3-5人，不符合限制需<span style="border-bottom: 0.5px solid darkred;color: darkred;cursor: pointer">提交申请</span>)</mu-sub-header>
           <mu-list-item avatar button :ripple="false"  :key="newTeam.members"  v-for="option in newTeam.members" style="margin-left: -2vh;">
             <mu-list-item-action>
               <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.identify=='组长'">
@@ -32,7 +33,7 @@
               <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action style="margin-left: -4vh;">
-              <mu-button icon v-if="option.identify=='组员'">
+              <mu-button icon v-if="option.identify=='组员'" @click="deleteFlag=!deleteFlag">
                <i style="margin-top: -1vh;" class="el-icon-circle-close-outline"/>
               </mu-button>
             </mu-list-item-action>
@@ -56,7 +57,7 @@
               </mu-avatar>
             </mu-list-item-action>
             <mu-list-item-content>
-              <mu-list-item-title style=" "> &emsp;{{option.name}}</mu-list-item-title>
+              <mu-list-item-title> &emsp;{{option.name}}</mu-list-item-title>
               <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action>
@@ -67,9 +68,16 @@
           </mu-list-item>
         </mu-list>
       </div>
-      <mu-button class="submit" color="success" >提交申请</mu-button>
+      <mu-button class="save" color="success" >保存</mu-button>
+      <mu-button class="dissolve" color="error" >解散小组</mu-button>
+
     </div>
 
+    <mu-dialog title="确认删除？" width="360" :open.sync="deleteFlag">
+      sdadsad
+      <mu-button slot="actions" flat color="success" @click="deleteFlag=!deleteFlag">Sure</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="deleteFlag=!deleteFlag">Close</mu-button>
+    </mu-dialog>
   </div>
 </template>
 
@@ -84,6 +92,8 @@
         return{
           inTeamOrNot:true,
           leaderOrNot:true,
+          deleteFlag:false,
+
           newTeam:{
             teamName:'咕咕鸟',
             class:'1',
@@ -118,8 +128,6 @@
         dissolve(){
           //组长解散小组
         },
-        dropout(){}
-         //组员退出小组
        }
     }
 </script>
@@ -129,12 +137,6 @@
     margin-top: 10vh;
     width:100% ;
   }
-  .enter{
-    width:80%;
-    margin-left: 3vh;
-    margin-top: -1vh;
-    font-size: 18px;
-  }
   .newMember{
     width: 100%;
     color: gray;
@@ -143,10 +145,12 @@
     padding-top: 1vh;
     /*border-top: 0.5px solid gray;*/
   }
-  .submit{
+  .save{
+    float: left;
+    margin-left: 4vw;
     font-size: 18px;
-    margin-top: 7vh;
-    width: 100%;
+    margin-top: 5vh;
+    width: 40%;
     height:6vh;
     opacity: 0.9;
   }
@@ -155,17 +159,36 @@
     width: 80%;
   }
   .dissolve{
+    float:right;
+    margin-right: 4vw;
     font-size: 18px;
     margin-top: 5vh;
-    width: 100%;
+    width: 40%;
     height:6vh;
     opacity: 0.9;
   }
-  @media screen and(min-width: 700px){
+  @media screen and(min-width: 481px){
     .back{
-      margin-top: 20vh;
+      margin-top: 13vh;
     }
+    .newMember{
 
+    }
+    .save{
+      font-size: 30px;
+      height:6vh;
+
+    }
+    .mu-form-item{
+      margin-left: 3vh;
+      width: 80%;
+    }
+    .dissolve{
+      font-size: 30px;
+      margin-top: 5vh;
+      height:6vh;
+      opacity: 0.9;
+    }
 
   }
 </style>

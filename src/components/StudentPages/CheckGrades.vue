@@ -1,6 +1,6 @@
 <template>
     <div>
-      <back-bar :titleName="title" :show-messages="false" backUrl="/StuRegisteredSeminarDetails"></back-bar>
+      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" backUrl="/StuRegisteredSeminarDetails"></back-bar>
 
       <div class="seminarDetailsBack animated fadeInRight" align="left" >
         <span style="margin-left: 2vw;font-size: 25px;">{{seminarDetails.name}}</span>

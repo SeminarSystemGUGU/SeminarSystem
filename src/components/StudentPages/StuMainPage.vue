@@ -9,7 +9,7 @@
       </div>
     </div> -->
     <back-bar titleName=" " :showMessages="true" backUrl="/StuMyTeam"></back-bar>
-    <div style="position: fixed;top:2vh;left:4vw;font-size: 20px;">我</div>
+    <div class="me" >我</div>
     <div class="main-content">
       <div class="my-course-card" style="margin-top: 16vh">
         <el-row :gutter="10" style="height: 100%">
@@ -70,6 +70,18 @@
 </script>
 
 <style scoped lang="less">
+  .me{
+    position: fixed;
+    font-weight:bold;
+    top:2vh;
+    left:4vw;
+    font-size: 20px;
+    @media screen and(min-width: 481px){
+        top:2vh;
+        left:4vw;
+        font-size: 30px;
+    }
+  }
   #MainPage{
     padding:1px;
     width: 100vw;
@@ -101,6 +113,7 @@
 
       @media screen and(min-width: 700px){
         margin-top: 80px;
+
       }
 
       .func-card{

@@ -1,35 +1,16 @@
 <template>
   <div>
-    <back-bar :titleName="title" :showMessages="false" backUrl="/SeminarSelectCourse"></back-bar>
+    <back-bar :titleName="title" :showMessages="true" :showBackBar="true" backUrl="/SeminarSelectCourse"></back-bar>
 
     <div  class="animated fadeInRight" align="left" >
       <div class="con">
-        <span class="tit">讨论课信息</span><br/>
       <div class="container" v-for="option in  rounds">
         <div class="parent1">
           <div >
             <div class="itemTitle"> {{option.roundName}}</div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" @click="linkToDetails(item.seminarId,option.roundId)" v-for="item in option.list">
-                <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarTopic}}</span>
-                <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-
-      <div class="con">
-        <span class="tit">已报名讨论课</span><br/>
-        <div class="container"  v-for="option in roundsSigned">
-        <div class="parent1">
-          <div >
-            <div class="itemTitle"> {{option.roundName}}</div>
-            <div class="parent3">
-              <!-- Content  -->
-              <div class="subList" @click="linkToRegisteredDetails" v-for="item in option.list">
+              <div class="subList" @click="linkToDetails(item.seminarId,option.roundId)" v-for="item in option.seminars">
                 <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarTopic}}</span>
                 <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
@@ -50,47 +31,90 @@
     components:{
       BackBar,
     },
-    created(){
-      this.$data.courseId=this.$route.query.courseId;
-
-      let _this=this;    //根据courseId获取该课程讨论课列表
-      this.$axios({
-        method:'get',
-        url:'course/courseId/round',
-      }).then(function(response){
-        _this.$data.rounds=response.data;
-      },function(error){
-        alert(error);
-      });
-
-
-      let  _th=this;    //根据courseId获取该课程讨论课列表
-      this.$axios({
-        method:'get',
-        url:'/course/courseId/roundSigned',
-      }).then(function(response){
-        _th.$data.roundsSigned=response.data;
-      },function(error){
-        alert(error);
-      });
-
-    },
+    // created(){
+    //   this.$data.courseId=this.$route.query.courseId;
+    //
+    //   let _this=this;    //根据courseId获取该课程讨论课列表
+    //   this.$axios({
+    //     method:'get',
+    //     url:'course/'+this.$data.courseId+'/round',
+    //   }).then(function(response){
+    //     _this.$data.rounds=response.data;
+    //   },function(error){
+    //     alert(error);
+    //   });
+    //
+    //   let  _th=this;    //根据courseId获取该课程讨论课列表
+    //   this.$axios({
+    //     method:'get',
+    //     url:'/course/'+this.$data.courseId+'/roundSigned',
+    //   }).then(function(response){
+    //     _th.$data.roundsSigned=response.data;
+    //   },function(error){
+    //     alert(error);
+    //   });
+    //
+    // },
     data(){
       return{
         title:"讨论课",
         courseId:1,
 
-        rounds:[],  //发布的讨论课所在round
-        roundsSigned:[], //已经报名的讨论课所在round
+        rounds:[
+          {
+            roundName:'第一轮',
+            roundId:1,
+            seminars:[
+              {
+                seminarTopic:'业务流程',
+                seminarID:1,
+              },
+              {
+                seminarTopic:'关系模型',
+                seminarID:2,
+              }
+            ]
+          },
+          {
+            roundName:'第二轮',
+            roundId:2,
+            seminars:[
+              {
+                seminarTopic:'controller',
+                seminarID:3,
+              },
+              {
+                seminarTopic:'XXXX',
+                seminarID:4,
+              },
+            ]
+          },
+          {
+            roundName:'第三轮',
+            roundId:3,
+            seminars:[
+              {
+                seminarTopic:'XXXX',
+                seminarID:1,
+              },
+              {
+                seminarTopic:'XXXX',
+                seminarID:2,
+              }
+            ]
+          },
+
+        ],  //发布的讨论课所在round
+        // roundsSigned:[], //已经报名的讨论课所在round
       }
     },
     methods:{
       linkToDetails(seminarId,roundId){
         this.$router.push({path:'/StuSeminarDetails',query:{ seminarId:seminarId,roundId:roundId} });
       },
-      linkToRegisteredDetails(){
-        this.$router.push('/StuRegisteredSeminarDetails')
-      }
+      // linkToRegisteredDetails(){
+      //   this.$router.push('/StuRegisteredSeminarDetails')
+      // }
     }
   }
 </script>
@@ -100,10 +124,6 @@
     color: grey;
     font-size: 20px;
     margin-top: 10vh;
-  }
-  .tit{
-    /*font-size: ;*/
-    margin-left: 4vw;
   }
   .container  {
     width: 100%;
@@ -144,9 +164,6 @@
     font-size: 22px;
     box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
 
-    /*border: 1px solid black;*/
-    /*border-radius: 10px;*/
-    /*background-color:#96c4e6;*/
   }
 
   .subList {
@@ -165,14 +182,13 @@
 
   @media screen and (min-width: 481px ){
     .con  {
-      font-size: 38px;
-      margin-top: 13vh;
+      margin-top: 10vh;
     }
     .itemTitle{
-      padding-top: 10px;
+      padding-top: 20px;
       padding-left: 4vw;
       height:7vh;
-      font-size: 38px;
+      font-size: 33px;
     }
 
     .subList {
@@ -186,7 +202,7 @@
     }
     .subItem{
       color:gray;
-      font-size: 18px;
+      font-size: 25px;
     }
 
   }

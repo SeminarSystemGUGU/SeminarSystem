@@ -1,6 +1,6 @@
 <template>
   <div >
-    <back-bar titleName="OOAD-讨论课" :showMessages="false" backUrl="/StuSeminarDetails"></back-bar>
+    <back-bar titleName="OOAD-讨论课" :showMessages="true" :showBackBar="true" backUrl="/StuSeminarDetails"></back-bar>
 
     <div class="statusDetailsBack animated fadeInRight" >
       <!--讨论课已经结束-->
@@ -26,7 +26,6 @@
             <mu-list-item-title style="margin-left: 20%;font-size: 20px;height:8vh;">
               <mu-button flat color="success" style="margin-top: 1vh;"large @click="download">{{option.pptName}}</mu-button>
             </mu-list-item-title>
-
           </mu-list-item>
         </mu-list>
         <mu-divider></mu-divider>
@@ -163,7 +162,7 @@
           },
           register(){
             this.$data.registerFlag=true;
-          }
+          },
 
       }
 

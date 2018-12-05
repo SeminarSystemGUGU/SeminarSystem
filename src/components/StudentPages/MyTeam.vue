@@ -1,6 +1,6 @@
 <template>
   <div align="center">
-    <back-bar titleName="我的组队" :showMessages="false" backUrl="/StuMyCourses"></back-bar>
+    <back-bar titleName="我的组队" :showMessages="true" :showBackBar="true" backUrl="/StuMyCourses"></back-bar>
 
     <div class="animated fadeInRight">
     <div  v-if="teamState==0" >
@@ -8,7 +8,7 @@
       <div class="title">
         我的队伍
       </div>
-      <div v-if="!createFlag">当前未组队</div>
+      <div class="cF" v-if="!createFlag">当前未组队</div>
       <!--其他队伍-->
       <div class="title">
         其他队伍
@@ -22,9 +22,31 @@
             <div class="subContent">
               <span class="subItem"  data-toggle="collapse"  data-target="#demo21"></span>
               <div id="demo21" class="collapse in">
-                Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                vice lomo.
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>身份</th>
+                    <th>姓名</th>
+                    <th>学号</th>
+                    <th>备注</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>组长</td>
+                    <td>Li</td>
+                    <td>243201222</td>
+                    <td>J2EE</td>
+                  </tr>
+                  <tr>
+                    <td>组员</td>
+                    <td>Wang</td>
+                    <td>243201223</td>
+                    <td>J2EE</td>
+                  </tr>
+
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -35,11 +57,30 @@
         未组队学生
       </div>
       <div class="subContent">
-        <span class="subItem"  data-toggle="collapse"  data-target="#demo31">asdasdas</span>
+        <span class="subItem"  data-toggle="collapse"  data-target="#demo31">未组队学生列表</span>
         <div id="demo31" class="collapse in">
-          Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-          cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-          vice lomo.
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th>姓名</th>
+              <th>学号</th>
+              <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Li</td>
+              <td>243201222</td>
+              <td>J2EE</td>
+            </tr>
+            <tr>
+              <td>Wang</td>
+              <td>243201223</td>
+              <td>J2EE</td>
+            </tr>
+
+            </tbody>
+          </table>
         </div>
       </div>
       <mu-button class="butnCT" color="success" @click="createTeam">创建小组<i class="el-icon-circle-plus-outline" style="margin-left: 3vw;"/></mu-button>
@@ -153,7 +194,7 @@
         leaderName:'Li',
         leaderID:'110',
 
-        teamState:1,
+        teamState:0,
         newTeam:{
           teamName:'咕咕鸟',
           class:'1',
@@ -243,7 +284,30 @@
     opacity: 0.9;
   }
   @media screen and (min-width: 481px ){
-
+    #accordion{
+      margin-top: 13vh;
+      width:90%;
+    }
+    .cF{
+      font-size: 20px;
+    }
+    .title{
+      font-size: 30px;
+    }
+    .panel-heading{
+      font-size: 25px;
+    }
+    .subContent{
+      font-size: 20px;
+    }
+    .subItem{
+      color:gray;
+      font-size: 20px;
+    }
+    .butnCT{
+      font-size: 30px;
+      height:7vh;
+    }
   }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back-bar titleName="我的课程" :showMessages="false" backUrl="/StuMainPage"></back-bar>
+    <back-bar titleName="我的课程" :showMessages="true" :showBackBar="true" backUrl="/StuMainPage"></back-bar>
 
     <div  class="animated fadeInRight" align="left">
       <div class="container">
@@ -163,7 +163,7 @@
       padding-left: 4vw;
       width: 100%;
       height:8vh;
-      font-size: 40px;
+      font-size: 30px;
     }
 
     .subList {
@@ -178,7 +178,7 @@
     }
     .subItem{
       color:gray;
-      font-size: 30px;
+      font-size: 25px;
     }
   }
 

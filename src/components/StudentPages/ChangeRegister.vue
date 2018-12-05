@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back-bar :titleName="title" :showMessages="false" backUrl="/StuRegisteredSeminarDetails"></back-bar>
+    <back-bar :titleName="title":showMessages="true" :showBackBar="true" backUrl="/StuSeminarDetails"></back-bar>
 
     <div class="changeRegisterBack animated fadeInRight" >
       <mu-paper :z-depth="1" class="demo-list-wrap" >

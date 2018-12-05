@@ -28,9 +28,9 @@ new Vue({
   el: '#app',
   router,
   created () {
-    this.$axios.defaults.baseURL='http://yr3mr9.wxadra.natappfree.cc'
+    this.$axios.defaults.baseURL='http://xzuwdw.natappfree.cc'
   },
-  // },
+
   components: { App },
   template: '<App/>'
 })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <back-bar titleName="课程列表" :showMessages="false" backUrl="/StuMainPage"></back-bar>
+    <back-bar titleName="课程列表" :showMessages="true" :showBackBar="true" backUrl="/StuMainPage"></back-bar>
 
     <div  class="animated fadeInRight" align="left">
       <div class="container" v-for="option in courses">
@@ -22,20 +22,29 @@
       components:{
         BackBar,
       },
-      created(){
-        let _this=this;
-        this.$axios({
-          method: 'get',
-          url: '/course/studentCourse',
-        }).then(function (response) {
-          _this.$data.courses=response.data;
-        }, function (error) {
-          alert("请求失败",error);
-        });
-      },
+      // created(){
+      //   let _this=this;
+      //   this.$axios({
+      //     method: 'get',
+      //     url: '/course/studentCourse',
+      //   }).then(function (response) {
+      //     _this.$data.courses=response.data;
+      //   }, function (error) {
+      //     alert("请求失败",error);
+      //   });
+      // },
       data(){
         return{
-          courses:[],
+          courses:[
+            {
+              courseName:'OOAD',
+              courseId:'2016-1',
+            },
+            {
+              courseName:'J2EE',
+              courseId:'2016-2',
+            },
+          ],
           title:"讨论课",
         }
       },
@@ -76,10 +85,10 @@
       margin-top: 13vh;
     }
     .itemTitle{
-      padding-top: 10px;
+      padding-top: 18px;
       padding-left: 4vw;
       height:7vh;
-      font-size: 40px;
+      font-size: 30px;
     }
 
   }

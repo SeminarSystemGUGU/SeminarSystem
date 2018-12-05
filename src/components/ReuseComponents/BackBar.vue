@@ -1,7 +1,7 @@
 <template>
   <div class="bar animated bounce fadeIn" >
     <div class="reset-app-bar">
-      <div class="app-button" @click="linkBack(backUrl)" v-if="!showMessages">
+      <div class="app-button" @click="linkBack(backUrl)" v-if="showBackBar">
         <i class="el-icon-back"></i>
       </div>
       <div class="app-bar-title" >
@@ -26,7 +26,7 @@
 <script>
   export default {
     name: "BackBar",
-    props:['titleName','showMessages','backUrl'],
+    props:['titleName','showMessages','showBackBar','backUrl'],
     methods:{
       linkBack(backurl){
         this.$router.push(backurl);
@@ -76,6 +76,32 @@
   .el-icon-menu{
     font-size: 25px;
     color:#409EFF;
+  }
+  @media screen and (min-width: 481px ){
+    .reset-app-bar{
+        height:90px;
+    }
+    .app-bar-title{
+      margin-top: 3.5vw;
+      font-size:32px;
+      display: inline-block;
+      color: #409EFF;
+    }
+    .el-dropdown-link{
+      display:inline-block;
+      height:35px;
+      line-height:35px;
+    }
+    .el-icon-back{
+      margin-top: 15px;
+      font-size: 40px;
+    }
+    .el-icon-menu{
+      margin-top: 13px;
+      font-size: 40px;
+      color:#409EFF;
+    }
+
   }
 
 </style>
