@@ -16,7 +16,7 @@
         <mu-divider inset></mu-divider>
         <mu-list textline="two-line">
           <mu-sub-header inset>已有成员</mu-sub-header>
-          <mu-list-item avatar button :ripple="false"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+          <mu-list-item avatar button :ripple="false"  :key="newTeam.members"  v-for="option in newTeam.members" style="margin-left: -2vh;">
             <mu-list-item-action>
               <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.identify=='组长'">
                 <!--头像图标-->
@@ -48,7 +48,7 @@
         <mu-divider inset></mu-divider>
         <mu-list textline="two-line">
           <mu-sub-header inset>搜索结果</mu-sub-header>
-          <mu-list-item avatar button :ripple="false"  v-for="option in tempMembers" >
+          <mu-list-item avatar button :ripple="false" :key="tempMembers.length"  v-for="option in tempMembers" >
             <mu-list-item-action>
               <mu-avatar color="snow" style="font-size: 18px;" >
                 <!--头像图标-->

@@ -2,7 +2,7 @@
 	<div id="TeacherCourseShareSetting">
 		<app-bar titleName="OOAD-共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
 		<div class="main-content">
-			<el-card class="course-share-card" v-for="course in shareCourse">
+			<el-card class="course-share-card" v-for="(course,index) in shareCourse" :key="index">
 				<template slot="header">
 					<span class="share-course-title">{{course.courseName}}</span>
 					<span class="share-course-teacher">{{course.teacherName}}</span>

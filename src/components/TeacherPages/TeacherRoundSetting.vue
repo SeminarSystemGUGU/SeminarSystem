@@ -1,10 +1,12 @@
 <template>
+    <div id="TeacherRoundSetting">
 
+    </div>
 </template>
 
 <script>
     export default {
-        name: "TeacherSeminar"
+        name: "TeacherRoundSetting"
     }
 </script>
 
