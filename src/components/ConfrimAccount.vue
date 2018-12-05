@@ -41,7 +41,7 @@
             this.$router.push('/');
           },
           linkTo(){
-            this.$router.push('/ForgetPassword');
+            this.$router.push('/TeacherMainPage');
           }
       }
     }

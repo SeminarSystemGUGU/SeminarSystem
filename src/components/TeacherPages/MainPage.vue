@@ -10,7 +10,7 @@
     </div> -->
     <app-bar :showMessages="true" titleName="我" :showBack="false"></app-bar>
     <div class="main-content">
-      <el-card class="func-card" :body-style="{padding:'0px'}">
+      <el-card class="func-card animated " :body-style="{padding:'0px'}">
             <div class="func-card-title" style="">
               <div class="func-card-title-content">
                 <span>正在进行的事务</span>

@@ -1,7 +1,7 @@
 <template>
   <div id="TeacherStuTeams">
     <app-bar titleName="OOAD-学生组队" :showMessages="false" backPath="/TeacherMainPage"></app-bar>
-    <div class="main-content">
+    <div class="main-content" v-loading="isLoading">
       <mu-expansion-panel v-for="item in seminars" :key="item.name">
         <div slot="header" class="panel-header">{{item.name}}</div>
         <div class="divider"></div>
@@ -41,6 +41,7 @@
     },
     data(){
       return{
+        isLoading:true,
         seminars:[
           {
             name:'1-1 咕咕鸟队',
@@ -57,6 +58,12 @@
       linkToGrades(item){
         this.$router.push('/TeacherCourseGrades');
       }
+    },
+    created(){
+      let _this=this;
+      setTimeout(function () {
+        _this.$data.isLoading=false
+      },500)
     }
   }
 </script>
