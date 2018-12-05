@@ -305,8 +305,8 @@
       font-size: 20px;
     }
     .butnCT{
-      font-size: 30px;
-      height:7vh;
+      font-size: 23px;
+      height:6vh;
     }
   }
 

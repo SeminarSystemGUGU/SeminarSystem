@@ -171,22 +171,22 @@
     .back{
       margin-top: 13vh;
     }
-    .newMember{
-
-    }
     .save{
-      font-size: 30px;
-      height:6vh;
-
+      width:30%;
+      margin-left: 10%;
+      font-size: 23px;
+      height:4vh;
     }
     .mu-form-item{
       margin-left: 3vh;
       width: 80%;
     }
     .dissolve{
-      font-size: 30px;
+      font-size: 23px;
       margin-top: 5vh;
-      height:6vh;
+      margin-right: 10%;
+      width:30%;
+      height:4vh;
       opacity: 0.9;
     }
 
