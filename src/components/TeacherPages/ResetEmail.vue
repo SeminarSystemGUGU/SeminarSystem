@@ -6,7 +6,7 @@
         <span>修改邮箱</span>
       </div>
     </div>
-    <div class="main-content">
+    <div class="main-content animated bounceInRight">
       <div class="form-panel">
         <div class="input-panel">
           <label>Email:</label>

@@ -41,7 +41,7 @@
           </el-col>
           <el-col style="width: 27%">
             <div style="line-height: 9vw;text-align: right">
-              <i class="el-icon-arrow-right" style="width: 25px;height: 25px;"></i>
+              <!--<i class="el-icon-arrow-right" style="width: 25px;height: 25px;"></i>-->
             </div>
           </el-col>
         </el-row>
@@ -169,7 +169,7 @@
   height: 12vw;
   /*background-color: orangered;*/
   position: fixed;
-  bottom: 13vw;
+  bottom: 0;
 
   .logout-button{
     width: 100%;

@@ -8,7 +8,7 @@
       </el-col>
       <el-col style="width:29%;float:right;">
         <div style="float:right;margin-right:4vw;">
-          <el-dropdown>
+          <el-dropdown trigger="click">
             <span class="el-dropdown-link">
               <i class="el-icon-menu"/>
             </span>
@@ -49,7 +49,7 @@
         console.log(this.$props.backPath);
        if(this.$props.showBack===false){
         this.$data.isBack=this.$props.showBack;
-       } 
+       }
       }
     }
 </script>
@@ -68,7 +68,7 @@
       font-weight:bold;
       /*<!-- margin-top:7px;;*/
     }
-    
+
     .el-dropdown-link{
       display:inline-block;
       height:35px;

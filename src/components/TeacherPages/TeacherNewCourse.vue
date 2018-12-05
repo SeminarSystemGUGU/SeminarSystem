@@ -1,7 +1,7 @@
 <template>
 	<div id="TeacherNewCourse">
 		<app-bar titleName="新建课程" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
-		<div class="main-content">
+		<div class="main-content animated bounceInUp">
 			<el-form :model="formNewCourse" ref="formNewCourse" class="new-course-form">
 				<el-form-item>
 					<el-input class="new-course-input" placeholder="请输入课程名" v-model="formNewCourse.courseName" ></el-input>

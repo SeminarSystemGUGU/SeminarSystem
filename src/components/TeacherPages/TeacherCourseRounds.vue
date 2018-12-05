@@ -59,7 +59,7 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		.panel-title{
 			font-size:20px;
 		}
-		
+
 		.setting{
 			text-align:left;
 			font-size:18px;
@@ -82,7 +82,7 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 				font-size:18px;
 				margin-left:3vw;
 			}
-				
+
 			.class-panel{
 				margin-top:1.4vh;
 			}

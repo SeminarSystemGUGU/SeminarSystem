@@ -49,11 +49,16 @@
         </el-row>
       </div>
       <div class="delete-button">
-        <mu-button class="the-button" color="error">删除该课程</mu-button>
+        <mu-button class="the-button" color="error" @click="">删除该课程</mu-button>
       </div>
 
 
     </div>
+    <mu-dialog :open.sync="openDelCourse" title="确认删除课程" width="360">
+      <span>确认删除课程{{courseName}}</span>
+      <mu-button slot="actions" flat color="primary" @click="confirmModify">确定</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="openDelCourse=false">放弃</mu-button>
+    </mu-dialog>
   </div>
 </template>
 
@@ -68,13 +73,15 @@
       },
       data(){
         return {
+          openDelCourse:false,
           preProportion:'',
           questionProportion:'',
           reportProportion:'',
           teamMinNumber:0,
           teamMaxNumber:0,
           teamStartTime:'',
-          teamEndTime:''
+          teamEndTime:'',
+          courseName:'OOAD'
         }
       },
       methods:{

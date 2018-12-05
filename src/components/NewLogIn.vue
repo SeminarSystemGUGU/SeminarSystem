@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="login-panel animated fadeInUp">
-          <form class="input-panel" action="http://wxadra.natappfree.cc/security/login" method="post" >
+          <form class="input-panel" action="http://kfh4u9.natappfree.cc/security/login" method="post" >
             <div class="input-account">
               <label>账号</label><br/>
               <input  class="login-input"  name="username" id="username" placeholder="请输入账号" v-model="account" />
@@ -18,25 +18,25 @@
               <label>密码</label><br/>
               <input class="login-input" name="password" type="password"  id="password" placeholder="请输入密码" v-model="password" />
             </div>
-
-          <div class="radio-select">
+            <div class="radio-select">
               <mu-radio v-model="value1" style="margin-right: 16px;colro:white" value="top" label="教师">
               </mu-radio>
               <mu-radio v-model="value1" style="margin-right: 16px;" value="left" label="学生"></mu-radio>
           </div>
           <div class="button-panel">
-            <button class="login-button" ref="loginButton" @click="linkTo" type="submit">登录</button>
+            <button class="login-button" ref="loginButton" type="submit">登录</button>
           </div>
           </form>
           <div class="button-panel">
             <span @click="forgetPassword" >忘记密码</span>
+            <span style="float: right">初始密码为123456</span>
           </div>
 
         </div>
       </div>
-      <div class="fixed-notice">
-        <span>初始密码为123456</span>
-      </div>
+      <!--<div class="fixed-notice">-->
+        <!--<span>初始密码为123456</span>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
@@ -66,28 +66,60 @@
           }
       },
       methods:{
-          linkTo(){
-            let _this=this;
-            this.$axios({
-              method: 'post',
-              url: '/user/account/login',
-              data: {
-                password:_this.$data.password
-              }
-              }).then(function (response) {
-                _this.$data.success=response.data.success;
-                _this.$data.firstLogin=response.data.firstLogin;
-              }, function (error) {
-              alert("请求失败",error);
-              });
 
-            //初次登陆
-            if(this.$data.firstLogin==true )
-            {
-              this.$router.push('/ConfirmAccount');
-            }
+        LogIn(){
+          // let _this=this;
+          // this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+          // this.$axios({
+          //   method:'post',
+          //   url:'/security/login',
+          //   headers:{
+          //     // "Content-Type":"application/x-www-form-urlencoded"
+          //   },
+          //   // headers:{
+          //   //   "Access-Control-Expose-Headers:token":"ROLE"
+          //   //   // "Access-Control-Expose-Headers ":"ROLE"
+          //   // },
+          //   // validateStatus: function (status) {
+          //   //   return status > 200 && status < 300; // 默认的
+          //   // },
+          //   data:_this.$qs.stringify({
+          //     username:'123',
+          //     password:'123456'
+          //   })
+          // }).then(function (response) {
+          //   console.log(response.data)
+          // }).catch(function (error) {
+          //   console.log(JSON.stringify(error.response));
+          //   console.log(error.data);
+          //   // console.log(error.response.data);
+          //   console.log(error);
+          //   console.log(error.request);
+          //   console.log(error.config);
+          //   console.log(error.message);
+          //   console.log(error.response);
+          // })
+          $.ajax({
+            url: 'http://kfh4u9.natappfree.cc/security/login',
+            type: 'post',
+            dataType: 'form-data',
+            contentType: 'application/x-www-form-urlencoded',
+            data: {
+              username:'aaaa',
+              password:'aaaa'
+            },
+          })
+            .done(function(data) {
+              console.log(data);
+            })
+            .fail(function() {
+              console.log("error");
+            })
+            .always(function() {
+              console.log("complete");
+            });
+        },
 
-          },
 
         forgetPassword(){
           this.$router.push('/forgetPassword');
@@ -136,8 +168,8 @@
     width: 100%;
     color: rgba(255,255,255,0.7);
     text-align: center;
-    position: absolute;
-    bottom: 3vh;
+    /*position: absolute;*/
+    margin-top: 5vh;
   }
 
   .main-content{

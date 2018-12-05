@@ -6,7 +6,7 @@
         <span>修改密码</span>
       </div>
     </div>
-    <div class="main-content">
+    <div class="main-content animated bounceInRight">
       <div class="form-panel">
         <div class="input-panel">
           <label>输入新密码：</label>

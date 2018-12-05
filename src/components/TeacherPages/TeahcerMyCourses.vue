@@ -2,7 +2,7 @@
   <div id="TeacherMyCourses">
     <app-bar titleName="我的课程" :show-messages="true" backPath="/TeacherMainPage"></app-bar>
 
-    <div class="main-content">
+    <div class="main-content" v-loading="isLoading">
     <mu-expansion-panel v-for="item in courses" :key="item.name">
       <div slot="header" class="panel-header">{{item.name}}<span v-if="item.isMainCourse">（主）</span>
         <span v-else>（从）</span></div>
@@ -57,16 +57,11 @@
       data(){
           return{
             backPath:'/TeacherMainPage',
+            isLoading:false,
             courses:[
               {
-                id:0,
                 name:'OOAD',
                 isMainCourse:true,
-              },
-              {
-                id:0,
-                name:'软件工程',
-                isMainCourse:false
               }
             ]
           }
@@ -110,13 +105,21 @@
                 isMainCourse:(responseData[i].status.toString()==="1")?true:false,
               })
             }
+            // _this.setTimeout(function () {
+            //   // _this.$data.isLoading=false;
+            // },300);
+            setTimeout(function () {
+              _this.$data.isLoading=false;
+            },600)
+
+            // _this.$data.isLoading=false
           }).catch(function (error) {
             console.log(error.response.data);
           });
         }
       },
       created(){
-        this.loadTeacherCourse();
+        // this.loadTeacherCourse();
       }
     }
 </script>
