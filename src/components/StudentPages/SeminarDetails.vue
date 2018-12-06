@@ -175,7 +175,7 @@
         <!--未报名未开始-->
         <div class="dateRemind" v-if="status==1">
           <img class="iimg" src="../../assets/schedule.svg"   />
-          开始报名时间：{{seminarDetails.regieterStartTime}}
+          开始报名时间：{{seminarDetails.regieterStartTime}}<br/>
           <img class="iimg" src="../../assets/schedule.svg"   />
           结束报名时间：{{seminarDetails.registerEndTime}}
         </div>
