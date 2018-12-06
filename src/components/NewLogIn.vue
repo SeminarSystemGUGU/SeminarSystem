@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="login-panel animated fadeInUp">
-          <form class="input-panel" action="http://kfh4u9.natappfree.cc/security/login" method="post" >
+          <!--<form class="input-panel" action="http://kfh4u9.natappfree.cc/security/login" method="post" >-->
             <div class="input-account">
               <label>账号</label><br/>
               <input  class="login-input"  name="username" id="username" placeholder="请输入账号" v-model="account" />
@@ -19,14 +19,14 @@
               <input class="login-input" name="password" type="password"  id="password" placeholder="请输入密码" v-model="password" />
             </div>
             <div class="radio-select">
-              <mu-radio v-model="value1" style="margin-right: 16px;colro:white" value="top" label="教师">
+              <mu-radio v-model="value1" style="margin-right: 16px;colro:white" value="1" label="教师">
               </mu-radio>
-              <mu-radio v-model="value1" style="margin-right: 16px;" value="left" label="学生"></mu-radio>
+              <mu-radio v-model="value1" style="margin-right: 16px;" value="2" label="学生"></mu-radio>
           </div>
           <div class="button-panel">
-            <button class="login-button" ref="loginButton" type="submit">登录</button>
+            <button class="login-button" ref="loginButton" @click="linkTo">登录</button>
           </div>
-          </form>
+          <!--</form>-->
           <div class="button-panel">
             <span @click="forgetPassword" >忘记密码</span>
             <span style="float: right">初始密码为123456</span>
@@ -48,7 +48,7 @@
           return{
            account:'',
            password:'',
-           value1:'',
+           value1:'1',
             success:'',
           firstLogin:'',
           }
@@ -66,6 +66,13 @@
           }
       },
       methods:{
+        linkTo(){
+          if(this.$data.value1==='1'){
+            this.$router.push('/ConfirmAccount');
+          }else{
+            this.$router.push('/StuMainPage');
+          }
+        },
 
         LogIn(){
           // let _this=this;

@@ -28,11 +28,11 @@
             <template slot="title">
               <div class="group-grades">
                 <span class="left-grades">{{item.groupName}}</span>
-                <span class="right-grades">{{item.groupRoundScore}}</span>
+                <span class="right-grades">总分：{{item.groupRoundScore}}</span>
               </div>
             </template>
             <!--<div class="divider"></div>-->
-            <div class="group-seminar-grades" v-for="(it,i) in item.grades" :key="it.preGrade">
+            <div class="group-seminar-grades" v-for="(it,i) in item.grades" :key="i">
               <div class="seminar-name">
                 <span>{{it.seminarName}}</span>
               </div>
