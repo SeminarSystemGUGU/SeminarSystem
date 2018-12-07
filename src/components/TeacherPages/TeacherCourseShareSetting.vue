@@ -117,6 +117,7 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		margin-right:auto;
 
 		.course-share-card{
+      margin-top: 1.3vh;
 			text-align:left;
 			.share-course-title{
 				font-size:20px;
@@ -129,7 +130,8 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 			}
 
 			.course-share-card-content{
-				width:100%;
+				/*margin-top: 1.5vh;*/
+        width:100%;
 
 				.content-row{
 					margin-top:2vh;
