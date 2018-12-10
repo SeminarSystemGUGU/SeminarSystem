@@ -4,7 +4,7 @@
 		<div class="main-content">
 			<mu-expansion-panel>
     			<div slot="header" class="panel-title">第一轮</div>
-    			<div class="setting">
+    			<div class="setting" @click="linkToSetting">
     				<span class="setting-panel"><i class="el-icon-setting"></i>&nbsp;讨论课轮次设置</span>
     				<span class="setting-icon"><i class="el-icon-arrow-right"></i></span>
     			</div>
@@ -18,7 +18,7 @@
     						</template>
     						<div class="divider"></div>
     						<!--班级信息-->
-    						<div class="class-panel">
+    						<div class="class-panel" @click="linkTo">
     							<span class="class-title">2016级1班</span>
     							<span class="class-icon"><i class="el-icon-arrow-right"/></span>
     						</div>
@@ -28,16 +28,27 @@
     			</div>
     		</mu-expansion-panel>
   		</div>
+      <div class="running-seminars">
+        <span>正在进行的讨论课</span>
+      </div>
 	</div>
 </template>
 
 <script>
-import AppBar from '../../components/ReuseComponents/AppBar'
+import AppBar from '../../ReuseComponents/AppBar'
     export default {
         name: "TeacherCourseRounds",
         components:{
         	AppBar
+        },
+      methods:{
+          linkToSetting(){
+            this.$router.push('/TeacherRoundSetting');
+          },
+        linkTo(){
+            this.$router.push('/TeacherSeminar');
         }
+      }
     }
 </script>
 
@@ -45,6 +56,16 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 #TeacherCourseRounds{
 	width:100vw;
 	padding:1px;
+
+
+  .running-seminars{
+    position: fixed;
+    bottom:12vh;
+    right: 0;
+    width: 30vw;
+    height: 18vh;
+    background-color: dodgerblue;
+  }
 
 	.main-content{
 

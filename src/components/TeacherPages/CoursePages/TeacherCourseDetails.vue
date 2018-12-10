@@ -63,8 +63,8 @@
 </template>
 
 <script>
-  import AppBar from '../../components/ReuseComponents/AppBar'
-  import App from "../../App";
+  import AppBar from '../../ReuseComponents/AppBar'
+  import App from "../../../App";
     export default {
       name: "TeacherCourseDetails",
       components:{

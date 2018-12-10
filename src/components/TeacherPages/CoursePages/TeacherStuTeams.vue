@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import AppBar from '../ReuseComponents/AppBar'
+  import AppBar from '../../ReuseComponents/AppBar'
   export default {
     name: "TeahcerMyCourses",
     components:{

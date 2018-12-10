@@ -36,7 +36,7 @@
 	</div>
 </template>
 <script>
-import AppBar from '../../components/ReuseComponents/AppBar'
+import AppBar from '../../ReuseComponents/AppBar'
 	export default{
 		name:'TeacherCourseShareSetting',
 		components:{

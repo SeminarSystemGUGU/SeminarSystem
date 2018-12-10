@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import AppBar from '../../components/ReuseComponents/AppBar'
+  import AppBar from '../../ReuseComponents/AppBar'
     export default {
         name: "TeacherClassInfos",
       components:{

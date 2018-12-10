@@ -1,25 +1,28 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NewLogIn from '../components/NewLogIn'
-import ConfirmAccount from '../components/ConfrimAccount'
-import ForgetPassword from '../components/ForgetPassword'
-import ForgetPasswordSet from '../components/ForgetPasswordSet'
+import ConfirmAccount from '../components/TeacherPages/BeforeLogIn/ConfrimAccount'
+import ForgetPassword from '../components/TeacherPages/BeforeLogIn/ForgetPassword'
+import ForgetPasswordSet from '../components/TeacherPages/BeforeLogIn/ForgetPasswordSet'
 import TeacherMainPage from '../components/TeacherPages/MainPage'
-import MyAccount from '../components/TeacherPages/MyAccount'
-import ResetPassword from '../components/TeacherPages/ResetPassword'
-import ResetEmail from '../components/TeacherPages/ResetEmail'
-import TeacherStuTeams from '../components/TeacherPages/TeacherStuTeams'
-import TeacherMyCourses from '../components/TeacherPages/TeahcerMyCourses'
-import TeacherCourseGrades from '../components/TeacherPages/TeacherCourseGrades'
-import TeacherCourseDetails from '../components/TeacherPages/TeacherCourseDetails'
-import TeacherClassInfos from '../components/TeacherPages/TeacherClassInfos'
-import NewClassPage from '../components/TeacherPages/NewClassPage'
-import TeacherCourseRounds from '../components/TeacherPages/TeacherCourseRounds'
-import TeacherCourseShareSetting from '../components/TeacherPages/TeacherCourseShareSetting'
-import TeacherNewShare from '../components/TeacherPages/TeacherNewShare'
-import TeacherNewCourse from '../components/TeacherPages/TeacherNewCourse'
-import TeacherSeminar from '../components/TeacherPages/TeacherSeminar'
-import TeacherRoundSetting from '../components/TeacherPages/TeacherRoundSetting'
+import MyAccount from '../components/TeacherPages/MyInfoPages/MyAccount'
+import ResetPassword from '../components/TeacherPages/MyInfoPages/ResetPassword'
+import ResetEmail from '../components/TeacherPages/MyInfoPages/ResetEmail'
+import TeacherStuTeams from '../components/TeacherPages/CoursePages/TeacherStuTeams'
+import TeacherMyCourses from '../components/TeacherPages/CoursePages/TeahcerMyCourses'
+import TeacherCourseGrades from '../components/TeacherPages/CoursePages/TeacherCourseGrades'
+import TeacherCourseDetails from '../components/TeacherPages/CoursePages/TeacherCourseDetails'
+import TeacherClassInfos from '../components/TeacherPages/ClassPages/TeacherClassInfos'
+import NewClassPage from '../components/TeacherPages/ClassPages/NewClassPage'
+import TeacherCourseRounds from '../components/TeacherPages/SeminarPages/TeacherCourseRounds'
+import TeacherCourseShareSetting from '../components/TeacherPages/CoursePages/TeacherCourseShareSetting'
+import TeacherNewShare from '../components/TeacherPages/CoursePages/TeacherNewShare'
+import TeacherNewCourse from '../components/TeacherPages/CoursePages/TeacherNewCourse'
+import TeacherSeminar from '../components/TeacherPages/SeminarPages/TeacherSeminar'
+import TeacherRoundSetting from '../components/TeacherPages/SeminarPages/TeacherRoundSetting'
+import TeacherAfterSeminar from '../components/TeacherPages/SeminarPages/TeacherAfterSeminar'
+import TeacherApplyInfo from '../components/TeacherPages/SeminarPages/TeacherApplyInfo'
+import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/TeacherSeminarGrades'
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -128,6 +131,18 @@ export default new Router({
     {
       path:'/TeacherRoundSetting',
       component:TeacherRoundSetting
+    },
+    {
+      path:'/TeacherAfterSeminar',
+      component:TeacherAfterSeminar
+    },
+    {
+      path:'/TeacherApplyInfo',
+      component:TeacherApplyInfo
+    },
+    {
+      path:'/TeacherSeminarGrades',
+      component:TeacherSeminarGrades
     },
 
     //学生端组件

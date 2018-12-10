@@ -31,7 +31,7 @@
           </el-col>
           <el-col style="width: 10%;text-align: right;">
             <div style="margin-top: 3vw;">
-              <img src="../../assets/修改密码.png" class="menu-image"/>
+              <img src="../../../assets/修改密码.png" class="menu-image"/>
             </div>
           </el-col>
           <el-col style="width: 50%;">
@@ -54,7 +54,7 @@
           </el-col>
           <el-col style="width: 10%;text-align: right;">
             <div style="margin-top: 3vw;">
-              <img src="../../assets/通知时间.png" class="menu-image"/>
+              <img src="../../../assets/通知时间.png" class="menu-image"/>
             </div>
           </el-col>
           <el-col style="width: 50%;">

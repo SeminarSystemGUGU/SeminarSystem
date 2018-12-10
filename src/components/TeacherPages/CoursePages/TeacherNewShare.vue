@@ -35,7 +35,7 @@
 					</el-col>
 				</el-row>
 			</div>
-			
+
 			<div class="col-content">
 				<el-row>
 					<el-col class="row-col">
@@ -63,7 +63,7 @@
 	</div>
 </template>
 <script>
-import AppBar from '../../components/ReuseComponents/AppBar'
+import AppBar from '../../ReuseComponents/AppBar'
 	export default{
 		name:'TeacherNewShare',
 		components:{
@@ -71,7 +71,7 @@ import AppBar from '../../components/ReuseComponents/AppBar'
 		},
 		methods:{
 			confirm(){
-				
+
 			}
 		}
 	}

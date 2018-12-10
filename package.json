@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "ajax": "0.0.4",
     "animate.css": "^3.7.0",
     "axios": "^0.18.0",
     "bootstrap3": "^3.3.5",
