@@ -12,7 +12,7 @@
         </el-col>
         <el-col style="width: 68%">
           <div class="main-content" style="width: 70%;height: 600px;display: inline-block">
-            <router-view/>
+            <router-view v-bind:style="'box-shadow: 5px 5px 5px #888888;background: #ffffff;margin-top:20px;overflow-y:auto;height:'+height+'px'" />
           </div>
         </el-col>
       </el-row>
