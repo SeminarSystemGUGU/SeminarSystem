@@ -24,6 +24,8 @@ import TeacherAfterSeminar from '../components/TeacherPages/SeminarPages/Teacher
 import TeacherApplyInfo from '../components/TeacherPages/SeminarPages/TeacherApplyInfo'
 import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/TeacherSeminarGrades'
 
+import PCMainPage from '../components/PC/PCMainPage'
+
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
 import StuMyGrades from '../components/Studentpages/MyGrades'
@@ -43,7 +45,7 @@ import StuCheckGrades from '../components/StudentPages/CheckGrades'
 
 
 
-
+import PcLogin from '../components/PC/LoginPC'
 
 
 
@@ -144,6 +146,10 @@ export default new Router({
       path:'/TeacherSeminarGrades',
       component:TeacherSeminarGrades
     },
+    {
+      path:'/LoginPc',
+      component:PcLogin
+    },
 
     //学生端组件
     {
@@ -210,8 +216,12 @@ export default new Router({
     {
       path:'/StuCheckGrades',
       component:StuCheckGrades
-    }
+    },
+    {
+      path:'/PCPages',
+      component:PCMainPage,
 
+    }
 
 
   ]
