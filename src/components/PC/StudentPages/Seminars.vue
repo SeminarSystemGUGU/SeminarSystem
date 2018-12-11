@@ -10,6 +10,33 @@
         </mu-select>
     </div>
 
+    <div class="courseCard">
+      <mu-divider inset></mu-divider>
+      <mu-list textline="three-line">
+        <mu-sub-header >轮次</mu-sub-header>
+        <mu-list-item avatar button :ripple="false" v-for="option,index in seminarList">
+          <mu-list-item-action>
+            <mu-avatar class="avatar"  color="blue" v-show="index%2==0">
+              {{option.roundID}}
+            </mu-avatar>
+            <mu-avatar class="avatar" color="yellow" v-show="index%2==1">
+              {{option.roundID}}
+            </mu-avatar>
+          </mu-list-item-action>
+          <mu-list-item-content>
+            <mu-list-item-title>{{option.seminarTopic}}</mu-list-item-title>
+            <mu-list-item-sub-title>报名情况：{{option.registerStatus}}</mu-list-item-sub-title>
+            <mu-list-item-sub-title>报名起止日期：{{option.registerStartStopTime}}</mu-list-item-sub-title>
+          </mu-list-item-content>
+          <mu-list-item-action>
+            <mu-button icon>
+              <mu-button flat color="success">查看详情</mu-button>
+            </mu-button>
+          </mu-list-item-action>
+        </mu-list-item>
+      </mu-list>
+    </div>
+
   </div>
 </template>
 
@@ -27,6 +54,20 @@
             {
               courseName:'J2EE',
               courseID:2,
+            }
+          ],
+          seminarList:[
+            {
+              roundID:1,
+              seminarTopic:'业务流程',
+              registerStatus:'1 / 6',
+              registerStartStopTime:'2018.1.1—2018.2.2',
+            },
+            {
+              roundID:2,
+              seminarTopic:'关系模型',
+              registerStatus:'1 / 6',
+              registerStartStopTime:'2018.2.3—2018.3.3',
             }
           ]
         }
