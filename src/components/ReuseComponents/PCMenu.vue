@@ -7,50 +7,50 @@
               active-text-color='#ffffff'
               active-background-color="#1476BF"
               style="font-size: 16px;display: inline-block;margin: 0 auto;height: 100%;width: 90%;z-index: 0;">
-      <el-menu-item index="1" style="border: none;margin-top: 30px;"  class="item4menu">
+      <el-menu-item index="1" style="border: none;margin-top: 30px;"  class="item4menu"  >
         <div style="width: 100%;height: 100%">
           <div style="height: 10px"></div>
           <div style="margin-bottom: 20px;">
             <!--<img src="../../assets/审核流程.png" style="width: 15%;height: 23%"/>-->
           </div>
-          <div style="height: 40px;">
-            <span  slot="title" style="display: block;">审核流程</span>
+          <div style="height: 40px;" >
+            <span slot="title" style="display: block;">讨论课</span>
           </div>
         </div>
       </el-menu-item>
       <el-menu-item index="2"  style="border: none"  class="item4menu">
-        <div style="width: 100%;height: 100%">
+        <div style="width: 100%;height: 100%" >
           <div style="height: 10px"></div>
           <div style="margin-bottom: 20px;">
             <!--<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>-->
           </div>
           <div style="height: 40px;">
-            <span  slot="title" style="display: block;">管理事项</span>
+            <span  slot="title" style="display: block;">成绩查看</span>
           </div>
         </div>
       </el-menu-item>
-      <el-menu-item index="3"  style="border: none"  class="item4menu">
-        <div style="width: 100%;height: 100%">
-          <div style="height: 10px"></div>
-          <div style="margin-bottom: 20px;">
-            <!--<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>-->
-          </div>
-          <div style="height: 40px;">
-            <span  slot="title" style="display: block;">申请信息</span>
-          </div>
-        </div>
-      </el-menu-item>
-      <el-menu-item index="4"  style="border: none"  class="item4menu">
-        <div style="width: 100%;height: 100%">
-          <div style="height: 10px"></div>
-          <div style="margin-bottom: 20px;">
-            <!--<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>-->
-          </div>
-          <div style="height: 40px;">
-            <span  slot="title" style="display: block;">消息中心</span>
-          </div>
-        </div>
-      </el-menu-item>
+      <!--<el-menu-item index="3"  style="border: none"  class="item4menu">-->
+        <!--<div style="width: 100%;height: 100%">-->
+          <!--<div style="height: 10px"></div>-->
+          <!--<div style="margin-bottom: 20px;">-->
+            <!--&lt;!&ndash;<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>&ndash;&gt;-->
+          <!--</div>-->
+          <!--<div style="height: 40px;">-->
+            <!--<span  slot="title" style="display: block;">申请信息</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</el-menu-item>-->
+      <!--<el-menu-item index="4"  style="border: none"  class="item4menu">-->
+        <!--<div style="width: 100%;height: 100%">-->
+          <!--<div style="height: 10px"></div>-->
+          <!--<div style="margin-bottom: 20px;">-->
+            <!--&lt;!&ndash;<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>&ndash;&gt;-->
+          <!--</div>-->
+          <!--<div style="height: 40px;">-->
+            <!--<span  slot="title" style="display: block;">消息中心</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</el-menu-item>-->
     </el-menu>
   </div>
 </template>
@@ -103,7 +103,14 @@
     },
     methods:{
       handleSelect (key, keyPath) {
-        console.log(key, keyPath)
+        switch(key){
+          case '1':
+            this.$router.push('/PcStuSeminars');
+            break;
+          case '2':
+            this.$router.push('/PcStuGrades');
+            break;
+        }
       },
     }
   }

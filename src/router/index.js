@@ -47,6 +47,9 @@ import StuCheckGrades from '../components/StudentPages/CheckGrades'
 
 import PcLogin from '../components/PC/LoginPC'
 
+import PcStuSeminars from '../components/PC/StudentPages/Seminars'
+import PcStuSeminarDetails from '../components/PC/StudentPages/SeminarDetails'
+import PcStuGrades from '../components/PC/StudentPages/Grades'
 
 
 Vue.use(Router);
@@ -220,6 +223,26 @@ export default new Router({
     {
       path:'/PCPages',
       component:PCMainPage,
+      children: [
+        {
+          path:'/PcLogin',
+          component:PcLogin
+        },
+
+        //PC端学生
+        {
+          path: '/PcStuSeminars',
+          component: PcStuSeminars
+        },
+        {
+          path: '/PcStuGrades',
+          component: PcStuGrades
+        },
+        {
+          path: '/PcStuSeminarDetails',
+          component: PcStuSeminarDetails
+        }
+      ]
 
     }
 

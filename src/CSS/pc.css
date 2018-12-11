@@ -1,0 +1,24 @@
+/* Seminar */
+.seminarBack{
+  width:74%;
+  /*box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);*/
+  /*margin-left: 400px*/
+}
+.titleBar{
+  height: 45px;
+  width: 600px;
+  line-height: 45px;
+  font-size: 24px;
+  padding-left: 20px;
+  margin-top: 30px;
+  /*margin-left: 10px;*/
+  box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+  /*border-bottom: 0.5px solid lightgray;*/
+}
+.courseSelect{
+  margin-top: 40px;
+  font-size: 20px;
+}
+.select{
+  margin-left: 30px;
+}
