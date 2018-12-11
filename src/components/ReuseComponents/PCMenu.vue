@@ -97,7 +97,7 @@
     },
     data () {
       return {
-        activeIndex: '2',
+        activeIndex: '1',
         document:null
       }
     },
