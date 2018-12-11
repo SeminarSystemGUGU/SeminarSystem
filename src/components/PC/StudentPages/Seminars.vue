@@ -60,13 +60,19 @@
             {
               roundID:1,
               seminarTopic:'业务流程',
-              registerStatus:'1 / 6',
+              registerStatus:'3 / 6',
               registerStartStopTime:'2018.1.1—2018.2.2',
             },
             {
               roundID:2,
               seminarTopic:'关系模型',
-              registerStatus:'1 / 6',
+              registerStatus:'3 / 6',
+              registerStartStopTime:'2018.2.3—2018.3.3',
+            },
+            {
+              roundID:3,
+              seminarTopic:'什么模型',
+              registerStatus:'3 / 6',
               registerStartStopTime:'2018.2.3—2018.3.3',
             }
           ]

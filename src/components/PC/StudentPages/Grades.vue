@@ -21,6 +21,8 @@
       <el-table-column prop="totalScore" label="总分" ></el-table-column>
     </el-table>
 
+    <mu-button color="success" class="exportGrade">导出成绩</mu-button>
+
 
   </div>
 </template>

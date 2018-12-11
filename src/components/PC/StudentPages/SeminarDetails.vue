@@ -72,7 +72,24 @@
                 leader:'WTF',
                 ppt:'已上传',
               },
-              {},{},{}
+              {
+                preOrder:3,
+                teamID:'',
+                leader:'',
+                ppt:'',
+              },
+              {
+                preOrder:4,
+                teamID:'',
+                leader:'',
+                ppt:'',
+              },
+              {
+                preOrder:6,
+                teamID:'1-6',
+                leader:'Li',
+                ppt:'已上传',
+              },
             ]
           }
 
