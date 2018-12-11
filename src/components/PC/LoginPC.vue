@@ -1,16 +1,21 @@
 <template>
-  <div class="img4login">
+  <div class="img4login" id="LogInPC">
     <div class="ndaw">
-      <el-card class="kkk3">
-        <el-form :model="formData" :rules="rules" label-width="100px" style="margin-top: 70px;width: 90%" ref="formData" :status-icon="true">
-          <el-form-item label="团队用户名" prop="userName" style="margin-bottom: 50px;width: 300px" class="input1">
-            <el-input class="input1" v-model="formData.userName" placeholder="用户名/UserName" style="width: 200px;"></el-input>
-          </el-form-item>
-          <el-form-item label="密码" prop="password" style="margin-bottom: 50px;width: 300px;" class="input1">
-            <el-input class="input2" type="password" v-model="formData.password" placeholder="密码/Password" style="width: 200px;background: rgba(255,255,255,0.8)"></el-input>
-          </el-form-item>
-          <el-button round style="width: 50%;margin-left: 10%;background-color: #6798d8;color: white" >登陆</el-button>
-        </el-form>
+      <el-card class="log-card">
+        <div class="card-title">
+          <span>欢迎登陆讨论课管理系统</span>
+        </div>
+        <div class="form-content">
+          <el-form :model="formData" :rules="rules" label-width="100px"  ref="formData" :status-icon="true">
+            <el-form-item label="用户名：" prop="userName" style="" class="input1 input-form-item">
+              <el-input class="input1 the-input" v-model="formData.userName" placeholder="用户名/UserName"></el-input>
+            </el-form-item>
+            <el-form-item label="密码：" prop="password" class="input1 input-form-item">
+              <el-input class="input2 the-input" type="password" v-model="formData.password" placeholder="密码/Password"></el-input>
+            </el-form-item>
+            <el-button round class="login-button" >登陆</el-button>
+          </el-form>
+        </div>
       </el-card>
     </div>
   </div>
@@ -71,6 +76,30 @@
 </script>
 <style>
   /*@import url("//unpkg.com/element-ui@2.4.4/lib/theme-chalk/index.css");*/
+  .card-title{
+    margin-top: 20px;
+    font-size: 23px;
+    font-weight: bold;
+    color: #122b40;
+  }
+
+  .login-button{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #6798d8;
+    color: white;
+    margin-top: 30px;
+  }
+
+  .form-content{
+    margin-top: 40px;
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+
+  }
+
   .img4login{
     background: url('../../assets/timg1.jpg') center top no-repeat;
     background-size: 100%;
@@ -80,13 +109,21 @@
   }
 
   .input1{
+    /*width: 80%;*/
     transition: all 0.8s;
   }
 
-  .input1:hover{
-    transform: scale(1.05);
+  .input-form-item{
+    margin-top: 30px;
   }
-  .kkk3{
+
+  .the-input{
+    width: 230px;
+  }
+  .input1:hover{
+    transform: scale(1.02);
+  }
+  .log-card{
     float: right;
     margin-top: 150px;
     margin-right: 100px;

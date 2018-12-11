@@ -1,11 +1,5 @@
 <template>
   <div id="app" >
-    <!--<mu-appbar style="width: 100%;position: absolute;top:0" color="primary">-->
-      <!--<mu-button icon slot="left">-->
-      <!--</mu-button>-->
-      <!--Title-->
-      <!--<mu-button flat slot="right">LOGIN</mu-button>-->
-    <!--</mu-appbar>-->
     <div ontouchstart>
     <router-view/>
     </div>
@@ -16,11 +10,30 @@
 export default {
   name: 'App',
   created(){
-    // let platform=navigator.platform;
+    // this.logInJudge(); //用于自动跳转pc还是移动端以及获取jwt
+  },
+  methods:{
+    logInJudge(){
+      let platform=navigator.platform;  //用于获取平台号
+      let isLogin=false;        //用于请求获取是否之前已经登陆过
 
-    // if(platform.indexOf('W')!==-1){
-    //   this.$router.push('/');
-    // }
+      if(isLogin===false) {
+        this.$message({
+          type:'error',
+          message:'请先登录哦！'
+        });
+        if (platform.indexOf('W') !== -1) {
+          this.$router.push('/LoginPc');
+        } else {
+          this.$router.push('/');
+        }
+      }else{
+        this.$message({
+          type:'success',
+          message:'欢迎回来！'
+        })
+      }
+    }
   }
 }
 </script>
