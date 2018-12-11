@@ -7,7 +7,8 @@
       <el-row>
         <el-col style="width: 15%">
           <div v-bind:style="'position:relative;height:'+(height+20)+'px'">
-            <pc-menu></pc-menu>
+            <pc-menu v-show="$route.path!=='/PCPages/TeacherMainPage'"></pc-menu>
+            <pc-menu-teacher v-show="$route.path==='/PCPages/TeacherMainPage'"></pc-menu-teacher>
           </div>
         </el-col>
         <el-col style="width: 75%;margin-left: 50px;">
@@ -21,13 +22,15 @@
 </template>
 
 <script>
+  import PcMenuTeacher from '../ReuseComponents/PCMenuTeacher'
   import PcMenu from '../ReuseComponents/PCMenu'
   import PcNavMenu from '../ReuseComponents/PCNavMenu'
   export default {
     name: "LoginPC",
     components:{
       PcMenu,
-      PcNavMenu
+      PcNavMenu,
+      PcMenuTeacher
     },
     data(){
       return{
@@ -35,6 +38,7 @@
       }
     },
     mounted(){
+      console.log(this.$route.path);
       let _this=this;
       _this.$data.height = window.innerHeight - 110;
       window.onresize = function temp() {
