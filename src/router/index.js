@@ -25,10 +25,6 @@ import TeacherApplyInfo from '../components/TeacherPages/SeminarPages/TeacherApp
 import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/TeacherSeminarGrades'
 
 import PCMainPage from '../components/PC/PCMainPage'
-import PCTeacherMainPage from '../components/PC/TeacherPages/TeacherAddStu'
-import TeacherOutGrades from '../components/PC/TeacherPages/TeacherOutGrades'
-import TeacherPcSeminar from '../components/PC/TeacherPages/TeacherPcSeminars'
-
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
 import StuMainSeminars from '../components/Studentpages/MainSeminars'
@@ -229,20 +225,8 @@ export default new Router({
       component:PCMainPage,
       children: [
         {
-          path:'/PcLogin',
+          path:'PcLogin',
           component:PcLogin
-        },
-        {
-          path:'TeacherMainPage',
-          component:PCTeacherMainPage
-        },
-        {
-          path:'TeacherOutGrade',
-          component:TeacherOutGrades
-        },
-        {
-          path:'TeacherSeminar',
-          component:TeacherPcSeminar
         },
 
         //PC端学生
