@@ -22,7 +22,7 @@ export default {
           type:'error',
           message:'请先登录哦！'
         });
-        if (platform.indexOf('W') !== -1) {
+        if (platform.indexOf('Win') !== -1) {
           this.$router.push('/LoginPc');
         } else {
           this.$router.push('/');

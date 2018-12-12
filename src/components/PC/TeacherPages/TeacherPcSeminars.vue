@@ -1,5 +1,7 @@
 <template>
-
+  <div id="TeacherPcSeminars">
+    <span>dwjdw</span>
+  </div>
 </template>
 
 <script>
