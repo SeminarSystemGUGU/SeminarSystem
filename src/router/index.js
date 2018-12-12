@@ -29,6 +29,8 @@ import PCTeacherMainPage from '../components/PC/PCTeacherMainPage'
 import TeacherAddStus from '../components/PC/TeacherPages/TeacherAddStu'
 import TeacherOutGrades from '../components/PC/TeacherPages/TeacherOutGrades'
 import TeacherPcSeminar from '../components/PC/TeacherPages/TeacherPcSeminars'
+import TeacherSeminarDetails from '../components/PC/TeacherPages/TeacherSeminarDetails'
+import TeacherMyMessage from '../components/TeacherPages/MyInfoPages/MyMessage'
 
 
 import StuMyCourses from '../components/StudentPages/MyCourses'
@@ -155,6 +157,10 @@ export default new Router({
       component:TeacherSeminarGrades
     },
     {
+      path:'/TeacherMyMessage',
+      component:TeacherMyMessage
+    },
+    {
       path:'/LoginPc',
       component:PcLogin
     },
@@ -241,6 +247,10 @@ export default new Router({
           path:'TeacherSeminar',
           component:TeacherPcSeminar
         },
+        {
+          path:'TeacherSeminarDetails',
+          component:TeacherSeminarDetails
+        }
       ]
     },
     {
