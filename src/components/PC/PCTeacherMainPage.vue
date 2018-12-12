@@ -1,5 +1,5 @@
 <template>
-  <div id="LoginPC">
+  <div id="PCTeacherMainpage">
     <div class="top-menu">
       <PcNavMenu></PcNavMenu>
     </div>
@@ -7,8 +7,8 @@
       <el-row>
         <el-col style="width: 15%">
           <div v-bind:style="'position:relative;height:'+(height+20)+'px'">
-            <pc-menu v-show="!isTeacherPages"></pc-menu>
-            <pc-menu-teacher v-show="isTeacherPages"></pc-menu-teacher>
+            <!--<pc-menu v-show="!isTeacherPages"></pc-menu>-->
+            <pc-menu-teacher></pc-menu-teacher>
           </div>
         </el-col>
         <el-col style="width: 75%;margin-left: 50px;">
@@ -39,21 +39,7 @@
       }
     },
     watch:{
-      $route(to,from){
-        switch(this.$route.path){
-          case '/PCPages/TeacherMainPage':
-            this.$data.isTeacherPages=true;
-            break;
-          case '/PCPages/TeacherOutGrades':
-            this.$data.isTeacherPages=true;
-            break;
-          case 'PCPages/TeacherPcSeminar':
-            this.$data.isTeacherPages=true;
-            break;
-          default:
-            this.$data.isTeacherPages=false;
-        }
-      }
+
     },
     mounted(){
       console.log(this.$route.path);

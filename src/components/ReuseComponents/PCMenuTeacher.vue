@@ -16,7 +16,7 @@
           </div>
         </div>
       </el-menu-item>
-      <el-menu-item index="4"   class="item4menu item2-menu">
+      <el-menu-item index="5"   class="item4menu item2-menu">
         <div class="item-content" >
           <div class="item-img">
             <img src="../../assets/清单.png" class="nav-img"/>
@@ -26,7 +26,7 @@
           </div>
         </div>
       </el-menu-item>
-      <el-menu-item index="5"   class="item4menu item2-menu">
+      <el-menu-item index="4"   class="item4menu item2-menu">
         <div class="item-content">
           <div class="item-img">
             <img src="../../assets/提取流量.png" class="nav-img"/>
@@ -89,12 +89,14 @@
     methods:{
       handleSelect (key, keyPath) {
         switch(key){
-          case '1':
-            this.$router.push('/PcStuSeminars');
+          case '3':
+            this.$router.push('TeacherAddStu');
             break;
-          case '2':
-            this.$router.push('/PcStuGrades');
+          case '4':
+            this.$router.push('TeacherOutGrade');
             break;
+          case '5':
+            this.$router.push('TeacherSeminar');
         }
       },
     }

@@ -1,5 +1,7 @@
 <template>
-
+  <div class="TeacherOutGrades">
+    <span>dwjidwidj</span>
+  </div>
 </template>
 
 <script>
