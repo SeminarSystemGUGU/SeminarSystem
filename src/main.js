@@ -12,6 +12,8 @@ import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import $ from 'jquery';
 import intro from 'intro.js'
+import './assets/iconfont/iconfont.css'
+
 
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';

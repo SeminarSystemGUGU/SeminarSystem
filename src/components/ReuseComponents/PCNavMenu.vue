@@ -16,7 +16,7 @@
           </svg>
         </el-menu-item>
       <div class="line" title="返回登录页">
-        <img  style="width: 25px;height: 25px;color:#67C23A;margin-top: -2px;" src="../../assets/power.svg"/>退出登录
+        <i class="icon-first-power2"/>退出登录
       </div>
       </el-menu>
     </div>
@@ -88,15 +88,15 @@
   .line{
     float: right;
     margin-top: 20px;
-    line-height: 18px;
+    line-height: 19px;
     margin-right: 100px;
-    font-size: 18px;
+    font-size: 19px;
     cursor: pointer;
     transition: all 0.5s;
   }
   .line:hover{
-    font-size: 19px;
+    font-size: 20px;
     color: darkred;
-    line-height: 19px;
+    line-height: 20px;
   }
 </style>
