@@ -80,7 +80,7 @@
     },
     methods:{
       showDetails(roundID){
-        this.$router.push('TeacherSeminarDetails');
+        this.$router.push('/PCTeacher/TeacherSeminarDetails');
 
       }
     }

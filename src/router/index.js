@@ -232,47 +232,42 @@ export default new Router({
       component:StuCheckGrades
     },
     {
-      path:'/PCTeacher/',
+      path:'/PCTeacher',
       component:PCTeacherMainPage,
       children:[
         {
-          path:'TeacherAddStu',
+          path:'/PCTeacher/TeacherAddStu',
           component:TeacherAddStus
         },
         {
-          path:'TeacherOutGrade',
+          path:'/PCTeacher/TeacherOutGrade',
           component:TeacherOutGrades
         },
         {
-          path:'TeacherSeminar',
+          path:'/PCTeacher/TeacherSeminar',
           component:TeacherPcSeminar
         },
         {
-          path:'TeacherSeminarDetails',
+          path:'/PCTeacher/TeacherSeminarDetails',
           component:TeacherSeminarDetails
         }
       ]
     },
     {
-      path:'/PCPages',
+      path:'/PCStudent',
       component:PCMainPage,
       children: [
-        {
-          path:'PcLogin',
-          component:PcLogin
-        },
-
         //PC端学生
         {
-          path: 'PcStuSeminars',
+          path: '/PCStudent/PcStuSeminars',
           component: PcStuSeminars
         },
         {
-          path: 'PcStuGrades',
+          path: '/PCStudent/PcStuGrades',
           component: PcStuGrades
         },
         {
-          path: 'PcStuSeminarDetails',
+          path: '/PCStudent/PcStuSeminarDetails',
           component: PcStuSeminarDetails
         }
       ]

@@ -58,4 +58,5 @@
     border-bottom: none;
   }
   @import "../../less/PC.less";
+  @import "../../less/TeacherOutGrades.less";
 </style>

@@ -82,10 +82,10 @@
       handleSelect (key, keyPath) {
         switch(key){
           case '1':
-            this.$router.push('PcStuSeminars');
+            this.$router.push('/PCStudent/PcStuSeminars');
             break;
           case '2':
-            this.$router.push('PcStuGrades');
+            this.$router.push('/PCStudent/PcStuGrades');
             break;
         }
       },

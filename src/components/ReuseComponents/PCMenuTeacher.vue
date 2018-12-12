@@ -90,13 +90,13 @@
       handleSelect (key, keyPath) {
         switch(key){
           case '3':
-            this.$router.push('TeacherAddStu');
+            this.$router.push('/PCTeacher/TeacherAddStu');
             break;
           case '4':
-            this.$router.push('TeacherOutGrade');
+            this.$router.push('/PCTeacher/TeacherOutGrade');
             break;
           case '5':
-            this.$router.push('TeacherSeminar');
+            this.$router.push('/PCTeacher/TeacherSeminar');
         }
       },
     }
