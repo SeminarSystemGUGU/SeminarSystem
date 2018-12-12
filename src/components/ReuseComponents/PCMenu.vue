@@ -1,7 +1,6 @@
 <template>
   <div id="PCMenu">
     <el-menu  :default-active="activeIndex" class="el-menu-demo" @select="handleSelect"
-
               text-color="#ffffff"
               background-color="#001C31"
               active-text-color='#ffffff'

@@ -8,13 +8,13 @@
       </el-col>
       <el-col style="width:29%;float:right;">
         <div style="float:right;margin-right:4vw;">
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link">
               <i class="el-icon-menu"/>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>讨论课</el-dropdown-item>
-              <el-dropdown-item>新消息</el-dropdown-item>
+              <el-dropdown-item command="2">新消息</el-dropdown-item>
               <el-dropdown-item>设置</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -24,7 +24,6 @@
       <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/消息.png"/>
       <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
       <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png"/>
-
     </div> -->
     </el-row>
   </div>
@@ -38,6 +37,15 @@
           linkBack(){
             console.log(this.$props.backPath);
             this.$router.push(this.$props.backPath);
+          },
+          linkToMessage(){
+            console.log(1111);
+            this.$router.push({path:'/TeacherMyMessage'});
+          },
+          handleCommand(command){
+            if (command=='2'){
+              this.linkToMessage();
+            }
           }
       },
       data(){
