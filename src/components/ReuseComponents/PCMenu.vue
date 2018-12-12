@@ -14,7 +14,7 @@
             <!--<img src="../../assets/审核流程.png" style="width: 15%;height: 23%"/>-->
           </div>
           <div style="height: 40px;" >
-            <span slot="title" style="display: block;">讨论课</span>
+            <span slot="title" style="display: block;" ><i class="el-icon-document" />讨论课</span>
           </div>
         </div>
       </el-menu-item>
@@ -25,32 +25,10 @@
             <!--<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>-->
           </div>
           <div style="height: 40px;">
-            <span  slot="title" style="display: block;">成绩查看</span>
+            <span  slot="title" style="display: block;"><i class="el-icon-search"/>成绩查看</span>
           </div>
         </div>
       </el-menu-item>
-      <!--<el-menu-item index="3"  style="border: none"  class="item4menu">-->
-        <!--<div style="width: 100%;height: 100%">-->
-          <!--<div style="height: 10px"></div>-->
-          <!--<div style="margin-bottom: 20px;">-->
-            <!--&lt;!&ndash;<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>&ndash;&gt;-->
-          <!--</div>-->
-          <!--<div style="height: 40px;">-->
-            <!--<span  slot="title" style="display: block;">申请信息</span>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</el-menu-item>-->
-      <!--<el-menu-item index="4"  style="border: none"  class="item4menu">-->
-        <!--<div style="width: 100%;height: 100%">-->
-          <!--<div style="height: 10px"></div>-->
-          <!--<div style="margin-bottom: 20px;">-->
-            <!--&lt;!&ndash;<img src="../../assets/管理事项.png" style="width: 15%;height: 23%"/>&ndash;&gt;-->
-          <!--</div>-->
-          <!--<div style="height: 40px;">-->
-            <!--<span  slot="title" style="display: block;">消息中心</span>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</el-menu-item>-->
     </el-menu>
   </div>
 </template>

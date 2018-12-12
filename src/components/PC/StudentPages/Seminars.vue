@@ -6,7 +6,7 @@
     <div class="courseSelect">
       <span >课程 </span>
         <mu-select class="select" v-model="courseName">
-          <mu-option v-for="option,index in courseList" :key="option.courseID" :label="option.courseName" :value="option.courseName"></mu-option>
+          <mu-option v-for="option,index in courseList" :key="index" :label="option.courseName" :value="option.courseName"></mu-option>
         </mu-select>
     </div>
 
@@ -14,7 +14,7 @@
       <mu-divider inset></mu-divider>
       <mu-list textline="three-line">
         <mu-sub-header >轮次</mu-sub-header>
-        <mu-list-item avatar  :ripple="false" v-for="option,index in seminarList">
+        <mu-list-item avatar  :ripple="false" v-for="option,index in seminarList" :key="index">
           <mu-list-item-action>
             <mu-avatar class="avatar"  color="blue" v-show="index%2==0">
               {{option.roundID}}

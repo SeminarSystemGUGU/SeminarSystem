@@ -29,11 +29,12 @@
           <span v-if="seminar.registeredTeams[scope.$index].ppt=='未上传'">{{seminar.registeredTeams[scope.$index].ppt}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="">
         <template slot-scope="scope">
           <div>
-            <el-button @click.native.prevent="updateHandle(scope.$index )" type="success" icon="el-icon-edit" circle></el-button>
-            <el-button @click.native.prevent="deleteRow(scope.$index)" type="danger" icon="el-icon-delete" circle></el-button>
+            <mu-button  flat :disabled="seminar.registeredTeams[scope.$index].teamID !=''" @click.native.prevent="updateHandle(scope.$index )" color="success"  >
+              可报名
+            </mu-button>
           </div>
         </template>
       </el-table-column>
