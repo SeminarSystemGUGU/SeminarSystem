@@ -15,7 +15,9 @@
             <use class="text" xlink:href="#s-text"></use>
           </svg>
         </el-menu-item>
-      <div class="line"></div>
+      <div class="line" title="返回登录页">
+        <img  style="width: 25px;height: 25px;color:#67C23A;margin-top: -2px;" src="../../assets/power.svg"/>退出登录
+      </div>
       </el-menu>
     </div>
 </template>
@@ -82,5 +84,19 @@
     position: absolute;
     width: 800px;
     /*height: 100%;*/
+  }
+  .line{
+    float: right;
+    margin-top: 20px;
+    line-height: 18px;
+    margin-right: 100px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.5s;
+  }
+  .line:hover{
+    font-size: 19px;
+    color: darkred;
+    line-height: 19px;
   }
 </style>
