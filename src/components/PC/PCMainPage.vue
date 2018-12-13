@@ -5,7 +5,7 @@
     </div>
     <div style="width: 80%;margin: 0 auto;height: 100%;vertical-align: top;">
       <el-row>
-        <el-col style="width: 15%">
+        <el-col style="width: 15%;min-width: 120px;">
           <div v-bind:style="'position:relative;height:'+(height+20)+'px'">
             <pc-menu v-show="!isTeacherPages"></pc-menu>
             <pc-menu-teacher v-show="isTeacherPages"></pc-menu-teacher>

@@ -6,11 +6,11 @@
     <div class="courseSelect">
       <span >课程 </span>
       <mu-select class="select" v-model="courseName">
-        <mu-option v-for="option,index in courseList" :key="option.courseID" :label="option.courseName" :value="option.courseName"></mu-option>
+        <mu-option v-for="option,index in courseList" :key="index" :label="option.courseName" :value="option.courseName"></mu-option>
       </mu-select>
     </div>
 
-    <el-table :data="grades" border="false" id="gradesTable">
+    <el-table :data="grades"  id="gradesTable">
       <el-table-column prop="roundName" label="轮次" width="120"></el-table-column>
       <el-table-column prop="seminarTopic" label="参与讨论课主题" width="150"></el-table-column>
       <el-table-column label="成绩">
@@ -32,6 +32,17 @@
         name: "Grades",
       data(){
           return{
+            courseName:'OOAD',
+            courseList:[
+              {
+                courseName:'OOAD',
+                courseID:1,
+              },
+              {
+                courseName:'J2EE',
+                courseID:2,
+              }
+            ],
             grades:[
               {
                 roundName:"第一轮",

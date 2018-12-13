@@ -5,7 +5,7 @@
               background-color="#001C31"
               active-text-color='#ffffff'
               active-background-color="#1476BF"
-              style="font-size: 16px;display: inline-block;margin: 0 auto;height: 100%;width: 90%;z-index: 0;">
+              style="font-size: 16px;display: inline-block;margin: 0 auto;height: 100%;width: 90%;z-index: 0;min-width: 125px;">
       <el-menu-item index="1" style="border: none;margin-top: 30px;"  class="item4menu"  >
         <div style="width: 100%;height: 100%">
           <div style="height: 10px"></div>
@@ -95,6 +95,7 @@
 <style lang="less">
   #PCMenu {
     display: block;
+    min-width: 120px;
     height: 100%;
     position:absolute;
     top:0px;
