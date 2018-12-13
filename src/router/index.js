@@ -254,12 +254,12 @@ export default new Router({
       ]
     },
     {
-      path:'/PCStudent',
+      path:'/PCStudent/',
       component:PCMainPage,
       children: [
         //PC端学生
         {
-          path: '/PCStudent/PcStuSeminars',
+          path: '/PCStudent/',
           component: PcStuSeminars
         },
         {
