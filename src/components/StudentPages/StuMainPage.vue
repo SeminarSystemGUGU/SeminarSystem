@@ -73,6 +73,7 @@
   .me{
     position: fixed;
     font-weight:bold;
+    z-index: 1000;
     top:2vh;
     left:4vw;
     font-size: 20px;

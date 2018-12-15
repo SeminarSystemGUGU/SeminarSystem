@@ -134,7 +134,7 @@
 
 <style lang="less">
   .back{
-    margin-top: 10vh;
+    margin-top: 12vh;
     width:100% ;
   }
   .newMember{

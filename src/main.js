@@ -14,11 +14,8 @@ import $ from 'jquery';
 import intro from 'intro.js'
 import './assets/iconfont/iconfont.css'
 
-
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';
-
-
 
 
 Vue.prototype.$axios = axios;
@@ -26,8 +23,7 @@ Vue.prototype.$qs=qs;
 
 Vue.use(MuseUI);
 Vue.use(ElementUI);
-Vue.config.productionTip = false
-// Vue.prototype.$axios=axios
+Vue.config.productionTip = false;
 
 new Vue({
   el: '#app',
@@ -42,7 +38,6 @@ new Vue({
       return Promise.reject(error);
     });
   },
-  // },
   components: { App },
   template: '<App/>'
 })

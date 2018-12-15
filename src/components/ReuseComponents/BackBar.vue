@@ -1,6 +1,5 @@
 <template>
-  <div class="bar animated bounce fadeIn" >
-    <div class="reset-app-bar">
+    <div class="reset-app-bar animated bounce fadeIn">
       <div class="app-button" @click="linkBack(backUrl)" v-if="showBackBar">
         <i class="el-icon-back"></i>
       </div>
@@ -20,7 +19,6 @@
         </el-dropdown>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -54,6 +52,8 @@
     color: #409EFF;
     background-color: white;
     box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+    overflow: scroll;
+
   }
   .app-bar-title{
     margin-top: 3.5vw;

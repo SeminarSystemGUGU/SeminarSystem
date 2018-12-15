@@ -1,5 +1,5 @@
 <template>
-  <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray">
+  <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray;background-color: white">
   <el-row>
   <el-col style="width:70%">
     <div class="title" style="height: 35px;">
@@ -69,11 +69,13 @@
   }
 
   .app-bar{
+    position: fixed;
     .el-icon-menu{
       display:inline-block;
       font-size:25px;
       color:dodgerblue;
       font-weight:bold;
+
       /*<!-- margin-top:7px;;*/
     }
 
