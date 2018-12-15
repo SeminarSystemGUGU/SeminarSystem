@@ -47,28 +47,28 @@
         </el-row>
       </div>
       <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
-      <div class="my-course-card">
-        <el-row :gutter="10">
-          <el-col style="width: 3%">
-            <span>&nbsp;</span>
-          </el-col>
-          <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3vw;">
-              <img src="../../../assets/通知时间.png" class="menu-image"/>
-            </div>
-          </el-col>
-          <el-col style="width: 50%;">
-            <div style="margin-top: 3vw">
-              <span>通知发送时间</span>
-            </div>
-          </el-col>
-          <el-col style="width: 33%" >
-            <el-select size="mini" style="" class="the-select" v-model="timeInterval">
-              <el-option value="3h"></el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-      </div>
+      <!--<div class="my-course-card">-->
+        <!--<el-row :gutter="10">-->
+          <!--<el-col style="width: 3%">-->
+            <!--<span>&nbsp;</span>-->
+          <!--</el-col>-->
+          <!--<el-col style="width: 10%;text-align: right;">-->
+            <!--<div style="margin-top: 3vw;">-->
+              <!--<img src="../../../assets/通知时间.png" class="menu-image"/>-->
+            <!--</div>-->
+          <!--</el-col>-->
+          <!--<el-col style="width: 50%;">-->
+            <!--<div style="margin-top: 3vw">-->
+              <!--<span>通知发送时间</span>-->
+            <!--</div>-->
+          <!--</el-col>-->
+          <!--<el-col style="width: 33%" >-->
+            <!--<el-select size="mini" style="" class="the-select" v-model="timeInterval">-->
+              <!--<el-option value="3h"></el-option>-->
+            <!--</el-select>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
+      <!--</div>-->
       <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
     </div>
     <div class="logout">

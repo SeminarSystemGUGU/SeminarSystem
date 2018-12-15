@@ -23,6 +23,7 @@ import TeacherRoundSetting from '../components/TeacherPages/SeminarPages/Teacher
 import TeacherAfterSeminar from '../components/TeacherPages/SeminarPages/TeacherAfterSeminar'
 import TeacherApplyInfo from '../components/TeacherPages/SeminarPages/TeacherApplyInfo'
 import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/TeacherSeminarGrades'
+import TeacherNewSminar from '../components/TeacherPages/SeminarPages/TeacherNewSeminar'
 
 import PCMainPage from '../components/PC/PCMainPage'
 import PCTeacherMainPage from '../components/PC/PCTeacherMainPage'
@@ -159,6 +160,10 @@ export default new Router({
     {
       path:'/TeacherMyMessage',
       component:TeacherMyMessage
+    },
+    {
+      path:'/TeacherNewSeminar',
+      component:TeacherNewSminar
     },
     {
       path:'/LoginPc',

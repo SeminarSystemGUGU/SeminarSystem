@@ -12,11 +12,11 @@
           <label>Email:</label>
           <input class="confirm-input" />
         </div>
-        <span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>
-        <div class="input-panel">
-          <label>验证码：</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;
-          <input class="confirm-input" style="width: 30%" />
-        </div>
+        <!--<span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>-->
+        <!--<div class="input-panel">-->
+          <!--<label>验证码：</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;-->
+          <!--<input class="confirm-input" style="width: 30%" />-->
+        <!--</div>-->
         <div class="button-panel">
           <button >确认修改</button>
         </div>
