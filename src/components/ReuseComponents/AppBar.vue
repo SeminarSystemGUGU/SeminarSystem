@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray;background-color: white">
   <el-row>
   <el-col style="width:70%">
@@ -20,12 +21,9 @@
           </el-dropdown>
         </div>
       </el-col>
-    <!-- <div class="icon-button1" style="display: inline-block;float: right;" v-if="showMessages">
-      <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/消息.png"/>
-      <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
-      <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png"/>
-    </div> -->
     </el-row>
+  </div>
+    <div class="white-spaces"></div>
   </div>
 </template>
 
@@ -35,8 +33,9 @@
       props:['titleName','showMessages','showBack','backPath'],
       methods:{
           linkBack(){
-            console.log(this.$props.backPath);
-            this.$router.push(this.$props.backPath);
+            history.back();
+            // console.log(this.$props.backPath);
+            // this.$router.push(this.$props.backPath);
           },
           linkToMessage(){
             console.log(1111);
@@ -66,6 +65,11 @@
   .app-menu{
     fload:right;
     margin-right:0;
+  }
+
+  .white-spaces{
+    height: 7vh;
+    max-height: 50px;
   }
 
   .app-bar{

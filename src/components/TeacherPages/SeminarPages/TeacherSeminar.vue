@@ -52,11 +52,10 @@
       </div>
     </div>
     <div class="button-panel">
-      <el-button type="danger" class="start-button" v-if="seminarStatus==='1'">开始讨论课</el-button>
+      <el-button type="danger" class="start-button" v-if="seminarStatus==='1'" @click="GotoSeminar">开始讨论课</el-button>
       <el-button type="primary" class="doing-button" v-else-if="seminarStatus==='2'">进入讨论课</el-button>
       <el-button type="success" class="end-button" v-if="seminarStatus==='3'" @click="linkToReport">报告打分</el-button><br/>
       <el-button type="success" class="end-button" v-if="seminarStatus==='3'" @click="linkToGrades">查看成绩</el-button>
-      <!--<el-button type="success" class="end-button" v-if="seminarStatus==='3'">查看成绩</el-button>-->
     </div>
   </div>
 </template>
@@ -76,10 +75,13 @@
         seminarTopic:'对象模型',
         seminarNumber:'1',
         seminarRequirments:'每个组15分钟，要求为展示所做的对象模型和数据库设计',
-        seminarStatus:'3',
+        seminarStatus:'1',
       }
     },
     methods:{
+      GotoSeminar(){
+        this.$router.push('/TeacherSeminarIng');
+      },
       //加载课程详情
       loadCourseDetails(){
 

@@ -24,6 +24,7 @@ import TeacherAfterSeminar from '../components/TeacherPages/SeminarPages/Teacher
 import TeacherApplyInfo from '../components/TeacherPages/SeminarPages/TeacherApplyInfo'
 import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/TeacherSeminarGrades'
 import TeacherNewSminar from '../components/TeacherPages/SeminarPages/TeacherNewSeminar'
+import TeacherSeminarIng from '../components/TeacherPages/SeminarPages/TeacherSeminarIng'
 
 import PCMainPage from '../components/PC/PCMainPage'
 import PCTeacherMainPage from '../components/PC/PCTeacherMainPage'
@@ -168,6 +169,10 @@ export default new Router({
     {
       path:'/LoginPc',
       component:PcLogin
+    },
+    {
+      path:'/TeacherSeminarIng',
+      component:TeacherSeminarIng
     },
 
     //学生端组件

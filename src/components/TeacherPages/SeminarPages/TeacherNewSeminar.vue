@@ -24,11 +24,6 @@
             <el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>
           </el-select>
         </el-form-item>
-      <!--</el-form>-->
-      <!--<div class="second-form-title">-->
-        <!--<span>讨论课是否可见：</span>-->
-      <!--</div>-->
-      <!--<el-form :model="formNewCourse" ref="formNewCourse" class="course-grade-form">-->
         <el-form-item label="是否可见：" class="form-item" label-width="120">
           <el-switch
             v-model="canBeSeen"
