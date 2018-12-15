@@ -1,13 +1,5 @@
 <template>
   <div id="MainPage">
-    <!-- <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray">
-      <div class="title" style="width: 35px;height: 35px;">我</div>
-      <div class="icon-button1" style="display: inline-block;float: right;">
-        <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/消息.png"/>
-        <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
-        <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png"/>
-      </div>
-    </div> -->
     <app-bar :showMessages="true" titleName="我" :showBack="false"></app-bar>
     <div class="main-content">
       <el-card class="func-card animated " :body-style="{padding:'0px'}">
@@ -21,8 +13,6 @@
                 <span style="color: dodgerblue;float: right;margin-right: 3vw">点击进入</span>
               </div>
             </div>
-          <!--</el-col>-->
-        <!--</el-row>-->
       </el-card>
       <div class="my-course-card" style="margin-top: 4vw">
         <el-row :gutter="10" style="height: 100%">
@@ -111,7 +101,7 @@ import AppBar from '../ReuseComponents/AppBar'
 
 
   .main-content{
-    margin-top: 20vw;
+    margin-top: 10vw;
 
     @media screen and(min-width: 700px){
       margin-top: 80px;
