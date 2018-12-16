@@ -52,7 +52,6 @@
     color: #409EFF;
     background-color: white;
     box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
-    overflow: scroll;
 
   }
   .app-bar-title{
