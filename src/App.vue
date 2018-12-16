@@ -51,6 +51,7 @@ export default {
   background-color: white;
   padding: 0;
   margin: 0;
+  overflow: scroll;
 
 }
 </style>

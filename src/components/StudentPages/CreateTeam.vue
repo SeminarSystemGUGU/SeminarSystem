@@ -69,7 +69,7 @@
         </mu-list>
       </div>
       <mu-button class="save" color="success" >保存</mu-button>
-      <mu-button class="dissolve" color="error" >解散小组</mu-button>
+      <mu-button class="dissolve" color="error" style="margin-bottom: 50px;">解散小组</mu-button>
 
     </div>
 
