@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <div ontouchstart>
+    <div ontouchstart onload="setTimeout(function(){window.scrollTo(0,1)},100);" >
     <router-view/>
     </div>
   </div>

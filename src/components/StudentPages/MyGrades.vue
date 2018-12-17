@@ -8,13 +8,13 @@
         我的成绩
       </div>
       <div class="panel panel-default">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne"  onclick="">
           {{rounds[0].roundName}}
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" >
           <div class="panel-body" style="padding:1vh 0;">
             <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo11">{{rounds[0].seminars[0].seminarTopic}}</span>
+              <span class="subItem"  data-toggle="collapse"  data-target="#demo11"  onclick="">{{rounds[0].seminars[0].seminarTopic}}</span>
               <div id="demo11" class="collapse in" style="margin-top: 1vh;">
                 <table class="table table-bordered">
                   <thead>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo12">{{rounds[0].seminars[1].seminarTopic}}</span>
+              <span class="subItem"  data-toggle="collapse"  data-target="#demo12"  onclick="">{{rounds[0].seminars[1].seminarTopic}}</span>
               <div id="demo12" class="collapse in" style="margin-top: 1vh;">
                 <table class="table table-bordered">
                   <thead>
@@ -75,7 +75,7 @@
         <div id="collapseTwo" class="panel-collapse collapse">
           <div class="panel-body" style="padding:1vh 0;">
             <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo21">{{rounds[1].seminars[0].seminarTopic}}</span>
+              <span class="subItem"  data-toggle="collapse"  data-target="#demo21"  onclick="">{{rounds[1].seminars[0].seminarTopic}}</span>
               <div id="demo21" class="collapse in">
                 Nihil anim keffiyeh helvetica, craft beer labore wes anderson
                 cred nesciunt sapiente ea proident. Ad vegan excepteur butcher

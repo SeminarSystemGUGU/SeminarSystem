@@ -14,7 +14,7 @@
         其他队伍
       </div>
       <div class="panel panel-default" style="border: 0;">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"  onclick="">
           {{teamName}}
         </div>
         <div id="collapseTwo" class="panel-collapse collapse">
@@ -57,7 +57,7 @@
         未组队学生
       </div>
       <div class="subContent">
-        <span class="subItem"  data-toggle="collapse"  data-target="#demo31">未组队学生列表</span>
+        <span class="subItem"  data-toggle="collapse"  data-target="#demo31"  onclick="">未组队学生列表</span>
         <div id="demo31" class="collapse in">
           <table class="table table-bordered">
             <thead>

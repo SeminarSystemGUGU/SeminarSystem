@@ -1,18 +1,11 @@
 <template>
   <div id="MainPage">
-    <!-- <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray">
-      <div class="title" style="width: 35px;height: 35px;">我</div>
-      <div class="icon-button1" style="display: inline-block;float: right;">
-        <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/消息.png"/>
-        <img style="width: 35px;height: 35px;margin-right: 20px;" src="../../assets/头像.png"/>
-        <img style="width: 35px;height: 35px;margin-right: 5px;" src="../../assets/讨论课.png"/>
-      </div>
-    </div> -->
+
     <back-bar titleName=" " :showMessages="true" backUrl="/StuMyTeam"></back-bar>
     <div class="me" >我</div>
     <div class="main-content">
-      <div class="my-course-card" style="margin-top: 16vh">
-        <el-row :gutter="10" style="height: 100%">
+      <div class="my-course-card" style="margin-top: 16vh" @click="linkToMyCourses">
+        <el-row :gutter="10" style="height: 100%"  >
           <el-col style="width: 3%">
             <span>&nbsp;</span>
           </el-col>
@@ -29,8 +22,8 @@
         </el-row>
       </div>
       <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
-      <div class="my-course-card">
-        <el-row :gutter="10">
+      <div class="my-course-card" @click="linkToMyAccount">
+        <el-row :gutter="10" >
           <el-col style="width: 3%">
             <span>&nbsp;</span>
           </el-col>
