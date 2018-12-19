@@ -118,7 +118,7 @@
         <mu-form label-position="left" style="margin-top: 5vh;">
           <mu-form-item  label="搜索" >
             <mu-text-field v-model="tempNumber" placeholder="输入学号">
-              <mu-button color="primary" flat small> <img src="../../assets/search.svg" style="size: 25px;"></mu-button>
+              <mu-button color="primary" flat small> <img src="../../../assets/search.svg" style="size: 25px;"></mu-button>
             </mu-text-field>
           </mu-form-item>
         </mu-form>
@@ -132,7 +132,7 @@
               <mu-tooltip content="选了J2EE">
                 <mu-avatar color="bisque" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" >
                   <!--头像图标-->
-                  <img style="width: 20px;height: 20px;" src="../../assets/头像.png"   />
+                  <img style="width: 20px;height: 20px;" src="../../../assets/头像.png"   />
                 </mu-avatar>
               </mu-tooltip>
             </mu-list-item-action>
@@ -180,11 +180,23 @@
 </template>
 
 <script>
-  import BackBar from '../ReuseComponents/BackBar'
+  import BackBar from '../../ReuseComponents/BackBar'
   export default {
     name: "MyTeam",
     components:{
       BackBar,
+    },
+    created(){
+      let _this=this;
+
+        this.$axios({
+          method:'get',
+          url:'course/'+this.$data.courseId+'/noTeam',
+        }).then(function(response){
+          _this.$data.noTeamMembers=response.data;
+        },function(error){
+          alert(error);
+        });
     },
     data(){
       return{
@@ -193,6 +205,9 @@
         teamName:"1-6  咕咕鸟",
         leaderName:'Li',
         leaderID:'110',
+
+        courseId:2,
+        noTeamMembers:[],
 
         teamState:0,
         newTeam:{

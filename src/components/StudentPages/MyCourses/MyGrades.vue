@@ -94,7 +94,7 @@
 </template>
 
 <script>
-  import BackBar from '../ReuseComponents/BackBar'
+  import BackBar from '../../ReuseComponents/BackBar'
   export default {
     name: "MyGrades",
     components:{

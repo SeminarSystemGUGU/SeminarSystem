@@ -31,7 +31,7 @@
           </el-col>
           <el-col style="width: 10%;text-align: right;">
             <div style="margin-top: 3vw;">
-              <img src="../../assets/修改密码.png" class="menu-image"/>
+              <img src="../../../assets/修改密码.png" class="menu-image"/>
             </div>
           </el-col>
           <el-col style="width: 50%;" >
@@ -54,7 +54,7 @@
           </el-col>
           <el-col style="width: 10%;text-align: right;">
             <div style="margin-top: 3vw;">
-              <img src="../../assets/通知时间.png" class="menu-image"/>
+              <img src="../../../assets/通知时间.png" class="menu-image"/>
             </div>
           </el-col>
           <el-col style="width: 50%;">
@@ -88,20 +88,20 @@
         timeInterval:'3h',
       }
     },
-    // created(){
-    //   let _this=this;
-    //   this.$axios({
-    //     method: 'get',
-    //     url: '/student/studentInfo',
-    //   }).then(function (response) {
-    //      _this.$data.stuName=response.data.name;
-    //      _this.$data.account=response.data.account;
-    //      _this.$data.email=response.data.email;
-    //      _this.$data.timeInterval=response.data.timeInterval;
-    //   }, function (error) {
-    //     alert("请求失败",error);
-    //   });
-    // },
+    created(){
+      let _this=this;
+      this.$axios({
+        method: 'get',
+        url: '/student/studentInfo',
+      }).then(function (response) {
+         _this.$data.stuName=response.data.name;
+         _this.$data.account=response.data.account;
+         _this.$data.email=response.data.email;
+         _this.$data.timeInterval=response.data.timeInterval;
+      }, function (error) {
+        alert("请求失败",error);
+      });
+    },
     methods:{
       backTo(){
         this.$router.push('/StuMainPage');

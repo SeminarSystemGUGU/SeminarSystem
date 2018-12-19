@@ -53,7 +53,7 @@
             <mu-list-item-action>
               <mu-avatar color="snow" style="font-size: 18px;" >
                 <!--头像图标-->
-                <img style="width: 23px;height: 23px;" src="../../assets/头像.png"   />
+                <img style="width: 23px;height: 23px;" src="../../../assets/头像.png"   />
               </mu-avatar>
             </mu-list-item-action>
             <mu-list-item-content>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-  import BackBar from '../ReuseComponents/BackBar'
+  import BackBar from '../../ReuseComponents/BackBar'
     export default {
       name: "CreateTeam",
       components:{
