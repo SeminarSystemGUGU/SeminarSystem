@@ -9,13 +9,17 @@
             <div class="itemTitle"> <i class="el-icon-document"/> {{courseName}}&emsp;{{startDate}}</div>
             <div class="parent3">
               <!-- Content  -->
+              <div class="subList"  @click="linkToCourseInfo">
+                <span class="subItem">课程信息</span>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
+              </div>
               <div class="subList" @click="linkToMyGrades">
                 <span class="subItem"  >我的成绩</span>
-                <i style="margin-left: 70%;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
               </div>
               <div class="subList"  @click="linkToMyTeam">
                 <span class="subItem">我的组队</span>
-                <i style="margin-left: 70%;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
               </div>
             </div>
           </div>
@@ -30,11 +34,11 @@
               <!-- Content  -->
               <div class="subList" >
                 <span class="subItem"  >我的成绩</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
               </div>
               <div class="subList">
                 <span class="subItem" >我的组队</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
               </div>
             </div>
           </div>
@@ -47,7 +51,7 @@
 
 <script>
   import BackBar from '../../ReuseComponents/BackBar'
-  export default {
+    export default {
     name: "MyCourses",
     components:{
       BackBar,
@@ -57,6 +61,7 @@
         title:"我的课程",
         courseName:"OOAD",
         startDate:'2016(1)',
+        courseId:1,
       }
     },
     methods:{
@@ -65,8 +70,10 @@
       },
       linkToMyTeam(){
         this.$router.push('/StuMyteam');
+      },
+      linkToCourseInfo(){
+        this.$router.push({path:'/StuCourseInfo',query:{ courseId:this.$data.courseId}});
       }
-
     }
   }
 </script>
@@ -99,11 +106,11 @@
     transform-origin: top;
   }
   .container:hover .parent1   {
-    height: 21vh;
+    height: 27vh;
   }
   .container:hover .parent3   {
     transform: rotateX(0deg);
-    height: 21vh;
+    height: 27vh;
   }
 
   .itemTitle{

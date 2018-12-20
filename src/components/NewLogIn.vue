@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="login-panel animated fadeInUp">
-          <form class="input-panel" action="http://47.94.174.82:8080/user/login" method="post" >
+          <form class="input-panel" action="http://47.94.174.82:8081/user/login" method="post" >
             <div class="input-account">
               <label>账号</label><br/>
               <input  class="login-input"  name="username" id="username" placeholder="请输入账号" v-model="account" />

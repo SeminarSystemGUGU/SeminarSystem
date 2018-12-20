@@ -32,7 +32,7 @@ new Vue({
   router,
   created () {
     this.$axios.defaults.withCredentials=true;//让ajax携带cookie
-    this.$axios.defaults.baseURL='http://47.94.174.82:8080/';
+    this.$axios.defaults.baseURL='http://47.94.174.82:8081/';
     this.$axios.interceptors.response.use(function (response) {
       console.log(response);
       return response;
