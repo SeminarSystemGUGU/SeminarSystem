@@ -19,6 +19,7 @@
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "muse-ui": "^3.0.1",
+    "muse-ui-toast": "^0.3.0",
     "qs": "^6.6.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"

@@ -9,25 +9,20 @@
       <div class="fonts-panel">
         <span>请激活您的账号</span>
       </div>
-
       <div class="form-panel">
         <div class="input-panel">
           <label>设置新密码</label><br/>
-          <input type="password" class="confirm-input"/>
+          <input type="password" v-model="password" class="confirm-input"/>
         </div>
         <div class="input-panel">
           <label>确认新密码</label><br/>
-          <input type="password" class="confirm-input"/>
+          <input type="password" v-model="confirmPassword" class="confirm-input"/>
         </div>
-        <!--<span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>-->
-        <!--<div class="input-panel">-->
-          <!--<label>验证码</label><span style="color: dodgerblue;float: right">获取验证码</span>&nbsp;&nbsp;-->
-          <!--<input class="confirm-input" style="width: 30%" />-->
-        <!--</div>-->
-        <mu-button color="primary" class="active" @click="linkTo">激活账号</mu-button>
-        <!--<div class="button-panel">-->
-          <!--<button @click="linkTo">激活账号</button>-->
-        <!--</div>-->
+        <div class="input-panel">
+          <label>邮箱</label><br/>
+          <input type="text" v-model="email" class="confirm-input" />
+        </div>
+        <mu-button color="primary" class="active" @click="linkTo" >激活账号</mu-button>
       </div>
     </div>
 
@@ -37,12 +32,38 @@
 <script>
     export default {
         name: "ConfrimAccount",
+      data(){
+          return{
+            password: '',
+            confirmPassword: '',
+            email:'',
+          }
+      },
       methods:{
           linkBack(){
             this.$router.push('/');
           },
           linkTo(){
-            this.$router.push('/TeacherMainPage');
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if(re.test(this.$data.email))
+            {
+            let _this=this;
+            this.$axios({
+              method:'put',
+              url:'/student/active',
+              data:{
+                password:this.$data.password,
+                email:this.$data.email,
+              }
+            }).then(function (response) {
+              if(response.data===true)
+                _this.$router.push('/StuMainPage');
+            })
+          }
+          else{
+              // alert("邮箱格式错误");
+              this.$toast.error('邮箱格式错误！');
+            }
           }
       }
     }

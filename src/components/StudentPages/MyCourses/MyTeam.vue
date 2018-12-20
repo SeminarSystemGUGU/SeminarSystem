@@ -44,7 +44,6 @@
                     <td>243201223</td>
                     <td>J2EE</td>
                   </tr>
-
                   </tbody>
                 </table>
               </div>
@@ -68,7 +67,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="option in noTeamMembers" :key="index">
+            <tr v-for="option,index in noTeamMembers" :key="index">
               <td>{{option.studentName}}</td>
               <td>{{option.account}}</td>
               <td>J2EE</td>

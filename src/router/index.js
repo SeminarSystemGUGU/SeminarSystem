@@ -52,6 +52,7 @@ import StuRegisteredSeminarDetails from '../components/StudentPages/RegisteredSe
 import StuChangeRegister from '../components/StudentPages/Seminars/ChangeRegister'
 import StuCheckGrades from '../components/StudentPages/Seminars/CheckGrades'
 import StuCourseInfo from '../components/StudentPages/MyCourses/CourseInfo'
+import StuConfirmAccount from '../components/StudentPages/Account/ConfrimAccount'
 
 
 
@@ -189,6 +190,10 @@ export default new Router({
     {
       path:'/StuMainSeminars',
       component:StuMainSeminars,
+    },
+    {
+      path:'/StuConfirmAccount',
+      component:StuConfirmAccount
     },
     {
       path:'/StuMyGrades',

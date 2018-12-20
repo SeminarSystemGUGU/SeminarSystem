@@ -34,11 +34,11 @@
         </div>
         <div class="card">
           <span class="subTit">组队开始时间：</span>
-          <p class="subc">{{courseInfo.teamStartTime}}</p>
+          <div class="subc">{{courseInfo.teamStartTime}}</div>
         </div>
         <div class="card">
           <span class="subTit">组队结束时间：</span>
-          <p class="subc">{{courseInfo.teamEndTime}}</p>
+          <div class="subc">{{courseInfo.teamEndTime}}</div>
         </div>
         <div class="card">
           <span class="subTit">组员性别要求：</span>
