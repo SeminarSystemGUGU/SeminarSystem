@@ -13,6 +13,7 @@ import 'muse-ui/dist/muse-ui.css';
 import $ from 'jquery';
 import intro from 'intro.js'
 import './assets/iconfont/iconfont.css'
+import Author from '../src/components/ReuseComponents/Global'
 
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';
@@ -20,6 +21,7 @@ import 'bootstrap3/dist/js/bootstrap.min.js';
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs=qs;
+Vue.prototype.global=Author;
 
 Vue.use(MuseUI);
 Vue.use(ElementUI);
@@ -30,8 +32,9 @@ new Vue({
   router,
   created () {
     this.$axios.defaults.withCredentials=true;//让ajax携带cookie
-    this.$axios.defaults.baseURL='http://47.94.174.82:8081/';
+    this.$axios.defaults.baseURL='http://47.94.174.82:8080/';
     this.$axios.interceptors.response.use(function (response) {
+      console.log(response);
       return response;
     }, function (error) {
       console.log(error.response);

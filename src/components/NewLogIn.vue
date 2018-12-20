@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="login-panel animated fadeInUp">
-          <!--<form class="input-panel" action="http://192.168.1.101:8000/loginabc" method="post" >-->
+          <form class="input-panel" action="http://47.94.174.82:8080/user/login" method="post" >
             <div class="input-account">
               <label>账号</label><br/>
               <input  class="login-input"  name="username" id="username" placeholder="请输入账号" v-model="account" />
@@ -20,10 +20,10 @@
             </div>
 
           <div class="button-panel">
-            <button class="login-button" ref="loginButton" @click="LogIn">登录</button>
-            <!--<button class="login-button" ref="loginButton" type="submit">登录</button>-->
+            <!--<button class="login-button" ref="loginButton" @click="LogIn">登录</button>-->
+            <button class="login-button" ref="loginButton" type="submit">登录</button>
           </div>
-          <!--</form>-->
+          </form>
           <div class="button-panel">
             <span @click="forgetPassword" >忘记密码</span>
             <span style="float: right">初始密码为123456</span>
