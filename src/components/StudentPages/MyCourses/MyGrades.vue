@@ -100,10 +100,23 @@
     components:{
       BackBar,
     },
+    created(){
+      this.$data.courseId=this.$route.query.courseId;
+
+      let _this=this;
+      this.$axios({
+        method:'get',
+        url:'/course/'+this.$data.courseId+'/score',
+      }).then(function (response){
+        _this.$data.scores=response.data;
+      })
+    },
     data(){
       return{
         title:"OOAD",
         round:"第一轮",
+        courseId:0,
+        scores:[],
         rounds:[
           {
             roundName:'第一轮',

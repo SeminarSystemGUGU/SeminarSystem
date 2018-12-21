@@ -4,9 +4,9 @@
 
     <div  class="animated fadeInRight" align="left">
       <div class="container" v-for="option in courses">
-            <div class="itemTitle" @click="linkToSeminars(option.courseId)">
+            <div class="itemTitle" @click="linkToSeminars(option.id)">
               <i class="el-icon-document"/>
-              {{option.courseName}}&emsp;{{option.courseId}}
+              {{option.courseName}}&emsp;{{option.id}}
               <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 1vh "/>
             </div>
       </div>
@@ -22,17 +22,17 @@
       components:{
         BackBar,
       },
-      // created(){
-      //   let _this=this;
-      //   this.$axios({
-      //     method: 'get',
-      //     url: '/course/studentCourse',
-      //   }).then(function (response) {
-      //     _this.$data.courses=response.data;
-      //   }, function (error) {
-      //     alert("请求失败",error);
-      //   });
-      // },
+      created(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/course',
+        }).then(function(response){
+          _this.$data.courses=response.data;
+        },function(error){
+          alert(error);
+        });
+      },
       data(){
         return{
           courses:[

@@ -44,7 +44,6 @@
                     <td>243201223</td>
                     <td>J2EE</td>
                   </tr>
-
                   </tbody>
                 </table>
               </div>
@@ -58,7 +57,7 @@
       </div>
       <div class="subContent">
         <span class="subItem"  data-toggle="collapse"  data-target="#demo31"  onclick="">未组队学生列表</span>
-        <div id="demo31" class="collapse in">
+        <div id="demo31" class="collapse out">
           <table class="table table-bordered">
             <thead>
             <tr>
@@ -68,14 +67,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>Li</td>
-              <td>243201222</td>
-              <td>J2EE</td>
-            </tr>
-            <tr>
-              <td>Wang</td>
-              <td>243201223</td>
+            <tr v-for="option,index in noTeamMembers" :key="index">
+              <td>{{option.studentName}}</td>
+              <td>{{option.account}}</td>
               <td>J2EE</td>
             </tr>
 
@@ -206,7 +200,7 @@
         leaderName:'Li',
         leaderID:'110',
 
-        courseId:2,
+        courseId:1,
         noTeamMembers:[],
 
         teamState:0,
@@ -293,10 +287,14 @@
   }
   .butnCT{
     font-size: 18px;
-    margin-top: 10vh;
+    margin-top: 8vh;
     width: 100%;
     height:6vh;
     opacity: 0.9;
+  }
+  #demo31{
+    overflow: scroll;
+    max-height: 300px;
   }
   @media screen and (min-width: 481px ){
     #accordion{

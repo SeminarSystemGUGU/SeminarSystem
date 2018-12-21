@@ -3,43 +3,32 @@
     <back-bar titleName="我的课程" :showMessages="true" :showBackBar="true" backUrl="/StuMainPage"></back-bar>
 
     <div  class="animated fadeInRight" align="left">
-      <div class="container">
+      <div class="container" v-for="option,index in courses" :key="index">
         <div class="parent1">
           <div >
-            <div class="itemTitle"> <i class="el-icon-document"/> {{courseName}}&emsp;{{startDate}}</div>
+            <div class="itemTitle">
+              <i class="el-icon-document"/>
+              {{option.courseName}}&emsp;{{startDate}}
+            </div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" @click="linkToMyGrades">
-                <span class="subItem"  >我的成绩</span>
-                <i style="margin-left: 70%;" class="el-icon-arrow-right"></i>
+              <div class="subList"  @click="linkToCourseInfo(option.id)">
+                <span class="subItem">课程信息</span>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
               </div>
-              <div class="subList"  @click="linkToMyTeam">
+              <div class="subList" @click="linkToMyGrades(option.id)">
+                <span class="subItem"  >我的成绩</span>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
+              </div>
+              <div class="subList"  @click="linkToMyTeam(option.id)">
                 <span class="subItem">我的组队</span>
-                <i style="margin-left: 70%;" class="el-icon-arrow-right"></i>
+                <i style="float: right;margin-right: 5vw;margin-top: 1vh" class="el-icon-arrow-right"></i>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container">
-        <div class="parent1">
-          <div >
-            <div class="itemTitle"> <i class="el-icon-document"/> {{courseName}}&emsp;{{startDate}}</div>
-            <div class="parent3">
-              <!-- Content  -->
-              <div class="subList" >
-                <span class="subItem"  >我的成绩</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-              <div class="subList">
-                <span class="subItem" >我的组队</span>
-                <i style="margin-left: 66vw;" class="el-icon-arrow-right"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -47,7 +36,7 @@
 
 <script>
   import BackBar from '../../ReuseComponents/BackBar'
-  export default {
+    export default {
     name: "MyCourses",
     components:{
       BackBar,
@@ -57,16 +46,32 @@
         title:"我的课程",
         courseName:"OOAD",
         startDate:'2016(1)',
+        courseId:1,
+
+        courses:[],
       }
     },
+    created(){
+     let _this=this;
+     this.$axios({
+       method:'get',
+       url:'/course',
+     }).then(function(response){
+       _this.$data.courses=response.data;
+     },function(error){
+       alert(error);
+     });
+    },
     methods:{
-      linkToMyGrades(){
-        this.$router.push('/StuMyGrades');
+      linkToMyGrades(courseId){
+        this.$router.push({path:'/StuMyGrades',query:{courseId:courseId}});
       },
-      linkToMyTeam(){
+      linkToMyTeam(courseId){
         this.$router.push('/StuMyteam');
+      },
+      linkToCourseInfo(courseId){
+        this.$router.push({path:'/StuCourseInfo',query:{ courseId:courseId}});
       }
-
     }
   }
 </script>
@@ -99,11 +104,11 @@
     transform-origin: top;
   }
   .container:hover .parent1   {
-    height: 21vh;
+    height: 27vh;
   }
   .container:hover .parent3   {
     transform: rotateX(0deg);
-    height: 21vh;
+    height: 27vh;
   }
 
   .itemTitle{
