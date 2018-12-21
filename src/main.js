@@ -26,13 +26,16 @@ Vue.prototype.global=Author;
 Vue.use(MuseUI);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
+import Toast from 'muse-ui-toast';
+
+Vue.use(Toast);
 
 new Vue({
   el: '#app',
   router,
   created () {
     this.$axios.defaults.withCredentials=true;//让ajax携带cookie
-    this.$axios.defaults.baseURL='http://47.94.174.82:8080/';
+    this.$axios.defaults.baseURL='http://2gr5gz.natappfree.cc';
     this.$axios.interceptors.response.use(function (response) {
       console.log(response);
       return response;
@@ -40,6 +43,9 @@ new Vue({
       console.log(error.response);
       return Promise.reject(error);
     });
+  },
+  methods:{
+
   },
   components: { App },
   template: '<App/>'

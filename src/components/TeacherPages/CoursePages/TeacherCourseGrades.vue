@@ -73,10 +73,13 @@
       AppBar
     },
     created(){
+      this.$data.courseId=this.$route.query.courseId;
+      this.loadCourseGrades();
       console.log(this.$data.groupGrades[0]);
     },
     data(){
       return{
+        courseId:'',
         openModGrade:false,
         formModGrade:{
           seminarName:'',
@@ -136,6 +139,15 @@
       },
       linkToGrades(item){
         this.$router.push('/TeacherCourseGrades');
+      },
+      loadCourseGrades(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/course/'+this.$data.courseId+'/score'
+        }).then(function (response) {
+          console.log(response);
+        })
       }
     }
   }

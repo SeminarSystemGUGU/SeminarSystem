@@ -42,9 +42,7 @@ import AppBar from '../../ReuseComponents/AppBar'
 		components:{
 			AppBar
 		},
-    created(){
-		  this.loadCourseShareInfo();
-    },
+
     data(){
 		  return{
         shareCourse:[
@@ -54,8 +52,13 @@ import AppBar from '../../ReuseComponents/AppBar'
             shareType:'',
             shareStatus:'',
           }
-        ]
+        ],
+        courseId:'',
       }
+    },
+    created(){
+		  this.$data.courseId=this.$route.query.courseId;
+		  this.loadCourseShareInfo();
     },
 		methods:{
 			linkNewShare(){
@@ -66,22 +69,10 @@ import AppBar from '../../ReuseComponents/AppBar'
         let _this=this;
         _this.$axios({
           method:'get',
-          url:'/course/1/shareCourse',
+          url:'/course/'+this.$data.courseId+'/share'
         }).then(function (response) {
-          console.log(response.data);
-          _this.$data.shareCourse=[];//先清空静态数据
-          let responseData=response.data;
-          for(var i=0;i<responseData.length;i++){
-            _this.$data.shareCourse.push({
-              courseName:responseData[i].courseName,
-              teacherName:responseData[i].teacherName,
-              shareType:responseData[i].shareType,
-              shareStatus:(responseData[i].shareSituation.toString()==="1")?"主课程":"从课程",
-            })
-          }
-        }).catch(function (error) {
-          console.log(error.response.data);
-        });
+          
+        })
       }
 		}
 	}

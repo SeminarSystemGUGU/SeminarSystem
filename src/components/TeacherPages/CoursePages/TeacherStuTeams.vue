@@ -2,30 +2,24 @@
   <div id="TeacherStuTeams">
     <app-bar titleName="OOAD-学生组队" :showMessages="false" backPath="/TeacherMainPage"></app-bar>
     <div class="main-content" v-loading="isLoading">
-      <mu-expansion-panel v-for="item in seminars" :key="item.name">
-        <div slot="header" class="panel-header">{{item.name}}</div>
+      <mu-expansion-panel v-for="item in teams" :key="item.team_name">
+        <div slot="header" class="panel-header">{{item.team_name}}</div>
         <div class="divider"></div>
         <div class="table-item">
           <span class="item-title"></span>
           <span class="left-title">组长：</span>
-          <span>24320162202906 &nbsp;&nbsp;&nbsp;谭源杰&nbsp;&nbsp;</span>
-          <span class="item-course">J2EE</span>
+          <span>24320162202906&nbsp;&nbsp;&nbsp;{{item.leader.studentName}}&nbsp;&nbsp;</span>
+          <!--<span class="item-course">J2EE</span>-->
+        </div>
+        <div v-for="member in item.members">
+          <div class="divider"></div>
+          <div class="table-item">
+            <span class="item-title"></span>
+            <span class="left-title" style="float: left">组员：</span>
+            <span>24320162202917&nbsp;&nbsp;&nbsp;{{member.studentName}}&nbsp;&nbsp;</span>
+          </div>
         </div>
         <div class="divider"></div>
-        <div class="table-item">
-          <span class="item-title"></span>
-          <span class="left-title" style="float: left">组员：</span>
-          <span>24320162202917 &nbsp;&nbsp;&nbsp;王圣哲&nbsp;&nbsp;</span>
-        </div>
-        <div class="divider"></div>
-        <div class="table-item">
-          <span class="item-title"></span>
-          <span class="left-title" style="float: left;visibility: hidden">组员：</span>
-          <span>24320162202906 &nbsp;&nbsp;&nbsp;任剑鹏&nbsp;&nbsp;</span>
-          <span class="item-course">J2EE</span>
-        </div>
-        <div class="divider"></div>
-
       </mu-expansion-panel>
     </div>
     <div style="height: 8vh"></div>
@@ -41,29 +35,67 @@
     },
     data(){
       return{
-        isLoading:true,
-        seminars:[
+        courseId:'',
+        isLoading:false,
+        teams:[
           {
-            name:'1-1 咕咕鸟队',
+            status:0,
+            team_name:'1-1 咕咕鸟队',
+            team_id:'',
+            course_id:'',
+            klass_id:'',
+            leader:{
+              acoount:'',
+              email:'',
+              id:'',
+              isActive:'',
+              studentName:''
+            },
+            members:[
+              {
+                account:'',
+                email:'',
+                id:'',
+                isActive:'',
+                studentName:''
+              }
+            ],
+
             // isMainCourse:true,
           },
-          {
-            name:'1-2 早早鸟',
-            // isMainCourse:false
-          }
+
         ]
       }
     },
     methods:{
       linkToGrades(item){
         this.$router.push('/TeacherCourseGrades');
+      },
+      loadCourseTeams(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/course/'+this.$data.courseId+'/team'
+        }).then(function (response) {
+          console.log(response.data);
+          _this.$data.teams.splice(0,_this.$data.teams.length);
+          _this.$data.teams.push(response.data);
+        })
+      },
+      loadCourseNoTeamStu(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/course/'+this.$data.courseId+'/noTeam'
+        }).then(function (response) {
+          console.log(response.data);
+        })
       }
     },
     created(){
-      let _this=this;
-      setTimeout(function () {
-        _this.$data.isLoading=false
-      },500)
+      this.$data.courseId=this.$route.query.courseId;
+      this.loadCourseTeams();
+      this.loadCourseNoTeamStu();
     }
   }
 </script>

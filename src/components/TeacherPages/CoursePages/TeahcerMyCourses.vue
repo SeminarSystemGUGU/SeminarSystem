@@ -2,10 +2,13 @@
   <div id="TeacherMyCourses">
     <app-bar titleName="我的课程" :show-messages="true" backPath="/TeacherMainPage"></app-bar>
 
-    <div class="main-content" v-loading="isLoading">
-    <mu-expansion-panel v-for="item in courses" :key="item.name">
-      <div slot="header" class="panel-header">{{item.name}}<span v-if="item.isMainCourse">（主）</span>
-        <span v-else>（从）</span></div>
+      <div class="main-content" v-loading="isLoading">
+      <div class="no-course-message" v-show="isNull">当前尚无课程哦~</div>
+    <mu-expansion-panel v-for="item in courses" :key="item.courseName" v-show="!isNull">
+      <div slot="header" class="panel-header">{{item.courseName}}
+        <!--<span v-if="item.isMainCourse">（主）</span>-->
+        <!--<span v-else>（从）</span>-->
+      </div>
       <div class="divider"></div>
       <div class="table-item" @click="linkToGrades(item)">
         <span class="item-title">学生成绩</span>
@@ -57,69 +60,61 @@
       data(){
           return{
             backPath:'/TeacherMainPage',
-            isLoading:false,
+            isLoading:true,
             courses:[
-              {
-                name:'OOAD',
-                isMainCourse:true,
-              }
-            ]
+              // {
+              //   id:1,
+              //   courseName:'OOAD',
+              //   teacherId:'',
+              //   introduction: '',
+              // }
+            ],
+            isNull:false,
           }
+      },
+      watch:{
+
       },
       methods:{
         linkToGrades(item){
-          this.$router.push('/TeacherCourseGrades');
+          this.$router.push({path:'/TeacherCourseGrades',query:{courseId:item.id}});
         },
         linkToTeams(item){
-          this.$router.push('/TeacherStuTeams');
+          this.$router.push({path:'/TeacherStuTeams',query:{courseId:item.id}});
         },
         linkToDetails(item){
-          this.$router.push('/TeacherCourseDetails');
+          this.$router.push({path:'/TeacherCourseDetails',query:{courseId:item.id}});
         },
         linkToClass(item){
-          this.$router.push('/TeacherClassInfos');
+          this.$router.push({path:'/TeacherClassInfos',query:{courseId:item.id}});
         },
         linkToRounds(item){
-          this.$router.push('/TeacherCourseRounds');
+          this.$router.push({path:'/TeacherCourseRounds',query:{courseId:item.id}});
         },
         linkToShare(item){
-          this.$router.push('/TeacherCourseShareSetting');
+          this.$router.push({path:'/TeacherCourseShareSetting',query:{courseId:item.id}});
         },
         linkToNewCourse(){
           this.$router.push('/TeacherNewCourse');
         },
-
-        //加载教师所选课程
+        /**
+         * 加载教师的所有课程
+         */
         loadTeacherCourse(){
           let _this=this;
-          _this.$axios({
+          console.log(this.$axios.defaults);
+          this.$axios({
             method:'get',
-            url:'/course/teacherCourse',
+            url:'/course/'
           }).then(function (response) {
-            _this.$data.courses=[];//先清空静态数据
-            let responseData=response.data;
-            for(var i=0;i<responseData.length;i++){
-              _this.$data.courses.push({
-                id:responseData[i].courseId,
-                name:responseData[i].courseName,
-                isMainCourse:(responseData[i].status.toString()==="1")?true:false,
-              })
-            }
-            // _this.setTimeout(function () {
-            //   // _this.$data.isLoading=false;
-            // },300);
-            setTimeout(function () {
-              _this.$data.isLoading=false;
-            },600)
-
-            // _this.$data.isLoading=false
-          }).catch(function (error) {
-            console.log(error.response.data);
-          });
+            _this.$data.courses=response.data;
+            _this.$data.isLoading=false;
+          })
         }
+
       },
       created(){
-        // this.loadTeacherCourse();
+        this.loadTeacherCourse();
       }
     }
 </script>
@@ -136,6 +131,13 @@
 
   .main-content{
     margin-top: 3vh;
+
+    .no-course-message{
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+
     .panel-header{
       font-size: 20px;
     }

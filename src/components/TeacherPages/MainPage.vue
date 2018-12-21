@@ -61,6 +61,22 @@ import AppBar from '../ReuseComponents/AppBar'
         components:{
           AppBar
         },
+      watch:{
+
+      },
+      created(){
+        document.cookie='name=ShengzheWang;';
+        // $.ajax({
+        //   type: "GET",
+        //   url: "http://x3m3jt.natappfree.cc/course",
+        //   dataType: 'jsonp',
+        //   xhrFields: {withCredentials: true},
+        //   // crossDomain: true,
+        //   success:function (response) {
+        //     console.log(response);
+        //   }
+        // })
+      },
       methods:{
           linkTo(){
             this.$router.push('/MyAccount');

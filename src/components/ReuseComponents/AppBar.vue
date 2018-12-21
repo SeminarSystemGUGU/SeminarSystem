@@ -1,18 +1,19 @@
 <template>
-  <div>
-  <div class="app-bar" style="margin-top: 10px;border-bottom: 1px solid lightgray;background-color: white">
-  <el-row>
-  <el-col style="width:70%">
-    <div class="title" style="height: 35px;">
-      <i style="color: dodgerblue" @click="linkBack" class="el-icon-back" v-show="isBack" />&nbsp;
-      {{titleName}}</div>
-      </el-col>
-      <el-col style="width:29%;float:right;">
-        <div style="float:right;margin-right:4vw;">
-          <el-dropdown trigger="click" @command="handleCommand">
-            <span class="el-dropdown-link">
-              <i class="el-icon-menu"/>
-            </span>
+  <div id="AppBar">
+    <div class="app-bar">
+      <el-row class="app-row">
+        <el-col class="content-col">
+          <div class="title">
+            <i @click="linkBack" class="el-icon-back" v-show="isBack" ></i>&nbsp;
+            {{titleName}}
+          </div>
+        </el-col>
+        <el-col class="button-col">
+          <div class="col-menu">
+            <el-dropdown trigger="click" @command="handleCommand">
+              <span class="el-dropdown-link">
+                <i class="el-icon-menu"/>
+              </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>讨论课</el-dropdown-item>
               <el-dropdown-item command="2">新消息</el-dropdown-item>
@@ -73,7 +74,46 @@
   }
 
   .app-bar{
+    border-bottom: 1px solid lightgray;
+    background-color: white;
+    padding: 3px;
     position: fixed;
+    top:0;
+    /*padding:1px;*/
+    width: 100vw;
+    height: 7vh;
+    max-height: 50px;
+    /*background-color: gray;*/
+    text-align: left;
+    /*position: fixed;*/
+    /*top:0;*/
+    z-index: 1000;
+
+    .app-row{
+      margin-top: 3px;
+    }
+
+    .content-col{
+      width:70%;
+
+      .title{
+        height: 35px;
+        .el-icon-back{
+          color: dodgerblue;
+        }
+      }
+    }
+
+    .button-col{
+      width:29%;
+      float:right;
+      .col-menu{
+        float:right;
+        margin-right:4vw;
+      }
+    }
+
+
     .el-icon-menu{
       display:inline-block;
       font-size:25px;
@@ -89,14 +129,7 @@
       line-height:35px;
     }
 
-    padding:1px;
-    width: 100vw;
-    height: 7vh;
-    max-height: 50px;
-    /*background-color: gray;*/
-    text-align: left;
-    /*position: fixed;*/
-    /*top:0;*/
+
 
   .title{
     display: inline-block;

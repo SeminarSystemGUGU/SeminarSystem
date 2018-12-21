@@ -3,7 +3,7 @@
       <app-bar :show-messages="true" title-name="OOAD-班级信息" backPath="/TeacherMyCourses"></app-bar>
       <div class="main-content">
         <el-collapse v-model="activeName">
-          <el-collapse-item title="2016级1班" name="1">
+          <el-collapse-item  :name="index" v-for="item,index in classes" :title="item.grade+'级'+item.klassSerial+'班'" :key="item.id">
             <div class="item-content">
               <div class="class-info">
                 <el-row :gutter="10">
@@ -11,7 +11,7 @@
                     <span>讨论课时间：</span>
                   </el-col>
                   <el-col class="row-col-right">
-                    <span>周三78节</span>
+                    <span>{{item.klassTime}}</span>
                   </el-col>
                 </el-row>
               </div>
@@ -21,28 +21,24 @@
                     <span>讨论课地点：</span>
                   </el-col>
                   <el-col class="row-col-right">
-                    <span>海韵301</span>
+                    <span>{{item.klassLocation}}</span>
                   </el-col>
                 </el-row>
               </div>
               <div class="class-info">
                 <el-row :gutter="10">
                   <el-col class="row-col-left">
-                    <span>班级学生名单：</span>
+                    <span>上传学生名单：</span>
                   </el-col>
                   <el-col class="row-col-right">
-                    <span class="link-class">周三78节.xlsx</span>
                     <el-button type="text" size="small" class="choose-file-button">选择文件</el-button>
                   </el-col>
                 </el-row>
               </div>
               <div class="button-panel">
-                <el-button class="the-button">删除班级</el-button>
+                <el-button class="the-button" @click="delClass(item,index)">删除班级</el-button>
               </div>
             </div>
-          </el-collapse-item>
-          <el-collapse-item title="2016级2班" name="2">
-
           </el-collapse-item>
         </el-collapse>
       </div>
@@ -61,12 +57,62 @@
       },
       data(){
           return{
-            activeName:'1'
+            courseId:'',
+            activeName:'1',
+            classes:[
+              {
+                courseId:'',
+                grade:'',
+                id:'',
+                klassLocation:'',
+                klassSerial:'',
+                klassTime:''
+              }
+            ]
           }
       },
+      created(){
+        this.$data.courseId=this.$route.query.courseId;
+        this.loadCourseClass();
+      },
       methods:{
+          delClass(item,index){
+            let _this=this;
+            this.$axios({
+              method:'delete',
+              url:'/class/'+item.id,
+            }).then(function (response) {
+              if(response.data===true){
+                _this.$data.classes.splice(index,1);
+                _this.$message({
+                  type:'success',
+                  message:'删除成功！'
+                })
+              }else{
+                _this.$message({
+                  type:'error',
+                  message:'删除失败！'
+                })
+              }
+            }).catch(function (error) {
+              _this.$message({
+                type:'error',
+                message:'删除失败！'
+              })
+            })
+          },
+          loadCourseClass(){
+            let _this=this;
+            this.$axios({
+              method:'get',
+              url:'/course/'+this.$data.courseId+'/class',
+            }).then(function (response) {
+              // console.log(response);
+              _this.$data.classes=response.data;
+            })
+          },
           linkToNewClass(){
-            this.$router.push('/NewClass');
+            this.$router.push({path:'/NewClass',query:{courseId:this.$data.courseId}});
           }
       }
     }

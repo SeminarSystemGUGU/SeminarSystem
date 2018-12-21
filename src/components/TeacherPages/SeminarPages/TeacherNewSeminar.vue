@@ -1,63 +1,63 @@
 <template>
   <div id="TeacherNewSeminar">
-    <app-bar titleName="新建课程" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
+    <app-bar titleName="新建讨论课" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
     <div class="main-content animated bounceInUp">
-      <el-form :model="formNewCourse" ref="formNewCourse" class="new-course-form">
-        <el-form-item>
-          <el-input class="new-course-input" placeholder="请输入讨论课名" v-model="formNewCourse.courseName" ></el-input>
+      <el-form :model="formNewSeminar" ref="formNewSeminar" class="new-course-form" :rules="rulesFormSeminar">
+        <el-form-item prop="seminarName">
+          <el-input class="new-course-input" placeholder="请输入讨论课名" v-model="formNewSeminar.seminarName" ></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input class="new-course-input-textarea" type="textarea"  placeholder="请输入讨论课详情" v-model="formNewCourse.courseDetails"></el-input>
+        <el-form-item prop="introduction">
+          <el-input class="new-course-input-textarea" type="textarea"  placeholder="请输入讨论课详情" v-model="formNewSeminar.introduction"></el-input>
         </el-form-item>
       </el-form>
       <div class="second-form-title">
         <span>讨论课基本设置：</span>
       </div>
-      <el-form :model="formNewCourse" ref="formNewCourse" class="course-grade-form">
-        <el-form-item label="所属轮次：" class="form-item" label-width="120">
-          <el-select size="small" class="the-select" v-model="formNewCourse.scoreRate.preRate">
+      <el-form :model="formNewSeminar" ref="formNewSeminar" class="course-grade-form">
+        <el-form-item label="所属轮次：" class="form-item" label-width="120" prop="roundId">
+          <el-select size="small" class="the-select" v-model="formNewSeminar.roundId">
             <el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="课次序号：" class="form-item" label-width="120">
-          <el-select size="small" class="the-select" v-model="formNewCourse.scoreRate.preRate">
+        <el-form-item label="课次序号：" class="form-item" label-width="120" prop="seminarSerial">
+          <el-select size="small" class="the-select" v-model="formNewSeminar.seminarSerial">
             <el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否可见：" class="form-item" label-width="120">
+        <el-form-item label="是否可见：" class="form-item" label-width="120" prop="isVisible">
           <el-switch
-            v-model="canBeSeen"
+            v-model="formNewSeminar.isVisible"
             active-color="#13ce66"
             inactive-color="#ff4949"
             active-text="可见"
             inactive-text="不可见">
           </el-switch>
         </el-form-item>
-        <el-form-item label="上课时间：" class="form-item">
-          <el-date-picker class="date-picker" size="small" v-model="formNewCourse.teamEndDate"></el-date-picker>
-        </el-form-item>
+        <!--<el-form-item label="上课时间：" class="form-item">-->
+          <!--<el-date-picker class="date-picker" size="small" v-model="formNewSeminar"></el-date-picker>-->
+        <!--</el-form-item>-->
       </el-form>
       <div class="second-form-title">
         <span>讨论课报名设置：</span>
       </div>
-      <el-form :model="formNewCourse" ref="formNewCourse" class="team-rule-form" label-width="120px">
-        <el-form-item label="报名小组数量：" class="form-item">
-          <el-input-number size="small" v-model="formNewCourse.teamMaxNum"></el-input-number>
+      <el-form :model="formNewSeminar" ref="formNewCourse" class="team-rule-form" label-width="120px">
+        <el-form-item label="报名小组数量：" class="form-item" prop="maxTeam">
+          <el-input-number size="small" min="0" max="30" v-model.number="formNewSeminar.maxTeam"></el-input-number>
         </el-form-item>
-        <el-form-item label="报名顺序自定：" class="form-item">
-          <el-switch
-            v-model="rounds"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="开启"
-            inactive-text="关闭">
-          </el-switch>
+        <!--<el-form-item label="报名顺序自定：" class="form-item">-->
+          <!--<el-switch-->
+            <!--v-model="formNewSeminar"-->
+            <!--active-color="#13ce66"-->
+            <!--inactive-color="#ff4949"-->
+            <!--active-text="开启"-->
+            <!--inactive-text="关闭">-->
+          <!--</el-switch>-->
+        <!--</el-form-item>-->
+        <el-form-item label="报名开始时间：" class="form-item" prop="enrollSTime">
+          <el-date-picker class="date-picker" value-format="yyyy-MM-dd" size="small" v-model="formNewSeminar.enrollSTime" ></el-date-picker>
         </el-form-item>
-        <el-form-item label="报名开始时间：" class="form-item">
-          <el-date-picker size="small" v-model="formNewCourse.teamStartDate" ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="报名截止时间：" class="form-item">
-          <el-date-picker size="small" v-model="formNewCourse.teamEndDate"></el-date-picker>
+        <el-form-item label="报名截止时间：" class="form-item" prop="enrollETime">
+          <el-date-picker class="date-picker" value-format="yyyy-MM-dd" size="small" v-model="formNewSeminar.enrollETime"></el-date-picker>
         </el-form-item>
       </el-form>
       <div class="button-panel">
@@ -74,9 +74,60 @@
       AppBar
     },
     data(){
+      let validateDate=(rule, value, callback)=>{
+        console.log(value);
+        if(this.$data.formNewSeminar.enrollSTime!==''&&this.$data.formNewSeminar.enrollETime!==''){
+          if(this.$data.formNewSeminar.enrollSTime<this.$data.formNewSeminar.enrollETime){
+            callback();
+          }else{
+            callback(new Error('结束日期要晚于开始日期'));
+          }
+        }else{
+          callback();
+        }
+      };
       return{
         canBeSeen:false,
         rounds:false,
+        rulesFormSeminar:{
+          seminarName:[
+            {required:true,message:'请输入讨论课名称',trigger:'change'},
+          ],
+          introduction:[
+            {required:true,message:'请输入讨论课要求',trigger:'change'}
+          ],
+          maxTeam:[
+            {required:true,message:'数量应大于零',min:0,max:30,trigger:'change'}
+          ],
+          isVisible:[
+
+          ],
+          seminarSerial:[
+            {required:true,message:'请选择课次序号',trigger:'change'}
+          ],
+          roundId:[
+            {required:true,message:'请选择所属轮次',trigger:'change'}
+          ],
+          enrollSTime:[
+            {required:true,message:'请选择开始日期',trigger:'change'},
+            {validator:validateDate,trigger:'change'}
+          ],
+          enrollETime:[
+            {required:true,message:'请选择结束日期',trigger:'change'},
+            {validator:validateDate,trigger:'change'}
+          ]
+        },
+        formNewSeminar:{
+          roundId:'',
+          seminarName:'',
+          introduction:'',
+          maxTeam:0,
+          isVisible:false,
+          seminarSerial:'',
+          enrollSTime:'',
+          enrollETime:'',
+
+        },
         formNewCourse:{
           courseName:'',
           courseDetails:'',
@@ -127,8 +178,12 @@
       .team-rule-form{
         margin-top: 2vh;
 
+        .date-picker{
+          width: 140px;
+        }
+
         .el-input__inner{
-          width: 120px;
+          /*width: 120px;*/
           /*margin-left: 1vw;*/
         }
 
@@ -142,14 +197,16 @@
 
       .new-course-form{
         .el-input__inner{
-          border:none;
-          border-bottom:2px solid whitesmoke;
+          border-top:none;
+          border-left: none;
+          border-right: none;
+          border-bottom-width:2px;
           border-radius:0;
           font-size:18px;
           transition: all 0.5s;
         }
         .el-input__inner:focus{
-          border-bottom: 2px solid dodgerblue;
+          /*border-bottom: 2px solid dodgerblue;*/
 
         }
       }
@@ -171,14 +228,16 @@
 
       .el-textarea__inner{
         font-size: 18px;
-        border: none;
-        border-bottom: 2px solid whitesmoke;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom-width: 2px;
         transition: all 0.5s;
         border-radius: 0;
       }
 
       .el-textarea__inner:focus{
-        border-bottom: 2px solid dodgerblue;
+        /*border-bottom: 2px solid dodgerblue;*/
       }
       .el-input::-webkit-input-placeholder {
 

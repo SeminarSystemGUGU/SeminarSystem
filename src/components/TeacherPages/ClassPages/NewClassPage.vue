@@ -12,9 +12,9 @@
           <span>班级名称：</span>
          </el-col>
          <el-col class="row-col-right">
-          <input class="new-class-input"/>
+          <input v-model="grade" class="new-class-input"/>
            <span>年级</span>
-           <input class="new-class-input"/>
+           <input v-model="klassSerial" class="new-class-input"/>
            <span>班</span>
          </el-col>
        </el-row>
@@ -25,7 +25,7 @@
             <span>讨论课时间：</span>
           </el-col>
           <el-col class="row-col-right">
-            <span>{{address[0]+''+address[1]}}</span>
+            <span>{{addressProvince+''+addressCity}}</span>
             <el-button size="small" type="primary" @click="dialogVisible=!dialogVisible">选择时间</el-button>
           </el-col>
         </el-row>
@@ -36,7 +36,7 @@
             <span>上课地点：</span>
           </el-col>
           <el-col class="row-col-right">
-            <input class="new-class-input-address"/>
+            <input v-model="klassLocation" class="new-class-input-address"/>
           </el-col>
         </el-row>
       </div>
@@ -54,10 +54,10 @@
       <div class="button-panel">
         <el-row :gutter="50">
           <el-col class="row-col">
-            <mu-button color="primary">确定</mu-button>
+            <mu-button color="primary" @click="newClass">确定</mu-button>
           </el-col>
           <el-col class="row-col">
-            <mu-button color="primary">放弃</mu-button>
+            <mu-button color="primary" @click="giveUpNewClass">放弃</mu-button>
           </el-col>
         </el-row>
       </div>
@@ -66,13 +66,9 @@
       <mu-slide-picker :slots="addressSlots" :visible-item-count="7" @change="addressChange" :values="address"></mu-slide-picker>
       <div class="button-panel">
         <el-row :gutter="0">
-          <el-col class="row-col">
-            <el-button type="text">确定</el-button>
-          </el-col>
-          <el-col class="row-col">
-            <el-button type="text">放弃</el-button>
-          </el-col>
-
+          <!--<el-col class="row-col">-->
+            <el-button type="text" @click="dialogVisible=!dialogVisible">确定</el-button>
+          <!--</el-col>-->
         </el-row>
       </div>
     </el-dialog>
@@ -93,10 +89,11 @@
         name: "NewClassPage",
       data(){
           return{
+            courseId:'',
+            grade:'',
+            klassSerial:'',
+            klassLocation:'',
             dialogVisible:false,
-            formNewClass:{
-
-            },
             addressSlots: [
               {
                 width: '100%',
@@ -109,14 +106,39 @@
               }
             ],
             address: ['周一', '1-2节'],
-            addressProvince: '北京',
-            addressCity: '北京'
+            addressProvince: '周一',
+            addressCity: '1-2节'
           }
 
       },
       methods: {
+        newClass(){
+          let _this=this;
+          this.$axios({
+            method:'post',
+            url:'/course/'+this.$data.courseId+'/class',
+            data:{
+              courseId:' ',
+              grade:this.$data.grade,
+              klassSerial: this.$data.klassSerial,
+              klassTime:this.$data.addressProvince+' '+this.$data.addressCity,
+              klassLocation:this.$data.klassLocation
+            }
+          }).then(function (response) {
+            if(response.data){
+              _this.$message({
+                type:'success',
+                message:'创建成功！'
+              });
+              _this.$router.push({path:'/TeacherClassInfos',query:{courseId:_this.$data.courseId}});
+            }
+          })
+        },
+        giveUpNewClass(){
+          history.back();
+        },
         linkBack(){
-          this.$router.push('/TeacherClassInfos')
+          history.back();
         },
         addressChange (value, index) {
           switch (index) {
@@ -132,6 +154,9 @@
           }
           this.address = [this.addressProvince, this.addressCity]
         }
+      },
+      created() {
+          this.$data.courseId=this.$route.query.courseId;
       }
     }
 </script>

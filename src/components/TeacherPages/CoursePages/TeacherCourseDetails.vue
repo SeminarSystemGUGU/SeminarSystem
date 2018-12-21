@@ -1,10 +1,14 @@
 <template>
   <div id="TeacherCourseDetails">
-    <app-bar :show-messages="true" title-name="OOAD-课程详情" backPath="TeacherMyCourses"></app-bar>
+    <app-bar :show-messages="true" title-name="课程详情" backPath="TeacherMyCourses"></app-bar>
     <div class="main-content">
       <div class="course-title">
-        <span>课程要求</span>
+        <span>课程信息</span>
         <div class="divider"></div>
+      </div>
+      <div class="course-grade-requirments">
+        <span>课程要求:</span><br/>
+        <span>{{introduction}}</span>
       </div>
       <div class="course-grade-requirments">
         <el-row>
@@ -81,7 +85,9 @@
           teamMaxNumber:0,
           teamStartTime:'',
           teamEndTime:'',
-          courseName:'OOAD'
+          courseName:'OOAD',
+          courseId:'',
+          introduction:''
         }
       },
       methods:{
@@ -90,16 +96,17 @@
           let _this=this;
           _this.$axios({
             method:'get',
-            url:'/course/1',
+            url:'/course/'+this.$data.courseId,
           }).then(function (response) {
             console.log(response.data);
-            _this.$data.preProportion=response.data.presentationProportion*100;
-            _this.$data.questionProportion=response.data.questionProportion*100;
-            _this.$data.reportProportion=response.data.reportProportion*100;
+            _this.$data.preProportion=response.data.presentationPercentage;
+            _this.$data.questionProportion=response.data.questionPercentage;
+            _this.$data.reportProportion=response.data.reportPercentage;
             _this.$data.teamMinNumber=response.data.minMember;
             _this.$data.teamMaxNumber=response.data.maxMember;
             _this.$data.teamStartTime=response.data.teamStartTime;
             _this.$data.teamEndTime=response.data.teamEndTime;
+            _this.$data.introduction=response.data.introduction
           }).catch(function (error) {
             console.log(error.response.data);
           });
@@ -107,6 +114,7 @@
       },
 
       created(){
+        this.$data.courseId=this.$route.query.courseId;
         this.loadCourseDetails();
       }
 
