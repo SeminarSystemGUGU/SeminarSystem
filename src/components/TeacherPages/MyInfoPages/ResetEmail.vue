@@ -10,7 +10,11 @@
       <div class="form-panel">
         <div class="input-panel">
           <label>Email:</label>
-          <input class="confirm-input" />
+          <input class="confirm-input" v-model="email" />
+
+          <div class="animate fadeIn" v-show="emailValid">
+            <span class="validate-message">邮箱格式有错误！</span>
+          </div>
         </div>
         <!--<span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>-->
         <!--<div class="input-panel">-->
@@ -18,7 +22,7 @@
           <!--<input class="confirm-input" style="width: 30%" />-->
         <!--</div>-->
         <div class="button-panel">
-          <button >确认修改</button>
+          <button class="the-button" @click="modifyEmail">确认修改</button>
         </div>
       </div>
     </div>
@@ -26,11 +30,60 @@
 </template>
 
 <script>
+  import {validateEmail} from '../../util/validate.js'
   export default {
     name: "ResetEmail",
+    data(){
+      return{
+        emailValid:false,
+        email:''
+      }
+    },
+    watch:{
+      email(oldVal,newVal){
+        console.log('clearlove')
+        this.$data.emailValid = !validateEmail(this.$data.email);
+        console.log(this.$data.emailValid);
+      }
+    },
     methods:{
       linkBack(){
         this.$router.push('/MyAccount');
+      },
+      modifyEmail(){
+        if(this.$data.emailValid){
+          this.$message({
+            type:'error',
+            message:'有信息项还没改好哦！'
+          })
+        }else {
+          let _this = this;
+          this.$axios({
+            method: 'put',
+            url: '/user/email',
+            data: {
+              email: this.$data.email
+            }
+          }).then(function (response) {
+            if (response.data === true) {
+              _this.$message({
+                type: 'success',
+                message: '修改成功！'
+              })
+              _this.$router.push('/MyAccount');
+            } else {
+              _this.$message({
+                type: 'error',
+                message: '修改失败！'
+              })
+            }
+          }).catch(function (error) {
+            _this.$message({
+              type: "error",
+              message: '修改失败！'
+            })
+          })
+        }
       }
     }
   }
@@ -40,6 +93,13 @@
   #ResetEmail{
     width: 100vw;
     padding:1px;
+
+    .validate-message{
+      color: red;
+      display: block;
+      margin-top: 4px;
+      /*transition: all 1s;*/
+    }
 
     .top-bar{
       margin-top: 2vw;
@@ -86,7 +146,7 @@
           margin-right: auto;
           margin-left: auto;
 
-          button{
+          .the-button{
             max-width: 300px;
             max-height: 50px;
             width: 100%;

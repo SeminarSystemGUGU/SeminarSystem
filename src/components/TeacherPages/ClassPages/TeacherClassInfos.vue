@@ -31,7 +31,23 @@
                     <span>上传学生名单：</span>
                   </el-col>
                   <el-col class="row-col-right">
-                    <el-button type="text" size="small" class="choose-file-button">选择文件</el-button>
+                    <el-upload
+                      class="upload-demo"
+                      :with-credentials="true"
+                      :action="'http://kxp744.natappfree.cc/class/'+item.id"
+                      name="fileUpload"
+                      :limit="1"
+                      :file-list="fileList">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+                    </el-upload>
+                    <!--<form :action="'http://kxp744.natappfree.cc/class/'+item.id" method="post" runat="server"  enctype="multipart/form-data" target="nm_iframe">-->
+                      <!--<input name="fileUpload" type="file" />-->
+                      <!--<input type="submit"  value="提交"/>-->
+
+                    <!--</form>-->
+                    <!--<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>-->
+                    <!--<el-button type="text" size="small" class="choose-file-button">选择文件</el-button>-->
                   </el-col>
                 </el-row>
               </div>
@@ -58,6 +74,7 @@
       data(){
           return{
             courseId:'',
+            fileList:[],
             activeName:'1',
             classes:[
               {
@@ -123,6 +140,13 @@
 #TeacherClassInfos{
   width: 100vw;
 
+  .upload-demo{
+    .el-upload__input{
+      display: none;
+    }
+
+  }
+
   .el-collapse-item__header{
     font-size: 18px;
     /*background-color: orange;*/
@@ -185,7 +209,7 @@
       .row-col-right{
         text-align: left;
         width: 50%;
-        font-size: 17px;
+        font-size: 14px;
         font-weight: bold;
       }
 
