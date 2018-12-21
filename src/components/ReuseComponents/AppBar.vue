@@ -34,9 +34,9 @@
       props:['titleName','showMessages','showBack','backPath'],
       methods:{
           linkBack(){
-            history.back();
+            // history.back();
             // console.log(this.$props.backPath);
-            // this.$router.push(this.$props.backPath);
+            this.$router.push(this.$props.backPath);
           },
           linkToMessage(){
             console.log(1111);
