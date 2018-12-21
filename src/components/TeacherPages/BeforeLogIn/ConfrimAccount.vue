@@ -12,18 +12,12 @@
 
       <div class="form-panel">
         <div class="input-panel">
-          <label>输入新邮箱</label><br/>
-          <input v-model="newEmail" class="confirm-input"/>
-          <span v-show="emailValid" class="validate-message">邮箱格式不正确哦~</span>
-        </div>
-        <div class="input-panel">
           <label>设置新密码</label><br/>
-          <input type="password" v-model="newPassword" class="confirm-input"/>
+          <input type="password" class="confirm-input"/>
         </div>
         <div class="input-panel">
           <label>确认新密码</label><br/>
-          <input type="password" v-model="confirmPassword" class="confirm-input"/>
-          <span v-show="passwordValid" class="validate-message">两次密码输入不一致哦~</span>
+          <input type="password" class="confirm-input"/>
         </div>
         <!--<span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>-->
         <!--<div class="input-panel">-->
@@ -41,72 +35,14 @@
 </template>
 
 <script>
-  import {validateEmail} from "../../util/validate";
-
-  export default {
+    export default {
         name: "ConfrimAccount",
-      data(){
-          return{
-            newEmail:'',
-            newPassword:'',
-            confirmPassword:'',
-            passwordValid:false,
-            emailValid:false
-          }
-      },
-      watch:{
-        newEmail(oldVal,newVal){
-          this.$data.emailValid=!validateEmail(this.$data.newEmail);
-        },
-        confirmPassword(oldVal,newVal){
-          this.$data.passwordValid= this.$data.newPassword!==this.$data.confirmPassword;
-        },
-        newPassword(oldVal,newVal){
-          this.$data.passwordValid= this.$data.newPassword!==this.$data.confirmPassword;
-        }
-      },
       methods:{
           linkBack(){
             this.$router.push('/');
           },
-          linkTo() {
-            if (this.$data.passwordValid||this.$data.emailValid) {
-              this.$message({
-                type:'error',
-                message:'还有没填好的项哦'
-              })
-            } else {
-              let _this = this;
-
-              this.$axios({
-                method:'put',
-                url:'/teacher/active',
-                data:{
-                  password:this.$data.newPassword,
-                  email:this.$data.newEmail,
-                }
-              }).then(function (response) {
-                if(response.data===true){
-                  _this.$message({
-                    type:'success',
-                    message:'激活成功！'
-                  })
-                  _this.$router.push('/TeacherMainPage');
-                }else{
-                  _this.$message({
-                    type:'error',
-                    message:'还有没填好的项哦'
-                  })
-                }
-              }).catch(function (error) {
-                _this.$message({
-                  type:'error',
-                  message:'还有没填好的项哦'
-                })
-              })
-
-
-            }
+          linkTo(){
+            this.$router.push('/TeacherMainPage');
           }
       }
     }
@@ -134,13 +70,6 @@
       font-weight: bold;
     }
   }
-
-  .validate-message{
-    color: red;
-    display: inline-block;
-    margin-top: 5px;
-  }
-
   .main-content {
     width: 80%;
     margin-left: auto;

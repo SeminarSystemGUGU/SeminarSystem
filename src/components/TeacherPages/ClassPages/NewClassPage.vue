@@ -40,17 +40,17 @@
           </el-col>
         </el-row>
       </div>
-      <!--<div class="new-class-form">-->
-        <!--<el-row>-->
-          <!--<el-col class="row-col-left">-->
-            <!--<span>学生名单：</span>-->
-          <!--</el-col>-->
-          <!--<el-col class="row-col-right">-->
-            <!--<span class="tooltips">尚未上传文件</span>-->
-            <!--<el-button type="primary" size="mini">上传名单</el-button>-->
-          <!--</el-col>-->
-        <!--</el-row>-->
-      <!--</div>-->
+      <div class="new-class-form">
+        <el-row>
+          <el-col class="row-col-left">
+            <span>学生名单：</span>
+          </el-col>
+          <el-col class="row-col-right">
+            <span class="tooltips">尚未上传文件</span>
+            <el-button type="primary" size="mini">上传名单</el-button>
+          </el-col>
+        </el-row>
+      </div>
       <div class="button-panel">
         <el-row :gutter="50">
           <el-col class="row-col">

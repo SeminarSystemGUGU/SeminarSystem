@@ -8,9 +8,9 @@
     <div class="my-info-card">
       <el-card>
         <div class="top-card">
-          <span style="font-size: 20px;font-weight: bold">{{userName}}</span>
+          <span style="font-size: 20px;font-weight: bold">王圣哲</span>
           <div class="top-image">
-            <span style="color: white">{{userName}}</span>
+            <span style="color: white">圣哲</span>
           </div>
         </div>
         <div class="middle-card">
@@ -84,21 +84,8 @@
           return{
             account:'24320162202917',
             email:'1005709383@qq.com',
-            timeInterval:'',
-            userName:''
+            timeInterval:''
           }
-      },
-      created(){
-        let _this=this;
-        this.$axios({
-          method:'get',
-          url:'/user/information'
-        }).then(function (response) {
-          _this.$data.account=response.data.account;
-
-          _this.$data.email=response.data.email;
-          _this.$data.userName=response.data.studentName;
-        })
       },
       methods:{
           backTo(){
@@ -108,10 +95,10 @@
           this.$router.push('/ResetPassword');
         },
         linkToEmail(){
-          this.$router.push('/ResetEmail');
+            this.$router.push('/ResetEmail');
         },
         logBack(){
-          this.$router.push('/');
+            this.$router.push('/');
         }
       }
     }

@@ -41,10 +41,10 @@
           <el-input-number size="small" v-model="formTeamRules.teamMinNum" ></el-input-number>
         </el-form-item>
         <el-form-item label="组队开始时间：" class="form-item" prop="teamStartDate">
-          <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamStartDate" ></el-date-picker>
+          <el-date-picker size="middle" class="date-picker" type="date"  value-format="yyyy-MM-dd" v-model="formTeamRules.teamStartDate" ></el-date-picker>
         </el-form-item>
         <el-form-item label="组队截止时间：" class="form-item" prop="teamEndDate">
-          <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamEndDate"></el-date-picker>
+          <el-date-picker size="middle" class="date-picker" type="date"  value-format="yyyy-MM-dd" v-model="formTeamRules.teamEndDate"></el-date-picker>
         </el-form-item>
       </el-form>
       <div class="button-panel">
@@ -90,22 +90,13 @@ import AppBar from '../../ReuseComponents/AppBar'
           callback();
         }
       };
-      let validateTeam=(rule,value,callback)=>{
-        if(this.$data.formTeamRules.teamMaxNum<this.$data.formTeamRules.teamMinNum){
-          callback(new Error('人数上限达能小于下限！'));
-        }else{
-          callback();
-        }
-      }
 			return{
 			  rulesFormTeam:{
 			    teamMaxNum:[
             {required:true,message:'请输入最大组队人数',trigger:'change'},
-            {validator:validateTeam,trigger:'change'}
           ],
           teamMinNum:[
             {required:true,message:'请输入最小组队人数',trigger:'change'},
-            {validator:validateTeam,trigger:'change'}
           ],
           teamStartDate:[
             {required:true,message:'请选择开始组队日期',trigger:'blur'},
@@ -156,15 +147,11 @@ import AppBar from '../../ReuseComponents/AppBar'
         },
 			}
 		},
-    watch:{
-
-    },
     methods:{
       /**
        * 提交课程
        */
       newCourse() {
-        console.log(this.$data.formTeamRules.teamStartDate);
         let _this = this;
         let preScore = parseInt(this.$data.scoreRate.preRate);
         let quesScore = parseInt(this.$data.scoreRate.quesRate);
@@ -201,23 +188,15 @@ import AppBar from '../../ReuseComponents/AppBar'
               introduction: this.$data.formNewCourse.courseDetails,
               presentationPercentage: preScore * 10,
               questionPercentage: quesScore * 10,
-              reportPercentage: repScore*10,
+              reportPercentage: repScore,
               teamStartTime: this.$data.formTeamRules.teamStartDate,
               teamEndDate: this.$data.formTeamRules.teamEndDate
             }
           }).then(function (response) {
             if (response.data) {
-              _this.$message({
-                type:'success',
-                message:'创建成功！'
-              })
-              _this.$router.push('/TeacherMyCourses');
             }
           }).catch(function (error) {
-            _this.$message({
-              type:'error',
-              message:'创建失败！'
-            })
+
           })
         }
       }
@@ -256,7 +235,7 @@ import AppBar from '../../ReuseComponents/AppBar'
       margin-top: 2vh;
 
       .date-picker{
-        width: 180px;
+        width: 140px;
       }
 
       .el-input__inner{
