@@ -35,16 +35,7 @@
       },
       data(){
         return{
-          courses:[
-            {
-              courseName:'OOAD',
-              courseId:'2016-1',
-            },
-            {
-              courseName:'J2EE',
-              courseId:'2016-2',
-            },
-          ],
+          courses:[],
           title:"讨论课",
         }
       },

@@ -17,7 +17,7 @@
         <mu-list textline="two-line">
           <mu-sub-header inset>已有成员</mu-sub-header>
           <mu-sub-header style="margin-top: -3vh;" inset>(人数限制3-5人，不符合限制需<span style="border-bottom: 0.5px solid darkred;color: darkred;cursor: pointer">提交申请</span>)</mu-sub-header>
-          <mu-list-item avatar button :ripple="false"  :key="newTeam.members"  v-for="option in newTeam.members" style="margin-left: -2vh;">
+          <mu-list-item avatar button :ripple="false"  :key="index"  v-for="option,index in newTeam.members" style="margin-left: -2vh;">
             <mu-list-item-action>
               <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.identify=='组长'">
                 <!--头像图标-->
@@ -33,7 +33,7 @@
               <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action style="margin-left: -4vh;">
-              <mu-button icon v-if="option.identify=='组员'" @click="deleteFlag=!deleteFlag">
+              <mu-button icon v-if="option.identify=='组员'" @click="deleteMember(index)">
                <i style="margin-top: -1vh;" class="el-icon-circle-close-outline"/>
               </mu-button>
             </mu-list-item-action>
@@ -42,14 +42,14 @@
 
         <mu-form label-position="left" style="margin-top: 5vh;">
           <mu-form-item  label="搜索">
-            <mu-text-field v-model="tempNumber" placeholder="输入学号查找"><i class="el-icon-search"/></mu-text-field>
+            <mu-text-field v-model="searchNumber" placeholder="输入学号查找"><i class="el-icon-search"/></mu-text-field>
           </mu-form-item>
         </mu-form>
 
         <mu-divider inset></mu-divider>
         <mu-list textline="two-line">
           <mu-sub-header inset>搜索结果</mu-sub-header>
-          <mu-list-item avatar button :ripple="false" :key="tempMembers.length"  v-for="option in tempMembers" >
+          <mu-list-item avatar button :ripple="false" :key="index"  v-for="option,index in resultMembers" >
             <mu-list-item-action>
               <mu-avatar color="snow" style="font-size: 18px;" >
                 <!--头像图标-->
@@ -61,7 +61,7 @@
               <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action>
-              <mu-button icon >
+              <mu-button icon @click="addMember(index)">
                 <i style="margin-top: -1vh;"  class="el-icon-circle-plus-outline"/>
               </mu-button>
             </mu-list-item-action>
@@ -73,11 +73,11 @@
 
     </div>
 
-    <mu-dialog title="确认删除？" width="360" :open.sync="deleteFlag">
-      sdadsad
-      <mu-button slot="actions" flat color="success" @click="deleteFlag=!deleteFlag">Sure</mu-button>
+    <mu-dialog title="确认删除？" width="360" :open.sync="deleteFlag" >
+      <mu-button slot="actions" flat color="success" @click="confirmDelete">Sure</mu-button>
       <mu-button slot="actions" flat color="primary" @click="deleteFlag=!deleteFlag">Close</mu-button>
     </mu-dialog>
+
   </div>
 </template>
 
@@ -92,9 +92,11 @@
         return{
           inTeamOrNot:true,
           leaderOrNot:true,
+          deleteIndex:0,
           deleteFlag:false,
+          addFlag:false,
 
-          newTeam:{
+          newTeam:{   //创建队伍信息
             teamName:'咕咕鸟',
             class:'1',
             members:[
@@ -115,8 +117,8 @@
               },
             ]
           },
-          tempNumber:'',
-          tempMembers:[
+          searchNumber:'',  //搜索学号
+          resultMembers:[    //搜索结果
             {
               name:'LiMing',
               stuNo:'11111',
@@ -125,6 +127,18 @@
         }
       },
       methods:{
+        deleteMember(index){
+          this.$data.deleteIndex=index;
+          this.$data.deleteFlag=!this.$data.deleteFlag;
+        },
+        confirmDelete(){
+          this.$data.deleteFlag=!this.$data.deleteFlag;
+          this.$set(this.$data.newTeam.members.splice(this.$data.deleteIndex,1));
+        },
+        addMember(index){
+          this.$data.resultMembers[index].identify="组员";
+          this.$set(this.$data.newTeam.members,this.$data.newTeam.members.length,this.$data.resultMembers[index]);
+        },
         dissolve(){
           //组长解散小组
         },

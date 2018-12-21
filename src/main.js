@@ -35,7 +35,7 @@ new Vue({
   router,
   created () {
     this.$axios.defaults.withCredentials=true;//让ajax携带cookie
-    this.$axios.defaults.baseURL='http://2gr5gz.natappfree.cc';
+    this.$axios.defaults.baseURL='http://kxp744.natappfree.cc';
     this.$axios.interceptors.response.use(function (response) {
       console.log(response);
       return response;

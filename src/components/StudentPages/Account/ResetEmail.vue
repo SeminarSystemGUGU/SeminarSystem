@@ -10,16 +10,15 @@
       <div class="form-panel">
         <div class="input-panel">
           <label>Email:</label>
-          <input class="confirm-input" />
+          <input class="confirm-input"  v-model="email" />
         </div>
-        <span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>
-        <div class="input-panel">
-          <label>验证码：</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;
-          <input class="confirm-input" style="width: 30%" />
-        </div>
-        <div class="button-panel">
-          <button >确认修改</button>
-        </div>
+        <!--<span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>-->
+        <!--<div class="input-panel">-->
+          <!--<label>验证码：</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;-->
+          <!--<input class="confirm-input" style="width: 30%" />-->
+        <!--</div>-->
+        <mu-button color="primary" class="active" @click="changeEmail" >确认修改</mu-button>
+
       </div>
     </div>
   </div>
@@ -28,9 +27,37 @@
 <script>
   export default {
     name: "ResetEmail",
+    data(){
+      return {
+        email:'',
+      }
+    },
     methods:{
       linkBack(){
         this.$router.push('/StuMyAccount');
+      },
+      changeEmail(){
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (re.test(this.$data.email)) {
+          let _this=this;
+          this.$axios({
+            method: 'put',
+            url: '/user/email',
+            data: {
+              email: this.$data.email,
+            }
+          }).then(function (response) {
+            if(response.data===true)
+              _this.$router.push('/StuMyAccount');
+            else
+              alert("修改失败！");
+            }, function (error) {
+            alert(error);
+          });
+        }
+        else{
+          this.$toast.error("邮箱格式错误！");
+        }
       }
     }
   }
@@ -40,7 +67,11 @@
   #ResetEmail{
     width: 100vw;
     padding:1px;
-
+    .active{
+      width:100%;
+      margin-top: 10vh;
+      font-size: 17px;
+    }
     .top-bar{
       margin-top: 2vw;
       text-align: left;
@@ -72,7 +103,7 @@
           outline: none;
           border: none;
           border-bottom: 0.1px solid gray;
-          width: 60%;
+          width: 100%;
           padding-bottom: 1.2vh;
           font-size: 20px;
         }

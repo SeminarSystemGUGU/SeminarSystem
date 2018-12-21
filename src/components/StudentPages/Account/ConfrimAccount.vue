@@ -43,26 +43,28 @@
           linkBack(){
             this.$router.push('/');
           },
-          linkTo(){
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if(re.test(this.$data.email))
-            {
-            let _this=this;
-            this.$axios({
-              method:'put',
-              url:'/student/active',
-              data:{
-                password:this.$data.password,
-                email:this.$data.email,
+          linkTo() {
+            if (this.$data.password != this.$data.confirmPassword)
+              this.$toast.error('请确认输入密码一致！');
+            else {
+              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              if (re.test(this.$data.email)) {
+                let _this = this;
+                this.$axios({
+                  method: 'put',
+                  url: '/student/active',
+                  data: {
+                    password: this.$data.password,
+                    email: this.$data.email,
+                  }
+                }).then(function (response) {
+                  if (response.data === true)
+                    _this.$router.push('/StuMainPage');
+                })
               }
-            }).then(function (response) {
-              if(response.data===true)
-                _this.$router.push('/StuMainPage');
-            })
-          }
-          else{
-              // alert("邮箱格式错误");
-              this.$toast.error('邮箱格式错误！');
+              else {
+                this.$toast.error('邮箱格式错误！');
+              }
             }
           }
       }

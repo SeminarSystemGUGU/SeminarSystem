@@ -8,16 +8,16 @@
     <div class="my-info-card">
       <el-card>
         <div class="top-card">
-          <span style="font-size: 20px;font-weight: bold">{{stuName}}</span>
+          <span style="font-size: 20px;font-weight: bold">{{studentInfo.studentName}}</span>
           <div class="top-image">
-            <span style="color: white">{{stuName.substring(1)}}</span>
+            <span style="color: white">{{studentInfo.studentName.substring(1)}}</span>
           </div>
         </div>
         <div class="middle-card">
           <span style="font-weight: bold">学号：</span>
-          <span>{{account}}</span><br/>
+          <span>{{studentInfo.account}}</span><br/>
           <span style="font-weight: bold;display: inline-block;margin-top: 1.3vw">邮箱：</span>
-          <span>{{email}}</span>
+          <span>{{studentInfo.email}}</span>
           <span style="color: dodgerblue" @click="linkToEmail">&nbsp;修改</span>
         </div>
       </el-card>
@@ -47,29 +47,29 @@
         </el-row>
       </div>
       <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
-      <div class="my-course-card">
-        <el-row :gutter="10">
-          <el-col style="width: 3%">
-            <span>&nbsp;</span>
-          </el-col>
-          <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3vw;">
-              <img src="../../../assets/通知时间.png" class="menu-image"/>
-            </div>
-          </el-col>
-          <el-col style="width: 50%;">
-            <div style="margin-top: 3vw">
-              <span>通知发送时间</span>
-            </div>
-          </el-col>
-          <el-col style="width: 33%" >
-            <el-select size="mini" style="" class="the-select" v-model="timeInterval">
-              <el-option value="3h"></el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-      </div>
-      <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
+      <!--<div class="my-course-card">-->
+        <!--<el-row :gutter="10">-->
+          <!--<el-col style="width: 3%">-->
+            <!--<span>&nbsp;</span>-->
+          <!--</el-col>-->
+          <!--<el-col style="width: 10%;text-align: right;">-->
+            <!--<div style="margin-top: 3vw;">-->
+              <!--<img src="../../../assets/通知时间.png" class="menu-image"/>-->
+            <!--</div>-->
+          <!--</el-col>-->
+          <!--<el-col style="width: 50%;">-->
+            <!--<div style="margin-top: 3vw">-->
+              <!--<span>通知发送时间</span>-->
+            <!--</div>-->
+          <!--</el-col>-->
+          <!--<el-col style="width: 33%" >-->
+            <!--<el-select size="mini" style="" class="the-select" v-model="timeInterval">-->
+              <!--<el-option value="3h"></el-option>-->
+            <!--</el-select>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
+      <!--</div>-->
+      <!--<div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>-->
     </div>
     <div class="logout">
       <mu-button color="error" class="logout-button">退出登录</mu-button>
@@ -82,22 +82,25 @@
     name: "StuMyAccount",
     data(){
       return{
-        stuName:'李大海',
-        account:'24320162202999',
-        email:'123124@qq.com',
-        timeInterval:'3h',
+        studentInfo:{
+          // studentName:'李大海',
+          // account:'24320162202999',
+          // email:'123124@qq.com',
+        }
       }
     },
     created(){
+        const loading = this.$loading();
+        setTimeout(() => {
+          loading.close();
+        }, 500);
+
       let _this=this;
       this.$axios({
         method: 'get',
-        url: '/student/studentInfo',
+        url: '/user/information',
       }).then(function (response) {
-         _this.$data.stuName=response.data.name;
-         _this.$data.account=response.data.account;
-         _this.$data.email=response.data.email;
-         _this.$data.timeInterval=response.data.timeInterval;
+        _this.$data.studentInfo=response.data;
       }, function (error) {
         alert("请求失败",error);
       });
@@ -181,10 +184,10 @@
   }
   .logout{
     width: 100vw;
-    height: 12vw;
+    height: 15vw;
     /*background-color: orangered;*/
     position: fixed;
-    bottom: 13vw;
+    bottom: 0;
 
     .logout-button{
       width: 100%;

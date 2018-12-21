@@ -10,20 +10,21 @@
       <div class="form-panel">
         <div class="input-panel">
           <label>输入新密码：</label>
-          <input class="confirm-input" />
+          <input class="confirm-input"  v-model="password"/>
         </div>
         <div class="input-panel">
           <label>确认新密码：</label>
-          <input class="confirm-input" />
+          <input class="confirm-input" v-model="confirmPassword"/>
         </div>
-        <span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>
-        <div class="input-panel">
-          <label>验证码：</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;
-          <input class="confirm-input" style="width: 30%" />
-        </div>
-        <div class="button-panel">
-          <button >确认修改</button>
-        </div>
+        <!--<span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>-->
+        <!--<div class="input-panel">-->
+          <!--<label>验证码：</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;-->
+          <!--<input class="confirm-input" style="width: 30%" />-->
+        <!--</div>-->
+        <!--<div class="button-panel">-->
+          <!--<button >确认修改</button>-->
+        <!--</div>-->
+        <mu-button color="primary" class="active" @click="changePass" >确认修改</mu-button>
       </div>
     </div>
   </div>
@@ -32,9 +33,37 @@
 <script>
   export default {
     name: "ResetPassword",
+    data(){
+      return {
+        password:'',
+        confirmPassword:'',
+      }
+    },
     methods:{
       linkBack(){
         this.$router.push('/StuMyAccount');
+      },
+      changePass(){
+        if (this.$data.password===this.$data.confirmPassword && this.$data.password!=='') {
+          let _this=this;
+          this.$axios({
+            method: 'put',
+            url: '/user/password',
+            data: {
+              password: this.$data.password,
+            }
+          }).then(function (response) {
+            if(response.data===true)
+              _this.$router.push('/StuMyAccount');
+            else
+              alert("修改失败！");
+          }, function (error) {
+            alert(error);
+          });
+        }
+        else{
+          this.$toast.error("邮箱格式错误！");
+        }
       }
     }
   }
@@ -44,7 +73,11 @@
   #ResetPassword{
     width: 100vw;
     padding:1px;
-
+    .active{
+      width:100%;
+      margin-top: 10vh;
+      font-size: 17px;
+    }
     .top-bar{
       margin-top: 2vw;
       text-align: left;
@@ -76,7 +109,7 @@
           outline: none;
           border: none;
           border-bottom: 0.1px solid gray;
-          width: 60%;
+          width: 100%;
           padding-bottom: 1.2vh;
           font-size: 20px;
         }
