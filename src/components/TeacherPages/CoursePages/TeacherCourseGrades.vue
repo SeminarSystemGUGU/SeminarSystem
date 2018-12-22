@@ -140,6 +140,7 @@
       linkToGrades(item){
         this.$router.push('/TeacherCourseGrades');
       },
+
       loadCourseGrades(){
         let _this=this;
         this.$axios({

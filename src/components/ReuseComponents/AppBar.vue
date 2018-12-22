@@ -39,11 +39,11 @@
             this.$router.push(this.$props.backPath);
           },
           linkToMessage(){
-            console.log(1111);
+            // console.log(1111);
             this.$router.push({path:'/TeacherMyMessage'});
           },
           handleCommand(command){
-            if (command=='2'){
+            if (command==='2'){
               this.linkToMessage();
             }
           }

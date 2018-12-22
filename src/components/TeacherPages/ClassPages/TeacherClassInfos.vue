@@ -34,7 +34,7 @@
                     <el-upload
                       class="upload-demo"
                       :with-credentials="true"
-                      :action="'http://kxp744.natappfree.cc/class/'+item.id"
+                      :action="baseURL+'/class/'+item.id"
                       name="fileUpload"
                       :limit="1"
                       :file-list="fileList">
@@ -85,10 +85,12 @@
                 klassSerial:'',
                 klassTime:''
               }
-            ]
+            ],
+            baseURL:'',
           }
       },
       created(){
+        this.$data.baseURL=this.$axios.defaults.baseURL;
         this.$data.courseId=this.$route.query.courseId;
         this.loadCourseClass();
       },

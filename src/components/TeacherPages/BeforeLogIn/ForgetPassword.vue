@@ -8,21 +8,21 @@
       <div class="main-content animated bounceInRight">
         <div class="fonts-panel">
           <span>找回密码:</span><br/>
-          <span>请完成身份验证</span>
+          <span>请输入您的学工号</span>
         </div>
 
         <div class="form-panel">
           <div class="input-panel">
             <label>学工号</label><br/>
-            <input class="confirm-input" />
+            <input v-model="account" class="confirm-input" />
           </div>
-          <span style="display: inline-block;margin-top: 5vh;font-size: 14px;">验证码将发送至邮箱：100000@qq.com</span>
-          <div class="input-panel">
-            <label>验证码</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;
-            <input class="confirm-input" style="width: 30%" />
-          </div>
+          <span style="display: inline-block;margin-top: 5vh;font-size: 14px;">密码将发送至您的邮箱</span>
+          <!--<div class="input-panel">-->
+            <!--<label>验证码</label><span style="display: inline-block;color: dodgerblue;float: right;margin-top: 1.5vh;margin-left: 6vw">获取验证码</span>&nbsp;&nbsp;&nbsp;-->
+            <!--<input class="confirm-input" style="width: 30%" />-->
+          <!--</div>-->
           <div class="button-panel">
-            <button @click="linkTo">下一步</button>
+            <button @click="linkTo">获取密码</button>
           </div>
         </div>
       </div>
@@ -32,12 +32,40 @@
 <script>
     export default {
         name: "ForgetPassword",
+      data(){
+        return{
+          account:''
+        }
+      },
       methods:{
           linkBack(){
             this.$router.push('/');
           },
           linkTo(){
-            this.$router.push('/ForgetPasswordSet');
+            let _this=this;
+            this.$axios({
+              method:'get',
+              url:'/user/password/'+this.$data.account
+            }).then(function (response) {
+              if(response.data===true){
+                _this.$message({
+                  type:'success',
+                  message:'邮件已发送！'
+                })
+                _this.$router.push('/');
+              }else{
+                _this.$message({
+                  type:'error',
+                  message:'发送失败！请查看账号是否激活'
+                })
+              }
+            }).catch(function (error) {
+              _this.$message({
+                type:'error',
+                message:'发送失败！请查看账号是否激活'
+              })
+            })
+            // this.$router.push('/ForgetPasswordSet');
           }
       }
     }

@@ -47,9 +47,13 @@
           <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamEndDate"></el-date-picker>
         </el-form-item>
       </el-form>
-      <div class="button-panel">
-        <button class="new-course-button" @click="newCourse">提交</button>
+      <div class="special-team-rules">
+        <el-button type="primary">特殊分组规则</el-button>
+        <div class="special-team-form">
+          <!--<el-button type="primary"></el-button>-->
+        </div>
       </div>
+
 		</div>
 	</div>
 </template>
@@ -196,14 +200,16 @@ import AppBar from '../../ReuseComponents/AppBar'
           this.$axios({
             method: 'post',
             url: '/course',
+            withCredentials: true,
             data: {
+              teacherId:'',
               courseName: this.$data.formNewCourse.courseName,
               introduction: this.$data.formNewCourse.courseDetails,
               presentationPercentage: preScore * 10,
               questionPercentage: quesScore * 10,
               reportPercentage: repScore*10,
               teamStartTime: this.$data.formTeamRules.teamStartDate,
-              teamEndDate: this.$data.formTeamRules.teamEndDate
+              teamEndTime: this.$data.formTeamRules.teamEndDate
             }
           }).then(function (response) {
             if (response.data) {
@@ -237,6 +243,7 @@ import AppBar from '../../ReuseComponents/AppBar'
 
 
     .button-panel{
+      margin-top: 20px;
       margin-bottom: 60px;
 
       .new-course-button{
