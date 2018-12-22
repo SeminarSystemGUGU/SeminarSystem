@@ -1,6 +1,17 @@
 <template>
   <div id="TeacherSeminar">
-    <app-bar :show-messages="true" title-name="OOAD-课程详情" backPath="/TeacherCourseRounds"></app-bar>
+    <div class="app-bar">
+      <div :class="iconClass" ref="iconUse">
+        <i class="el-icon-back" @click="linkBack"></i>
+        <!--<span class="">轮次设置</span>-->
+        <transition name="slide-fade" class="transition-box">
+          <span class="title">讨论课详情</span>
+        </transition>
+        <span>&nbsp;&nbsp;</span>
+      </div>
+    </div>
+    <div class="app-bar-blank"></div>
+    <!--<app-bar :show-messages="true" title-name="讨论课详情" backPath="/TeacherCourseRounds"></app-bar>-->
     <div class="main-content">
       <div class="course-title">
         <span>{{seminarName}}<i v-if="seminarStatus==='2'" class="el-icon-loading"></i>
@@ -70,6 +81,8 @@
     },
     data(){
       return {
+        iconClass:'back-icon',
+        iconClassUse:'back-icon-use',
         seminarName:'对象模型分析',
         seminarRound:'第一轮',
         seminarTopic:'对象模型',
@@ -98,6 +111,8 @@
     },
 
     created(){
+      this.$data.courseId=this.$route.query.courseId;
+      this.$data.roundId=this.$route.query.roundId;
       // this.loadCourseDetails();
     }
 
@@ -107,6 +122,72 @@
 <style scoped lang="less">
   #TeacherSeminar{
     width: 100vw;
+
+    .app-bar-blank{
+      height: 10vh;
+      max-height: 60px;
+    }
+
+    .transition-box{
+      transition: all 0.8s;
+    }
+
+    .row-col{
+      width: 40%;
+    }
+
+    .app-bar {
+      padding: 0.1px;
+      height: 10vh;
+      max-height: 60px;
+      position: fixed;
+      z-index: 1000;
+      .back-icon-use{
+        border-bottom-right-radius: 20px;
+        -moz-box-shadow:0px 0px 2px whitesmoke;
+        -webkit-box-shadow:0px 0px 2px whitesmoke;
+        box-shadow:0px 0px 2px whitesmoke;
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
+
+      .back-icon {
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+
+
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
+    }
 
     .see-seminar-info{
       color: dodgerblue;

@@ -20,7 +20,7 @@
             <span>本轮次所含讨论课：</span>
           </div>
           <div class="round-seminars-class">
-            <el-row>
+            <el-row class="row-class">
               <el-col class="row-col" v-for="item,index in seminars" :key="index">
                 <seminar-card :seminarName="item.seminarName" :endTime="item.enrollEndTime"></seminar-card>
               </el-col>
@@ -196,7 +196,7 @@
   }
 
   .row-col{
-    width: 40%;
+    width: 150px;
   }
 
   .app-bar {
@@ -299,8 +299,17 @@
 
 
       .round-seminars-class{
-        overflow: scroll;
+        overflow-y: hidden;
+        overflow-wrap: normal;
+        white-space: nowrap;
+        width: 100%;
+        overflow-x: scroll;
         text-align: center;
+
+
+        .row-class{
+          width: 200vw;
+        }
       }
 
     }

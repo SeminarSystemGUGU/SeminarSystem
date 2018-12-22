@@ -18,11 +18,12 @@ import Author from '../src/components/ReuseComponents/Global'
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import 'bootstrap3/dist/js/bootstrap.min.js';
 
+let VueTouch = require('vue-touch');
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs=qs;
 Vue.prototype.global=Author;
-
+Vue.use(VueTouch, {name: 'v-touch'})
 Vue.use(MuseUI);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
@@ -36,7 +37,7 @@ new Vue({
   created () {
     this.$axios.defaults.withCredentials=true;//让ajax携带cookie
 
-    this.$axios.defaults.baseURL='http://kxp744.natappfree.cc/';
+    this.$axios.defaults.baseURL='http://47.94.174.82:8081';
     this.$axios.interceptors.response.use(function (response) {
       console.log(response);
       return response;

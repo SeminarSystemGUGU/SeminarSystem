@@ -28,7 +28,7 @@
         <el-form-item label="所属轮次：" class="form-item" label-width="120" prop="roundId">
           <el-select size="small" class="the-select" v-model="formNewSeminar.roundId">
             <el-option v-for="item in rounds" :key="item.id" :label="item.roundSerial" :value="item.id"></el-option>
-            <el-option label="无" :value="-1"></el-option>
+            <el-option label="新建" :value="-1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="课次序号：" class="form-item" label-width="120" prop="seminarSerial">
@@ -66,11 +66,11 @@
             <!--inactive-text="关闭">-->
           <!--</el-switch>-->
         <!--</el-form-item>-->
-        <el-form-item label="报名开始时间：" class="form-item" prop="enrollSTime">
-          <el-date-picker class="date-picker" value-format="yyyy-MM-dd" size="small" v-model="formNewSeminar.start" ></el-date-picker>
+        <el-form-item label="报名开始时间：" class="form-item" prop="start">
+          <el-date-picker class="date-picker" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" size="small" v-model="formNewSeminar.start" ></el-date-picker>
         </el-form-item>
-        <el-form-item label="报名截止时间：" class="form-item" prop="enrollETime">
-          <el-date-picker class="date-picker" value-format="yyyy-MM-dd" size="small" v-model="formNewSeminar.end"></el-date-picker>
+        <el-form-item label="报名截止时间：" class="form-item" prop="end">
+          <el-date-picker class="date-picker" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" size="small" v-model="formNewSeminar.end"></el-date-picker>
         </el-form-item>
       </el-form>
       <div class="button-panel">
@@ -89,8 +89,8 @@
     data(){
       let validateDate=(rule, value, callback)=>{
         console.log(value);
-        if(this.$data.formNewSeminar.enrollSTime!==''&&this.$data.formNewSeminar.enrollETime!==''){
-          if(this.$data.formNewSeminar.enrollSTime<this.$data.formNewSeminar.enrollETime){
+        if(this.$data.formNewSeminar.start!==''&&this.$data.formNewSeminar.end!==''){
+          if(this.$data.formNewSeminar.start<this.$data.formNewSeminar.end){
             callback();
           }else{
             callback(new Error('结束日期要晚于开始日期'));
@@ -123,11 +123,11 @@
           roundId:[
             {required:true,message:'请输入所属轮次',trigger:'change'}
           ],
-          enrollSTime:[
+          start:[
             {required:true,message:'请选择开始日期',trigger:'change'},
             {validator:validateDate,trigger:'change'}
           ],
-          enrollETime:[
+          end:[
             {required:true,message:'请选择结束日期',trigger:'change'},
             {validator:validateDate,trigger:'change'}
           ]
@@ -182,27 +182,35 @@
       newSeminar(){
         let _this=this;
         this.$data.formNewSeminar.courseId=parseInt(this.$data.courseId);
+        if(this.$data.formNewSeminar.isVisible===false){
+          this.$data.formNewSeminar.isVisible=0;
+        }else{
+          this.$data.formNewSeminar.isVisible=1;
+        }
+        if(this.$data.formNewSeminar.seminarSerial===-1){
+          this.$data.formNewSeminar.seminarSerial=this.$data.rounds.length+1;
+        }
 
         console.log(this.$data.formNewSeminar);
-        this.$axios({
-          method:'post',
-          url:'/seminar',
-          data:this.$data.formNewSeminar
-        }).then(function (response) {
-          if(response.data){
-            _this.$message({
-              type:'success',
-              message:'创建成功！'
-            })
-            _this.linkBack();
-          }
-        }).catch(function (error) {
-          _this.$message({
-            type:'error',
-            message:'创建失败！'
-          })
-        })
-
+      //   this.$axios({
+      //     method:'post',
+      //     url:'/seminar',
+      //     data:this.$data.formNewSeminar
+      //   }).then(function (response) {
+      //     if(response.data){
+      //       _this.$message({
+      //         type:'success',
+      //         message:'创建成功！'
+      //       })
+      //       _this.linkBack();
+      //     }
+      //   }).catch(function (error) {
+      //     _this.$message({
+      //       type:'error',
+      //       message:'创建失败！'
+      //     })
+      //   })
+      //
       }
     }
   }

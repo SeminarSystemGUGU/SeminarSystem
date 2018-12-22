@@ -19,7 +19,7 @@
                 <div v-for="c, k in it.classes" :key="c.id">
     						  <div class="divider"></div>
     						  <!--班级信息-->
-    						  <div class="class-panel" @click="linkTo">
+    						  <div class="class-panel" @click="linkTo(c.id,it.id)">
     							  <span class="class-title">{{c.grade}}级{{c.klassSerial}}班</span>
     							  <span class="class-icon"><i class="el-icon-arrow-right"/></span>
     						  </div>
@@ -163,7 +163,7 @@ import AppBar from '../../ReuseComponents/AppBar'
             this.$router.push({path:'/TeacherRoundSetting',query:{courseId:this.$data.courseId,roundId:id}});
         },
         linkTo(){
-            this.$router.push({path:'/TeacherSeminar',query:{courseId:this.$data.courseId}});
+            this.$router.push({path:'/TeacherSeminar',query:{courseId:this.$data.courseId,}});
         },
         linkToNewSeminar(){
             this.$router.push({path:'/TeacherNewSeminar',query:{courseId:this.$data.courseId}});
