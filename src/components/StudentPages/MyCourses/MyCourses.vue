@@ -67,7 +67,7 @@
         this.$router.push({path:'/StuMyGrades',query:{courseId:courseId}});
       },
       linkToMyTeam(courseId){
-        this.$router.push('/StuMyteam');
+        this.$router.push({path:'/StuMyteam',query:{courseId:courseId}});
       },
       linkToCourseInfo(courseId){
         this.$router.push({path:'/StuCourseInfo',query:{ courseId:courseId}});

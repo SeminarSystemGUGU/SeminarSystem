@@ -10,7 +10,7 @@
         <div class="top-card">
           <span style="font-size: 20px;font-weight: bold">{{studentInfo.studentName}}</span>
           <div class="top-image">
-            <span style="color: white">{{studentInfo.studentName.substring(1)}}</span>
+            <!--<span style="color: white">{{studentInfo.studentName.substring(1)}}</span>-->
           </div>
         </div>
         <div class="middle-card">

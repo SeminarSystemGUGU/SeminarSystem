@@ -4,11 +4,12 @@
 
     <div class="animated fadeInRight">
     <div  v-if="teamState==0" >
+      <!--未组队-->
     <div class="panel-group" id="accordion" align="left" >
       <div class="title">
         我的队伍
       </div>
-      <div class="cF" v-if="!createFlag">当前未组队</div>
+      <div class="cF">当前未组队</div>
       <!--其他队伍-->
       <div class="title">
         其他队伍
@@ -81,7 +82,7 @@
     </div>
     </div>
 
-      <!--组队后 队长界面 leaderOrNot==true  -->
+      <!--组队后 队长界面  -->
       <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==1 " >
         <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
         <mu-divider inset ></mu-divider>
@@ -139,6 +140,7 @@
         </mu-list>
         <mu-button class="dissolve" color="error"  @click="dissolve">解散小组</mu-button>
       </div>
+
       <!--组队后 队员界面  -->
       <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState==2 " >
         <span style="font-size: 22px;margin-left: 1vh; ">{{newTeam.teamName}}</span>
@@ -181,29 +183,52 @@
       BackBar,
     },
     created(){
-      let _this=this;
+      this.$data.courseId=parseInt(this.$route.query.courseId);
+      console.log(typeof  this.$data.courseId);
 
+      let _this=this;     //未组队成员
         this.$axios({
           method:'get',
-          url:'course/'+this.$data.courseId+'/noTeam',
+          url:'course/'+_this.$data.courseId+'/noTeam',
         }).then(function(response){
           _this.$data.noTeamMembers=response.data;
         },function(error){
           alert(error);
         });
+
+      let ts=this;      //我的组队信息
+      this.$axios({
+        method:'get',
+        url:'/course/'+ts.$data.courseId+'/team'
+      }).then(function (response) {
+        if(response.data.teamId===null)    //未组队
+          ts.$data.teamState=0;
+        // else(response.data.leader==)  //我是组长
+        //   _this.$data.teamState=1;
+        // else(response.data.leader==)   //我是组员
+        //   _this.$data.teamState=2;
+        else
+          ts.$data.teamState=1;
+      })
+
     },
     data(){
       return{
-        title:"OOAD",
-        createFlag:false,    //是否有组
+        title:"OOAD",    //当前课程名
+        courseId:1,
+        teamState:-1,    //组队状态 0-未组队  1-组长   2-组员
+        createFlag:true,    //是否有组
+        myTeam:{
+          teamId:'',
+          teamName:'咕咕鸟',
+        },
+
         teamName:"1-6  咕咕鸟",
         leaderName:'Li',
         leaderID:'110',
 
-        courseId:1,
         noTeamMembers:[],
 
-        teamState:0,
         newTeam:{
           teamName:'咕咕鸟',
           class:'1',
@@ -236,7 +261,7 @@
     },
     methods:{
       createTeam(){
-        this.$router.push('/CreateTeam');
+        this.$router.push({path:'/CreateTeam',query:{courseId:this.$data.courseId}});
       },
       dissolve(){
         //组长解散小组
