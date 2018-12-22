@@ -45,6 +45,35 @@
 
       created() {
 
+      },
+
+      methods:{
+          loadSeminarShareMessage:function(){
+            let _this=this;
+            _this.$axios({
+              method:'get',
+              url:'/request/seminarshare',
+              contentType:'application/json;charset=UTF-8',
+            }).then(function (response) {
+              console.log(response.data);
+            }).catch(function (error) {
+              console.log(error.response.data);
+            })
+          },
+
+          loadTeamShareMessage:function () {
+            let _this=this;
+            _this.$axios({
+              method:'get',
+              url:'/request/teamshare',
+              contentType:'application/json;charset=UTF-8',
+            }).then(function (response) {
+              console.log(response.data);
+            }).catch(function (error) {
+              console.log(error.response.data);
+            })
+          },
+
       }
     }
 </script>
