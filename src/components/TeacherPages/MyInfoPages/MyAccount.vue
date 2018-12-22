@@ -5,48 +5,48 @@
         <i class="el-icon-back" @click="backTo"></i>
       </div>
     </div>
-    <div class="my-info-card">
+    <div class="my-info-card" v-loading="loadingInfo">
       <el-card>
         <div class="top-card">
-          <span style="font-size: 20px;font-weight: bold">{{userName}}</span>
+          <span class="top-card-username">{{userName}}</span>
           <div class="top-image">
-            <span style="color: white">{{userName}}</span>
+            <span class="top-card-image">{{userName}}</span>
           </div>
         </div>
         <div class="middle-card">
-          <span style="font-weight: bold">工号:</span>
+          <span class="middle-card-username">工号:</span>
           <span>{{account}}</span><br/>
-          <span style="font-weight: bold;display: inline-block;margin-top: 1.3vw">邮箱：</span>
+          <span class="middle-card-email">邮箱：</span>
           <span>{{email}}</span>
-          <span style="color: dodgerblue" @click="linkToEmail">&nbsp;修改</span>
+          <span class="middle-card-link" @click="linkToEmail">&nbsp;修改</span>
         </div>
       </el-card>
     </div>
-    <div style="height: 8px;background-color: whitesmoke;width: 100vw;margin-top: 5vw"></div>
+    <div class="middle-menu-bar"></div>
     <div class="modify-menu">
       <div class="my-course-card">
         <el-row :gutter="10">
-          <el-col style="width: 3%">
+          <el-col class="course-card-col1">
             <span>&nbsp;</span>
           </el-col>
-          <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3vw;">
+          <el-col class="course-card-main-col">
+            <div class="course-card-top-dis">
               <img src="../../../assets/修改密码.png" class="menu-image"/>
             </div>
           </el-col>
-          <el-col style="width: 50%;">
-            <div style="margin-top: 3vw" @click="linkToPassword">
+          <el-col class="course-card-ano-col">
+            <div class="course-card-top-dis" @click="linkToPassword">
               <span>修改密码</span>
             </div>
           </el-col>
-          <el-col style="width: 27%">
-            <div style="line-height: 9vw;text-align: right">
+          <el-col class="course-card-this-col">
+            <div class="unused-col">
               <!--<i class="el-icon-arrow-right" style="width: 25px;height: 25px;"></i>-->
             </div>
           </el-col>
         </el-row>
       </div>
-      <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
+      <!--<div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>-->
       <!--<div class="my-course-card">-->
         <!--<el-row :gutter="10">-->
           <!--<el-col style="width: 3%">-->
@@ -69,7 +69,7 @@
           <!--</el-col>-->
         <!--</el-row>-->
       <!--</div>-->
-      <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
+      <div class="course-menu-divider"></div>
     </div>
     <div class="logout">
       <mu-button color="error" class="logout-button" @click="logBack">退出登录</mu-button>
@@ -85,7 +85,8 @@
             account:'24320162202917',
             email:'1005709383@qq.com',
             timeInterval:'',
-            userName:''
+            userName:'',
+            loadingInfo:true,
           }
       },
       created(){
@@ -95,9 +96,9 @@
           url:'/user/information'
         }).then(function (response) {
           _this.$data.account=response.data.account;
-
           _this.$data.email=response.data.email;
           _this.$data.userName=response.data.studentName;
+          _this.$data.loadingInfo=false;
         })
       },
       methods:{
@@ -121,6 +122,68 @@
 #MyAccount{
   width: 98vw;
   padding:1px;
+
+  .unused-col{
+    line-height: 9vw;
+    text-align: right
+  }
+
+  .course-menu-divider{
+    height: 1.5px;
+    background-color: whitesmoke;
+    width: 100vw
+  }
+
+  .course-card-this-col{
+    width: 27%
+  }
+
+  .course-card-ano-col{
+    width: 50%;
+  }
+
+  .course-card-top-dis{
+    margin-top: 3vw;
+  }
+
+  .course-card-main-col{
+    width: 10%;
+    text-align: right;
+  }
+
+  .course-card-col1{
+    width: 3%
+  }
+
+  .middle-menu-bar{
+    height: 8px;
+    background-color: whitesmoke;
+    width: 100vw;
+    margin-top: 5vw
+  }
+
+  .middle-card-link{
+    color: dodgerblue
+  }
+
+  .middle-card-email{
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 1.3vw
+  }
+
+  .middle-card-username{
+    font-weight: bold
+  }
+
+  .top-card-username{
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .top-card-image{
+    color: white
+  }
 
   .the-select{
     margin-top: 12px;

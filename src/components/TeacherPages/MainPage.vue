@@ -61,10 +61,16 @@ import AppBar from '../ReuseComponents/AppBar'
         components:{
           AppBar
         },
+      data(){
+          return{
+            baseURL:''
+          }
+      },
       watch:{
 
       },
       created(){
+
         document.cookie='name=ShengzheWang;';
         // $.ajax({
         //   type: "GET",

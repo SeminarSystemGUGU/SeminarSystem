@@ -80,7 +80,20 @@
           return{
             seminarTitle:'业务流程分析',
             isQuestion:false,
+            socket:null
           }
+      },
+      created() {
+          this.initWebSocket();
+      },
+      methods:{
+        initWebSocket(){
+          this.$data.socket=new WebSocket("ws://vjxea2.natappfree.cc/websocket/20");
+          this.$data.socket.onopen=this.webSocketOnOpen();
+        },
+        webSocketOnOpen(){
+          alert('成功！')
+        }
       }
 
     }

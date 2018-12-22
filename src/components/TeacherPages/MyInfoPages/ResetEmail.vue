@@ -2,7 +2,7 @@
   <div id="ResetEmail">
     <div class="top-bar">
       <div class="top-title">
-        <i style="color: dodgerblue" class="el-icon-back" @click="linkBack"></i>&nbsp;
+        <i class="top-icon el-icon-back" @click="linkBack"></i>&nbsp;
         <span>修改邮箱</span>
       </div>
     </div>
@@ -93,6 +93,10 @@
   #ResetEmail{
     width: 100vw;
     padding:1px;
+
+    .el-icon-back{
+      color: dodgerblue;
+    }
 
     .validate-message{
       color: red;

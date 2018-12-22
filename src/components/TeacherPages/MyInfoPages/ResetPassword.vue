@@ -2,7 +2,7 @@
   <div id="ResetPassword">
     <div class="top-bar">
       <div class="top-title">
-        <i style="color: dodgerblue" class="el-icon-back" @click="linkBack"></i>&nbsp;
+        <i class="el-icon-back" @click="linkBack"></i>&nbsp;
         <span>修改密码</span>
       </div>
     </div>
@@ -92,6 +92,10 @@
 #ResetPassword{
   width: 100vw;
   padding:1px;
+
+  .el-icon-back{
+    color: dodgerblue
+  }
 
   .top-bar{
     margin-top: 2vw;
