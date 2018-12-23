@@ -30,7 +30,7 @@
       </div>
       <div class="divider"></div>
       <div class="table-item" @click="linkToRounds(item)">
-        <span class="item-title">讨论课轮次</span>
+        <span class="item-title">讨论课</span>
         <span class="item-arrow"><i class="el-icon-arrow-right"></i></span>
       </div>
       <div class="divider"></div>

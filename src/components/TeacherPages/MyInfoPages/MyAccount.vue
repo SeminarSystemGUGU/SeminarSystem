@@ -82,8 +82,8 @@
         name: "MyAccount",
       data(){
           return{
-            account:'24320162202917',
-            email:'1005709383@qq.com',
+            account:'',
+            email:'',
             timeInterval:'',
             userName:'',
             loadingInfo:true,

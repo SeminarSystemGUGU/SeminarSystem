@@ -84,9 +84,14 @@
       </div>
     </div>
     <div class="button-panel">
+      <div>
       <el-button type="danger" class="start-button" v-if="seminarStatus===0" @click="GotoSeminar">开始讨论课</el-button>
-      <el-button type="primary" class="doing-button" v-else-if="seminarStatus===1" @click="doSeminar">进入讨论课</el-button>
-      <el-button type="primary" class="doing-button" v-else-if="seminarStatus===3">进入讨论课</el-button>
+      </div>
+      <div class="button-pel">
+      <el-button type="danger" class="start-button" v-if="seminarStatus===0" @click="deleteSeminar">删除讨论课</el-button>
+      </div>
+      <el-button type="primary" class="doing-button" v-if="seminarStatus===1" @click="doSeminar">进入讨论课</el-button>
+      <el-button type="primary" class="doing-button" v-if="seminarStatus===3" @click="doSeminar">进入讨论课</el-button>
       <el-button type="success" class="end-button" v-if="seminarStatus===2" @click="linkToReport">报告打分</el-button><br/>
       <el-button type="success" class="end-button" v-if="seminarStatus===2" @click="linkToGrades">查看成绩</el-button>
     </div>
@@ -120,9 +125,36 @@
       }
     },
     methods:{
+      deleteSeminar(){
+        let _this=this;
+        this.$axios({
+          method:'delete',
+          url:'/seminar/'+this.$data.seminarId+'/class/'+this.$data.classId
+        }).then(function (response) {
+          if(response.data===true){
+            _this.$message({
+              type:'success',
+              message:'删除成功！'
+            })
+          }else{
+            _this.$message({
+              type:'error',
+              message:'删除失败！'
+            })
+          }
+        }).catch(function (error) {
+          _this.$message({
+            type:'error',
+            message:'删除失败！'
+          })
+        })
+      },
       doSeminar(){
         let _this=this;
-        _this.$router.push({path:'/TeacherSeminarIng',query:{courseId:_this.$data.courseId,klassSeminarId:_this.$data.klassSeminarId}});
+        this.$router.push({path:'/TeacherSeminarIng',query:{courseId:_this.$data.courseId,
+            klassSeminarId:_this.$data.klassSeminarId,
+            classId:this.$data.classId,
+            seminarId:this.$data.seminarId}});
       },
       GotoSeminar(){
         let _this=this;
@@ -134,7 +166,10 @@
           }
         }).then(function (response) {
           if(response.data===true){
-            _this.$router.push({path:'/TeacherSeminarIng',query:{courseId:_this.$data.courseId,klassSeminarId:_this.$data.klassSeminarId}});
+            _this.$router.push({path:'/TeacherSeminarIng',query:{courseId:_this.$data.courseId,
+                klassSeminarId:_this.$data.klassSeminarId,
+                classId:_this.$data.classId,
+                seminarId:_this.$data.seminarId}});
           }
         })
 
@@ -154,8 +189,6 @@
           _this.$data.klassSeminarId=response.data.klassSeminarId;
           _this.$data.klassLocation=response.data.klassEntity.klassLocation;
           _this.$data.klassTime=response.data.klassEntity.klassTime;
-          console.log(_this.$data.seminarStatus);
-          console.log(_this.$data.klassSeminarId);
         })
       },
       loadRoundInfos(){
@@ -177,7 +210,7 @@
         this.$router.push('/TeacherSeminarGrades');
       },
       linkToApply(){
-        this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId}});
+        this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId}});
       }
     },
 
@@ -201,6 +234,11 @@
 <style scoped lang="less">
   #TeacherSeminar{
     width: 100vw;
+
+
+    .button-pel{
+      margin-top: 10px;
+    }
 
     .app-bar-blank{
       height: 10vh;

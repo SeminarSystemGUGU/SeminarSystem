@@ -97,7 +97,7 @@
             roundInfoLoading:true,
             option1:1,
             option2:0,
-            iconClass:'back-icon',
+            iconClass:'back-icon-use',
             iconClassUse:'back-icon-use',
             titleShow:false,
             formRoundInfos: {
@@ -219,6 +219,7 @@
       padding-top: 1vh;
       line-height: 25px;
       padding-bottom:5px;
+
       .title{
         color: black;
         font-size: 20px;

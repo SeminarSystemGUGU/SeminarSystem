@@ -100,7 +100,7 @@
       };
       return{
         canBeSeen:false,
-        iconClass:'back-icon',
+        iconClass:'back-icon-use',
         titleShow:false,
         rulesFormSeminar:{
           seminarName:[

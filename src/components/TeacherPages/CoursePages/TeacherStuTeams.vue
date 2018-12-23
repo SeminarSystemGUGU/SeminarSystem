@@ -1,6 +1,6 @@
 <template>
   <div id="TeacherStuTeams">
-    <app-bar titleName="OOAD-学生组队" :showMessages="false" backPath="/TeacherMainPage"></app-bar>
+    <app-bar titleName="学生组队" :showMessages="false" backPath="/TeacherMainPage"></app-bar>
     <div class="main-content" v-loading="isLoading">
       <span v-show="noItem" class="no-item-message">暂无组队信息哦~</span>
       <mu-expansion-panel v-for="item in teams" :key="item.teamId" v-show="!noItem">

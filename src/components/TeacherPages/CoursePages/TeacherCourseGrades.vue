@@ -19,7 +19,7 @@
       <mu-button slot="actions" flat color="primary" @click="confirmModify">确认修改</mu-button>
       <mu-button slot="actions" flat color="primary" @click="openModGrade=false">放弃</mu-button>
     </mu-dialog>
-    <div class="main-content">
+    <div class="main-content" v-loading="isLoading">
       <span class="no-item-message" v-show="noItem">当前暂无小组分数哦~</span>
       <mu-expansion-panel v-for="item1 in seminars" :key="item1.name" v-show="!noItem">
         <div slot="header" class="panel-header">{{item1.name}}</div>
@@ -80,6 +80,7 @@
     },
     data(){
       return{
+        isLoading:true,
         noItem:false,
         courseId:'',
         openModGrade:false,
@@ -151,6 +152,7 @@
         }).then(function (response) {
           console.log(response);
           _this.$data.noItem = response.data.length === 0;
+          _this.$data.isLoading=false;
         })
       }
     }

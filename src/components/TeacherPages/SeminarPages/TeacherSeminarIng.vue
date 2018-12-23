@@ -1,5 +1,12 @@
 <template>
   <div id="TeacherSeminarIng">
+    <el-dialog title="结束讨论课" width="70%" :visible.sync="openSimple">
+      讨论课已结束，请设置书面报告截止时间：<br/><br/>
+      <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" v-model="reportTime"></el-date-picker>
+      <div class="dialog-button">
+        <el-button type="text" @click="setReportTime">确定</el-button>
+      </div>
+    </el-dialog>
     <div class="app-bar">
       <div :class="iconClass" ref="iconUse">
         <i class="el-icon-back" @click="linkBack"></i>
@@ -89,6 +96,10 @@
       },
       data(){
           return{
+            seminarId:'',
+            classId:'',
+            reportTime:'',
+            openSimple:false,
             iconClass:'back-icon',
             seminarTitle:'业务流程分析',
             isQuestion:false,
@@ -100,12 +111,57 @@
       },
       created() {
           // this.initWebSocket();
+
+
+        this.$data.classId=this.$route.query.classId;
         this.$data.courseId=this.$route.query.courseId;
+        this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
         this.getWebSocketAddress();
-
+        // this.setSeminarStatus();
       },
       methods:{
+        setReportTime(){
+          let reportTime=this.$data.reportTime;
+          if(this.$data.reportTime) {
+            let _this = this;
+            this.$axios({
+              method: 'put',
+              url: '/seminar/' + this.$data.seminarId + '/class/' + this.$data.classId + '/reportddl',
+              params: {
+                date: reportTime
+              }
+            }).then(function (response) {
+              if (response.data === true) {
+                _this.$message({
+                  type: 'success',
+                  message: '设置成功！'
+                });
+                _this.$data.simpleOpen=false;
+                _this.setSeminarStatus();
+              }
+            })
+          }else{
+            this.$message({
+              type:'error',
+              message:'请设置时间！'
+            })
+          }
+        },
+        setSeminarStatus(){
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/seminar/'+this.$data.seminarId+'/class/'+this.$data.classId+'/status',
+            data:{
+              status:2
+            }
+          }).then(function (response) {
+            if(response.data===true){
+              _this.$router.push('/TeacherMyCourses');
+            }
+          })
+        },
         getWebSocketAddress(){
           let _this=this;
           this.$axios({
@@ -143,6 +199,10 @@
 
 <style lang="less">
   #TeacherSeminarIng{
+
+    .dialog-button{
+      margin-top: 20px;
+    }
 
     .app-bar-blank{
       height: 10vh;

@@ -6,7 +6,7 @@
         <i class="el-icon-back" @click="linkBack"></i>
         <!--<span class="">轮次设置</span>-->
         <transition name="slide-fade" class="transition-box">
-          <span class="title">讨论课详情</span>
+          <span class="title">讨论课报名</span>
         </transition>
         <span>&nbsp;&nbsp;</span>
       </div>
@@ -40,7 +40,9 @@
     },
     data(){
       return{
-        iconClass:'back-icon',
+        seminarId:'',
+        klassSeminarId:'',
+        iconClass:'back-icon-use',
         columns:[
           {title:'顺序',name:'No'},
           {title:'小组名称',name:'groupName'},
@@ -61,9 +63,22 @@
         ]
       }
     },
+    created(){
+      this.$data.klassSeminarId=this.$route.query.klassSeminarId;
+      this.loadApplyInfos();
+    },
     methods:{
       linkBack(){
         history.back();
+      },
+      loadApplyInfos(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/attendance/'+this.$data.klassSeminarId
+        }).then(function (response) {
+
+        })
       }
     }
   }
@@ -92,6 +107,31 @@
       max-height: 60px;
       position: fixed;
       z-index: 1000;
+
+      .back-icon-use{
+        border-bottom-right-radius: 20px;
+        -moz-box-shadow:0px 0px 2px whitesmoke;
+        -webkit-box-shadow:0px 0px 2px whitesmoke;
+        box-shadow:0px 0px 2px whitesmoke;
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
 
 
       .back-icon {
