@@ -4,7 +4,7 @@
 
     <div  class="animated fadeInRight" align="left">
       <div class="container" v-for="option in courses">
-            <div class="itemTitle" @click="linkToSeminars(option.id)">
+            <div class="itemTitle" @click="linkToSeminars(option.id,option.klassId)">
               <i class="el-icon-document"/>
               {{option.courseName}}&emsp;{{option.id}}
               <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 1vh "/>
@@ -41,8 +41,8 @@
       },
 
       methods:{
-        linkToSeminars(courseId){
-          this.$router.push({path:'/StuMainSeminars',query:{courseId:courseId}});
+        linkToSeminars(courseId,klassId){
+          this.$router.push({path:'/StuMainSeminars',query:{courseId:courseId,klassId:klassId}});
         }
 
       }

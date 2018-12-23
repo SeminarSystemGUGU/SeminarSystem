@@ -1,17 +1,17 @@
 <template>
   <div>
-    <back-bar :titleName="title" :showMessages="true" :showBackBar="true" backUrl="/SeminarSelectCourse"></back-bar>
+    <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/SeminarSelectCourse',query:{courseID:courseId,klassId:klassId}}"></back-bar>
 
     <div  class="animated fadeInRight" align="left" >
       <div class="con">
-      <div class="container" v-for="option in  rounds">
+      <div class="container" v-for="option,index in  rounds">
         <div class="parent1">
           <div >
-            <div class="itemTitle"> {{option.roundName}}</div>
+            <div class="itemTitle"> 第{{index+1}}轮</div>
             <div class="parent3">
               <!-- Content  -->
-              <div class="subList" @click="linkToDetails(item.seminarId,option.roundId)" v-for="item in option.seminars">
-                <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarTopic}}</span>
+              <div class="subList" @click="linkToDetails(item.id)" v-for="item in option.seminars">
+                <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarName}}</span>
                 <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
             </div>
@@ -31,86 +31,80 @@
     components:{
       BackBar,
     },
-    // created(){
-    //   this.$data.courseId=this.$route.query.courseId;
-    //
-    //   let _this=this;    //根据courseId获取该课程讨论课列表
-    //   this.$axios({
-    //     method:'get',
-    //     url:'course/'+this.$data.courseId+'/round',
-    //   }).then(function(response){
-    //     _this.$data.rounds=response.data;
-    //   },function(error){
-    //     alert(error);
-    //   });
-    //
-    //   let  _th=this;    //根据courseId获取该课程讨论课列表
-    //   this.$axios({
-    //     method:'get',
-    //     url:'/course/'+this.$data.courseId+'/roundSigned',
-    //   }).then(function(response){
-    //     _th.$data.roundsSigned=response.data;
-    //   },function(error){
-    //     alert(error);
-    //   });
-    //
-    // },
+    created(){
+      this.$data.courseId=this.$route.query.courseId;
+      this.$data.klassId=this.$route.query.klassId;
+
+      let _this=this;    //根据courseId获取该课程round列表
+      this.$axios({
+        method:'get',
+        url:'/course/'+_this.$data.courseId+'/round',
+      }).then(function(response){
+        _this.$data.allRounds=response.data;
+
+        let i;
+        for(i=0;i<_this.$data.allRounds.length;i++)
+        {
+          let _ts=_this;    //根据roundId获取该课程seminar列表
+          _this.$axios({
+            method:'get',
+            url:'/round/'+_ts.$data.allRounds[i].id+'/seminar',
+          }).then(function(response){
+            var tempRound= {
+              // roundId: _ts.$data.allRounds[i].id,
+              // roundName:'第'+_ts.$data.allRounds[i].id+'轮',
+              seminars : response.data,
+              };
+            _ts.$data.rounds.push(tempRound);
+          },function(error){
+            alert("Seminar error！");
+          });
+        }
+      },function(error){
+        alert(error);
+      });
+    },
     data(){
       return{
         title:"讨论课",
         courseId:1,
-
+        allRounds:[],    //当前课程下所有轮次
+        klassId:-1,    //当前班级ID
         rounds:[
-          {
-            roundName:'第一轮',
-            roundId:1,
-            seminars:[
-              {
-                seminarTopic:'业务流程',
-                seminarID:1,
-              },
-              {
-                seminarTopic:'关系模型',
-                seminarID:2,
-              }
-            ]
-          },
-          {
-            roundName:'第二轮',
-            roundId:2,
-            seminars:[
-              {
-                seminarTopic:'controller',
-                seminarID:3,
-              },
-              {
-                seminarTopic:'XXXX',
-                seminarID:4,
-              },
-            ]
-          },
-          {
-            roundName:'第三轮',
-            roundId:3,
-            seminars:[
-              {
-                seminarTopic:'XXXX',
-                seminarID:1,
-              },
-              {
-                seminarTopic:'XXXX',
-                seminarID:2,
-              }
-            ]
-          },
-
+          // {
+          //   roundName:'第一轮',
+          //   roundId:1,
+          //   seminars:[
+          //     {
+          //       seminarTopic:'业务流程',
+          //       seminarID:1,
+          //     },
+          //     {
+          //       seminarTopic:'关系模型',
+          //       seminarID:2,
+          //     }
+          //   ]
+          // },
+          // {
+          //   roundName:'第二轮',
+          //   roundId:2,
+          //   seminars:[
+          //     {
+          //       seminarTopic:'controller',
+          //       seminarID:3,
+          //     },
+          //     {
+          //       seminarTopic:'XXXX',
+          //       seminarID:4,
+          //     },
+          //   ]
+          // },
         ],  //发布的讨论课所在round
-        // roundsSigned:[], //已经报名的讨论课所在round
       }
     },
     methods:{
-      linkToDetails(seminarId,roundId){
-        this.$router.push({path:'/StuSeminarDetails',query:{ seminarId:seminarId,roundId:roundId} });
+      linkToDetails(seminarId){
+        this.$router.push({path:'/StuSeminarDetails',query:{ courseId:this.$data.courseId,seminarId:seminarId,klassId:this.$data.klassId} });
       },
       // linkToRegisteredDetails(){
       //   this.$router.push('/StuRegisteredSeminarDetails')

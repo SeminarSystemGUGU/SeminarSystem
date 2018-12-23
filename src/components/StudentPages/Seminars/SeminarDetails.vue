@@ -1,6 +1,6 @@
 <template>
     <div>
-      <back-bar :titleName="seminarDetails.title" :showMessages="true" :showBackBar="true" backUrl="/StuMainSeminars"></back-bar>
+      <back-bar :titleName="seminarDetails.title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMainSeminars',query:{courseId:courseId}}"></back-bar>
 
       <div class="seminarDetailsBack animated fadeInRight" align="left">
         <span  class="tit" style="margin-left: 2vw;">{{seminarDetails.seminarTopic}}</span>
@@ -10,7 +10,7 @@
               <mu-list-item-title>轮次</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.roundId}}
+                {{seminarEntity.roundId}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
           </mu-list-item>
@@ -21,7 +21,7 @@
               <mu-list-item-title>课次序号</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.classOrder}}
+                {{seminarEntity.seminarSerial}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
           </mu-list-item>
@@ -237,29 +237,41 @@
       components:{
           BackBar,
       },
-      // created(){
-      //   this.$data.seminarDetails.seminarId=this.$route.query.seminarId;
-      //   this.$data.seminarDetails.roundId=this.$route.query.roundId;
-      //
-      //   let _this=this;    //根据courseId获取该课程讨论课列表
-      //    this.$axios({
-      //     method:'get',
-      //     url:'/seminar/'+this.$data.seminarDetails.seminarId,
-      //   }).then(function(response){
-      //     _this.$data.seminarDetails.seminarTopic=response.data.seminarTopic;
-      //      _this.$data.seminarDetails.seminarContent=response.data.seminarContent;
-      //      _this.$data.seminarDetails.status=response.data.status;
-      //      _this.$data.seminarDetails.regieterStartTime=response.data.signStartTime;
-      //      _this.$data.seminarDetails.registerEndTime=response.data.signEndTime;
-      //
-      //   },function(error){
-      //     alert(error);
-      //   });
-      // },
+      created(){
+        this.$data.courseId=this.$route.query.courseId;
+        this.$data.seminarDetails.seminarId=this.$route.query.seminarId;
+        this.$data.klassId=this.$route.query.klassId;
+
+        let _this=this;    //根据courseId获取该课程讨论课列表
+         this.$axios({
+          method:'get',
+          url:'/seminar/'+_this.$data.seminarDetails.seminarId+'/class/'+_this.$data.klassId,
+        }).then(function(response){
+           _this.$data.seminarEntity=response.data.seminarEntity;
+           _this.$data.klassSeminarId=response.data.klassSeminarId;
+
+           if(response.data.status===1)
+             _this.$data.staus=2/3;
+
+          // _this.$data.seminarDetails.seminarTopic=response.data.seminarName;
+          //  _this.$data.seminarDetails.seminarContent=response.data.seminarContent;
+          //  _this.$data.seminarDetails.status=response.data.status;
+          //  _this.$data.seminarDetails.regieterStartTime=response.data.signStartTime;
+          //  _this.$data.seminarDetails.registerEndTime=response.data.signEndTime;
+
+        },function(error){
+          alert(error);
+        });
+      },
       data(){
           return{
             open:'send',
+
+            courseId:-1,
             status:1,   //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
+            klassSeminarId:-1,
+            seminarEntity:{},
+
             seminarDetails:{
               seminarId:"",
               title:"OOAD-讨论课",
@@ -276,6 +288,9 @@
               reportEndTime:'距截止时间还有一天',
               registerStatus:'2016(1)-第三组',
             },
+
+
+
             fileList: [{name: 'food.jpeg', url:[],}],
             reportFlag:false,
             pptFlag:false,

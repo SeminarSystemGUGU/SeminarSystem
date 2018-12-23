@@ -1,14 +1,16 @@
 <template>
   <div align="center">
-    <back-bar titleName="创建队伍" :showMessages="true" :showBackBar="true" backUrl="/StuMyTeam"></back-bar>
+    <back-bar titleName="创建队伍" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMyTeam',query:{courseId:courseId}}"></back-bar>
 
     <div class="back animated fadeInRight" align="left" >
       <mu-form label-position="left">
         <mu-form-item  label="组名">
-          <mu-text-field v-model="newTeam.class"></mu-text-field>
+          <mu-text-field v-model="newTeam.teamName"></mu-text-field>
         </mu-form-item>
         <mu-form-item label="班级">
-          <mu-select v-model="newTeam.class" ></mu-select>
+          <mu-select v-model="newTeam.klassId" >
+            <mu-option v-for="option,index in klasses" :key="index" :label="option.id" :value="option"></mu-option>
+          </mu-select>
         </mu-form-item>
       </mu-form>
 
@@ -68,7 +70,7 @@
           </mu-list-item>
         </mu-list>
       </div>
-      <mu-button class="save" color="success" >保存</mu-button>
+      <mu-button class="save" color="success" @click="createTeam" >保存</mu-button>
       <mu-button class="dissolve" color="error" style="margin-bottom: 50px;">解散小组</mu-button>
 
     </div>
@@ -88,30 +90,53 @@
       components:{
         BackBar,
       },
+      created(){
+        // 获取该课程下所有班级
+         this.$data.courseId=this.$route.query.courseId;
+
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/course/'+_this.$data.courseId+'/class',
+        }).then(function (response) {
+          _this.$data.klasses=response.data;
+        },function (error) {
+
+
+        })
+
+      },
       data(){
         return{
+          courseId:1,
+          klasses:[],
+          teamId:'',
+
           inTeamOrNot:true,
           leaderOrNot:true,
-          deleteIndex:0,
+          deleteIndex:1,
           deleteFlag:false,
           addFlag:false,
 
           newTeam:{   //创建队伍信息
             teamName:'咕咕鸟',
-            class:'1',
+            klassId:1,
             members:[
               {
                 name:'LiMing',
+                id:1,
                 stuNo:'11111',
                 identify:'组长',
               },
               {
                 name:'WangQIan',
+                id:2,
                 stuNo:'11112',
                 identify:'组员',
               },
               {
                 name:'WangQIan',
+                id:3,
                 stuNo:'11112',
                 identify:'组员',
               },
@@ -121,6 +146,7 @@
           resultMembers:[    //搜索结果
             {
               name:'LiMing',
+              id:1,
               stuNo:'11111',
             },
           ],
@@ -138,6 +164,37 @@
         addMember(index){
           this.$data.resultMembers[index].identify="组员";
           this.$set(this.$data.newTeam.members,this.$data.newTeam.members.length,this.$data.resultMembers[index]);
+        },
+        createTeam(){
+          let leaderId=0;
+          let commonMembers=[];
+          for( let i=0;i<this.$data.newTeam.members.length;i++ ) {
+            if (this.$data.newTeam.members[i].identify === "组长")
+              leaderId = this.$data.newTeam.members[i].id;
+            else {
+              commonMembers.push({id: this.$data.newTeam.members[i].id});
+            }
+          }
+          let _this=this;
+          this.$axios({
+            method:'post',
+            url:'/team/',
+            data:{
+                teamId:'',
+                team_name:_this.$data.newTeam.teamName,
+                course_id:_this.$data.courseId,
+                klass_id:_this.$data.newTeam.klassId,
+                leader:{
+                    id:3,
+                },
+                members:commonMembers,
+              status:0,
+              serial:1,
+            }
+          }).then(function (resopnse) {
+            _this.$data.teamId=resopnse.data.teamId;
+            console.log(resopnse);
+          })
         },
         dissolve(){
           //组长解散小组
