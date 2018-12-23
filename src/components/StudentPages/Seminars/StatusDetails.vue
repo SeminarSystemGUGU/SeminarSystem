@@ -201,7 +201,6 @@
                 teamOrder:1,
               }
             }).then(function (response) {
-
             });
             this.$data.registerFlag=!this.$data.registerFlag;
         }

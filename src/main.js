@@ -35,16 +35,11 @@ new Vue({
   el: '#app',
   router,
   created () {
-    this.$axios.defaults.withCredentials=true;//让ajax携带cookie
-
-    // this.$axios.defaults.baseURL='http://47.94.174.82:8081';
-    this.$axios.defaults.baseURL="http://mzndni.natappfree.cc";
-
-      this.$axios.interceptors.response.use(function (response) {
-      console.log(response);
+    this.$axios.defaults.withCredentials=true;
+    this.$axios.defaults.baseURL='http://47.94.174.82:8081/';
+    this.$axios.interceptors.response.use(function (response) {
       return response;
     }, function (error) {
-      console.log(error.response);
       return Promise.reject(error);
     });
   },
