@@ -1,14 +1,15 @@
 <template>
   <div id="TeacherStuTeams">
-    <app-bar titleName="OOAD-学生组队" :showMessages="false" backPath="/TeacherMainPage"></app-bar>
+    <app-bar titleName="学生组队" :showMessages="false" backPath="/TeacherMainPage"></app-bar>
     <div class="main-content" v-loading="isLoading">
-      <mu-expansion-panel v-for="item in teams" :key="item.team_name">
-        <div slot="header" class="panel-header">{{item.team_name}}</div>
+      <span v-show="noItem" class="no-item-message">暂无组队信息哦~</span>
+      <mu-expansion-panel v-for="item in teams" :key="item.teamId" v-show="!noItem">
+        <div slot="header" class="panel-header">{{item.teamName}}</div>
         <div class="divider"></div>
         <div class="table-item">
           <span class="item-title"></span>
           <span class="left-title">组长：</span>
-          <span>24320162202906&nbsp;&nbsp;&nbsp;{{item.leader.studentName}}&nbsp;&nbsp;</span>
+          <span>{{item.leader.account}}&nbsp;&nbsp;&nbsp;{{item.leader.studentName}}&nbsp;&nbsp;</span>
           <!--<span class="item-course">J2EE</span>-->
         </div>
         <div v-for="member in item.members">
@@ -16,7 +17,7 @@
           <div class="table-item">
             <span class="item-title"></span>
             <span class="left-title" style="float: left">组员：</span>
-            <span>24320162202917&nbsp;&nbsp;&nbsp;{{member.studentName}}&nbsp;&nbsp;</span>
+            <span>{{member.account}}&nbsp;&nbsp;&nbsp;{{member.studentName}}&nbsp;&nbsp;</span>
           </div>
         </div>
         <div class="divider"></div>
@@ -35,15 +36,16 @@
     },
     data(){
       return{
+        noItem:false,
         courseId:'',
         isLoading:false,
         teams:[
           {
             status:0,
-            team_name:'1-1 咕咕鸟队',
-            team_id:'',
-            course_id:'',
-            klass_id:'',
+            teamName:'1-1 咕咕鸟队',
+            teamId:'',
+            courseId:'',
+            klassId:'',
             leader:{
               acoount:'',
               email:'',
@@ -75,27 +77,17 @@
         let _this=this;
         this.$axios({
           method:'get',
-          url:'/course/'+this.$data.courseId+'/team'
+          url:'/course/'+this.$data.courseId+'/teams'
         }).then(function (response) {
           console.log(response.data);
-          _this.$data.teams.splice(0,_this.$data.teams.length);
-          _this.$data.teams.push(response.data);
+          _this.$data.noItem = response.data.length === 0;
+          _this.$data.teams=response.data;
         })
       },
-      loadCourseNoTeamStu(){
-        let _this=this;
-        this.$axios({
-          method:'get',
-          url:'/course/'+this.$data.courseId+'/noTeam'
-        }).then(function (response) {
-          console.log(response.data);
-        })
-      }
     },
     created(){
       this.$data.courseId=this.$route.query.courseId;
       this.loadCourseTeams();
-      this.loadCourseNoTeamStu();
     }
   }
 </script>
@@ -103,6 +95,15 @@
 <style scoped lang="less">
   #TeacherStuTeams{
     width: 100vw;
+
+    .no-item-message{
+      /*font-size: 15px;*/
+      font-size: 18px;
+      font-weight: bold;
+      /*margin-left: auto;*/
+      /*margin-right: auto;*/
+      /*display: inline-block;*/
+    }
 
     .title{
       margin-top: 20px;

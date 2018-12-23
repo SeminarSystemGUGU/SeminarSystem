@@ -25,6 +25,7 @@ import TeacherApplyInfo from '../components/TeacherPages/SeminarPages/TeacherApp
 import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/TeacherSeminarGrades'
 import TeacherNewSminar from '../components/TeacherPages/SeminarPages/TeacherNewSeminar'
 import TeacherSeminarIng from '../components/TeacherPages/SeminarPages/TeacherSeminarIng'
+import TeacherModifySeminar from '../components/TeacherPages/SeminarPages/TeacherModifySeminar'
 
 import PCMainPage from '../components/PC/PCMainPage'
 import PCTeacherMainPage from '../components/PC/PCTeacherMainPage'
@@ -76,6 +77,10 @@ export default new Router({
     {
       path:'/ConfirmAccount',
       component:ConfirmAccount
+    },
+    {
+      path:'/TeacherModifySeminar',
+      component:TeacherModifySeminar
     },
     {
       path:'/ForgetPassword',

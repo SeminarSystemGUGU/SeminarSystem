@@ -1,9 +1,9 @@
 <template>
   <div id="TeacherCourseDetails">
     <app-bar :show-messages="true" title-name="课程详情" backPath="TeacherMyCourses"></app-bar>
-    <div class="main-content">
+    <div class="main-content" v-loading="isLoading">
       <div class="course-title">
-        <span>课程信息</span>
+        <span>{{courseName}}</span>
         <div class="divider"></div>
       </div>
       <div class="course-grade-requirments">
@@ -77,6 +77,7 @@
       },
       data(){
         return {
+          isLoading:true,
           openDelCourse:false,
           preProportion:'',
           questionProportion:'',
@@ -85,7 +86,7 @@
           teamMaxNumber:0,
           teamStartTime:'',
           teamEndTime:'',
-          courseName:'OOAD',
+          courseName:'',
           courseId:'',
           introduction:''
         }
@@ -106,7 +107,9 @@
             _this.$data.teamMaxNumber=response.data.maxMember;
             _this.$data.teamStartTime=response.data.teamStartTime;
             _this.$data.teamEndTime=response.data.teamEndTime;
-            _this.$data.introduction=response.data.introduction
+            _this.$data.introduction=response.data.introduction;
+            _this.$data.courseName=response.data.courseName;
+            _this.$data.isLoading=false;
           }).catch(function (error) {
             console.log(error.response.data);
           });

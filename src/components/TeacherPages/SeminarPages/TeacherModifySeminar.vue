@@ -5,13 +5,12 @@
         <i class="el-icon-back" @click="linkBack"></i>
         <!--<span class="">轮次设置</span>-->
         <transition name="slide-fade" class="transition-box">
-          <span class="title">新建讨论课</span>
+          <span class="title">修改讨论课</span>
         </transition>
         <span>&nbsp;&nbsp;</span>
       </div>
     </div>
     <div class="app-bar-blank"></div>
-    <!--<app-bar titleName="新建讨论课" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>-->
     <div class="main-content animated bounceInUp">
       <el-form :model="formNewSeminar" ref="formNewSeminar" class="new-course-form" :rules="rulesFormSeminar">
         <el-form-item prop="seminarName">
@@ -34,7 +33,7 @@
         <el-form-item label="课次序号：" class="form-item" label-width="120" prop="seminarSerial">
           <el-input-number size="small" class="the-select" :min="0" v-model="formNewSeminar.seminarSerial"></el-input-number>
           <!--<el-select size="small" class="the-select" v-model="formNewSeminar.seminarSerial">-->
-            <!--<el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>-->
+          <!--<el-option v-for="i in 10" :key="i" :value="i*10+'%'"></el-option>-->
           <!--</el-select>-->
         </el-form-item>
         <el-form-item label="是否可见：" class="form-item" label-width="120" prop="isVisible">
@@ -47,7 +46,7 @@
           </el-switch>
         </el-form-item>
         <!--<el-form-item label="上课时间：" class="form-item">-->
-          <!--<el-date-picker class="date-picker" size="small" v-model="formNewSeminar"></el-date-picker>-->
+        <!--<el-date-picker class="date-picker" size="small" v-model="formNewSeminar"></el-date-picker>-->
         <!--</el-form-item>-->
       </el-form>
       <div class="second-form-title">
@@ -58,13 +57,13 @@
           <el-input-number size="small" :min="1" :max="30" v-model.number="formNewSeminar.maxTeam"></el-input-number>
         </el-form-item>
         <!--<el-form-item label="报名顺序自定：" class="form-item">-->
-          <!--<el-switch-->
-            <!--v-model="formNewSeminar"-->
-            <!--active-color="#13ce66"-->
-            <!--inactive-color="#ff4949"-->
-            <!--active-text="开启"-->
-            <!--inactive-text="关闭">-->
-          <!--</el-switch>-->
+        <!--<el-switch-->
+        <!--v-model="formNewSeminar"-->
+        <!--active-color="#13ce66"-->
+        <!--inactive-color="#ff4949"-->
+        <!--active-text="开启"-->
+        <!--inactive-text="关闭">-->
+        <!--</el-switch>-->
         <!--</el-form-item>-->
         <el-form-item label="报名开始时间：" class="form-item" prop="start">
           <el-date-picker class="date-picker" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" size="small" v-model="formNewSeminar.start" ></el-date-picker>
@@ -101,8 +100,7 @@
       };
       return{
         canBeSeen:false,
-        iconClass:'back-icon',
-        iconClassUse:'back-icon-use',
+        iconClass:'back-icon-use',
         titleShow:false,
         rulesFormSeminar:{
           seminarName:[
@@ -152,21 +150,25 @@
     },
     created(){
       this.$data.courseId=this.$route.query.courseId;
+      this.$data.seminarId=this.$route.query.seminarId;
+      // console.log(this.$route);
       this.loadCourseRounds();
-
-    },
-    mounted(){
-      this.box = this.$refs.viewBox
-      // 监听这个dom的scroll事件
-      window.addEventListener('scroll', () => {
-        this.$data.titleShow=true;
-        this.$data.iconClass=this.$data.iconClassUse;
-        // console.log(" scroll " + this.$refs.viewBox.scrollTop)
-        //以下是我自己的需求，向下滚动的时候显示“我是有底线的（类似支付宝）”
-        // this.isScroll=this.$refs.viewBox.scrollTop>0
-      }, true)
+      this.loadAlreadySeminar();
     },
     methods:{
+      loadAlreadySeminar(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/seminar/'+this.$data.seminarId
+        }).then(function (response) {
+          _this.$data.formNewSeminar=response.data;
+          _this.$data.formNewSeminar.start=_this.$data.formNewSeminar.enrollStartTime.slice(0,10)+' '+_this.$data.formNewSeminar.enrollStartTime.slice(11,19);
+          _this.$data.formNewSeminar.end=_this.$data.formNewSeminar.enrollEndTime.slice(0,10)+ ' '+ _this.$data.formNewSeminar.enrollEndTime.slice(11,19);
+          _this.$data.formNewSeminar.isVisible = _this.$data.formNewSeminar.isVisible === 1;
+          console.log(_this.$data.formNewSeminar);
+        })
+      },
       loadCourseRounds(){
         let _this=this;
         this.$axios({
@@ -177,7 +179,7 @@
         })
       },
       linkBack(){
-        this.$router.push({path:'/TeacherCourseRounds',query:{courseId:this.$data.courseId}});
+        this.$router.push({path:'/TeacherMyCourses'});
       },
 
       newSeminar(){
@@ -194,21 +196,21 @@
 
         console.log(this.$data.formNewSeminar);
         this.$axios({
-          method:'post',
-          url:'/seminar',
+          method:'put',
+          url:'/seminar/'+this.$data.seminarId,
           data:this.$data.formNewSeminar
         }).then(function (response) {
           if(response.data){
             _this.$message({
               type:'success',
-              message:'创建成功！'
+              message:'修改成功！'
             })
             _this.linkBack();
           }
         }).catch(function (error) {
           _this.$message({
             type:'error',
-            message:'创建失败！'
+            message:'修改失败！'
           })
         })
 

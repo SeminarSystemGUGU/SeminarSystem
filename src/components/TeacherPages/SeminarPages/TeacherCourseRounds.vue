@@ -1,7 +1,8 @@
 <template>
 	<div id="TeacherCourseRounds">
-		<app-bar titleName="OOAD-讨论课" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
-		<div class="main-content">
+		<app-bar titleName="讨论课" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
+		<div class="main-content" >
+      <span v-show="noItem" class="no-item-message">当前暂无讨论课信息哦~</span>
 			<mu-expansion-panel v-for="item, index in rounds" :key="item.id" v-loading="roundLoading">
     			<div slot="header" class="panel-title">第{{item.roundSerial}}轮</div>
     			<div class="setting" @click="linkToSetting(item.id)">
@@ -14,14 +15,14 @@
   						<el-collapse-item v-for="it, i in item.seminars" :key="it.id">
   							<!--讨论课名称-->
     						<template slot="title">
-      							<span class="seminar-title">{{it.seminarName}}</span>
+      							<span class="seminar-title" @click="linkToModify(it.id,courseId)">{{it.seminarName}}&nbsp;&nbsp;<i class="el-icon-edit"/></span>
     						</template>
                 <div v-for="c, k in it.classes" :key="c.id">
     						  <div class="divider"></div>
     						  <!--班级信息-->
-    						  <div class="class-panel" @click="linkTo(c.id,it.id)">
+    						  <div class="class-panel" @click="linkTo(c.id,it.id,item.id)">
     							  <span class="class-title">{{c.grade}}级{{c.klassSerial}}班</span>
-    							  <span class="class-icon"><i class="el-icon-arrow-right"/></span>
+                    <span class="class-icon" ><i  class="el-icon-arrow-right"></i></span>
     						  </div>
                 </div>
     						<div class="divider"></div>
@@ -29,14 +30,12 @@
 					</el-collapse>
     			</div>
     		</mu-expansion-panel>
+        <div class="bottom-blank"></div>
   		</div>
     <div class="footer-new-course">
-      <!--<mu-button class="new-course-button" @click="linkToNewRound" color="info"><i class="el-icon-plus"/>新建讨论课轮次</mu-button>-->
       <mu-button class="new-course-button" @click="linkToNewSeminar" color="info"><i class="el-icon-plus"/>新建讨论课</mu-button>
     </div>
-      <!--<div class="running-seminars">-->
-        <!--<span>正在进行的讨论课</span>-->
-      <!--</div>-->
+
 	</div>
 </template>
 
@@ -49,6 +48,7 @@ import AppBar from '../../ReuseComponents/AppBar'
         },
       data(){
         return{
+          noItem:false,
           courseId:'',
           roundLoading:true,
           rounds:[
@@ -92,6 +92,7 @@ import AppBar from '../../ReuseComponents/AppBar'
         this.$data.courseId=this.$route.query.courseId;
         this.loadCourseRounds();
       },
+
       methods:{
         loadCourseRounds(){
          let _this=this;
@@ -99,10 +100,10 @@ import AppBar from '../../ReuseComponents/AppBar'
            method:'get',
            url:'/course/'+this.$data.courseId+'/round'
          }).then(function (response) {
+           console.log(response.data.length);
+           _this.$data.noItem = response.data.length === 0;
+           _this.$data.rounds.splice(0,_this.$data.rounds.length);
             for(let index=0;index<response.data.length;index++){
-              // _this.$data.rounds=response.data;
-              // let a=[];
-              _this.$data.rounds.splice(0,_this.$data.rounds.length);
               _this.$data.rounds.push({
                 seminars:[],
                 id:response.data[index].id,
@@ -112,14 +113,16 @@ import AppBar from '../../ReuseComponents/AppBar'
                 roundSerial:response.data[index].roundSerial,
                 courseId:response.data[index].courseId
               })
-              _this.loadRoundSeminars();
+              console.log('kkk');
             }
+           _this.loadRoundSeminars();
          })
         },
         loadRoundSeminars(){
           console.log('11111');
           let _this=this;
           for(let index=0;index<this.$data.rounds.length;index++){
+            console.log(this.$data.rounds.length);
             this.$axios({
               method:'get',
               url:'/round/'+this.$data.rounds[index].id+'/seminar'
@@ -155,18 +158,21 @@ import AppBar from '../../ReuseComponents/AppBar'
             url:'/seminar/'+i+'/class'
           }).then(function (response) {
             console.log(_this.$data.rounds[index].seminars[t]);
-            _this.$data.rounds[index].seminars[t].classes.push(response.data);
+            _this.$data.rounds[index].seminars[t].classes=response.data;
           })
 
         },
         linkToSetting(id){
             this.$router.push({path:'/TeacherRoundSetting',query:{courseId:this.$data.courseId,roundId:id}});
         },
-        linkTo(){
-            this.$router.push({path:'/TeacherSeminar',query:{courseId:this.$data.courseId,}});
+        linkTo(classId,seminarId,roundId){
+            this.$router.push({path:'/TeacherSeminar',query:{courseId:this.$data.courseId,classId:classId,seminarId:seminarId,roundId:roundId}});
         },
         linkToNewSeminar(){
             this.$router.push({path:'/TeacherNewSeminar',query:{courseId:this.$data.courseId}});
+        },
+        linkToModify(seminarId,courseId){
+          this.$router.push({path:'/TeacherModifySeminar',query:{courseId:courseId,seminarId:seminarId}})
         }
       }
     }
@@ -176,6 +182,20 @@ import AppBar from '../../ReuseComponents/AppBar'
 #TeacherCourseRounds{
 	width:100vw;
 	padding:1px;
+
+  .no-item-message{
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .bottom-blank{
+    height: 200px;
+  }
+
+
+  .el-icon-edit{
+    color: dodgerblue;
+  }
 
 
   .footer-new-course{

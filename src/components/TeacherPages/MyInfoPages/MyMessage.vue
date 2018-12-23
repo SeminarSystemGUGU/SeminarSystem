@@ -8,14 +8,6 @@
       <div class="wait-message-bar">
         <message-card></message-card>
       </div>
-      <div class="history-message-bar">
-        <div class="history-title">
-          <span>历史消息</span>
-        </div>
-        <div class="history-cards">
-          <history-card></history-card>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -44,7 +36,8 @@
       },
 
       created() {
-
+        this.loadSeminarShareMessage();
+        this.loadTeamShareMessage();
       },
 
       methods:{
