@@ -2,7 +2,7 @@
   <div id="SeminarCard">
     <el-card :class="seminarClass" :body-style="{'padding':'0'}">
       <div class="card-title">
-        <span>{{seminarName}}</span>
+        <p class="title-wid">{{seminarName}}</p>
       </div>
       <div class="back-image">
         <i class="el-icon-loading" v-if="status==='1'"></i>
@@ -13,10 +13,10 @@
         <span v-if="status==='2'">已完成</span>
       </div>
       <div class="edit-panel">
-        <i class="el-icon-edit"></i>
+        <i class="el-icon-edit" @click="linkToModify"></i>
       </div>
       <div class="close-panel">
-        <i class="el-icon-close"></i>
+        <i class="el-icon-close" @click="deleteSeminar"></i>
       </div>
     </el-card>
     <!--</div>-->
@@ -25,11 +25,12 @@
 <script>
     export default {
         name: "SeminarCard",
-      props:['seminarName','endTime'],
+      props:['seminarName','endTime','seminarId','index','courseId'],
       data(){
           return{
             // seminarName:'对象模型',
             status:'1',
+            courseid:'',
             seminarClass:'seminar-card-doing',
             seminarClassFinished:'seminar-card-finished'
           }
@@ -41,6 +42,8 @@
           if(strDate>compDate){
             this.$data.status='2';
           }
+          console.log(this.$props.courseId);
+
 
           // console.log(compDate);
           // console.log(strDate);
@@ -49,7 +52,27 @@
         if(this.$data.status==='2'){
           this.$data.seminarClass=this.$data.seminarClassFinished
         }
-      }
+      },
+      methods:{
+        deleteSeminar(){
+          let _this=this;
+          this.$axios({
+            method:'delete',
+            url:'/seminar/'+this.$props.seminarId
+          }).then(function (response) {
+            if(response.data===true){
+              let data={
+                index:_this.$props.index
+              };
+              _this.$emit('deleteSeminar',data);
+            }
+          })
+        },
+        linkToModify(){
+          this.$router.push({path:'/TeacherModifySeminar',query:{courseId:this.$props.courseId,seminarId:this.$props.seminarId}})
+        }
+
+      },
     }
 </script>
 
@@ -58,6 +81,14 @@
   /*display: inline-block;*/
   .el-card{
     display: inline-block;
+  }
+
+  .title-wid{
+    width: 95%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   .seminar-card-doing{
@@ -92,6 +123,7 @@
       font-size: 20px;
       color: white;
       font-weight: normal;
+      overflow: hidden;
     }
 
     .back-image{

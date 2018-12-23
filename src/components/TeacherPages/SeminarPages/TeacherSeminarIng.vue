@@ -1,6 +1,17 @@
 <template>
   <div id="TeacherSeminarIng">
-    <AppBar title-name="讨论课-正在进行"></AppBar>
+    <div class="app-bar">
+      <div :class="iconClass" ref="iconUse">
+        <i class="el-icon-back" @click="linkBack"></i>
+        <!--<span class="">轮次设置</span>-->
+        <transition name="slide-fade" class="transition-box">
+          <span class="title">讨论课</span>
+        </transition>
+        <span>&nbsp;&nbsp;</span>
+      </div>
+    </div>
+    <div class="app-bar-blank"></div>
+    <!--<AppBar title-name="讨论课-正在进行"></AppBar>-->
     <div class="main-content">
       <div class="seminar-title">
         <el-row>
@@ -78,21 +89,52 @@
       },
       data(){
           return{
+            iconClass:'back-icon',
             seminarTitle:'业务流程分析',
             isQuestion:false,
-            socket:null
+            socket:null,
+            klassSeminarId:'',
+            courseId:'',
+            webSocketAddress:''
           }
       },
       created() {
-          this.initWebSocket();
+          // this.initWebSocket();
+        this.$data.courseId=this.$route.query.courseId;
+        this.$data.klassSeminarId=this.$route.query.klassSeminarId;
+        this.getWebSocketAddress();
+
       },
       methods:{
+        getWebSocketAddress(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/seminar/'+this.$data.klassSeminarId+'/seminarEnter'
+          }).then(function (response) {
+            _this.$data.webSocketAddress=response.data;
+            _this.initWebSocket();
+          })
+        },
         initWebSocket(){
-          this.$data.socket=new WebSocket("ws://vjxea2.natappfree.cc/websocket/20");
+          this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
+          this.$data.socket.onmessage=this.webSocketOnMessage();
+
         },
         webSocketOnOpen(){
-          alert('成功！')
+          // alert('成功！')
+        },
+        webSocketSend(){
+
+        },
+        webSocketOnMessage(e){
+          console.log(e);
+          // const redata=JSON.parse(e.);
+          // console.log(redata.value);
+        },
+        linkBack(){
+          history.back();
         }
       }
 
@@ -101,6 +143,50 @@
 
 <style lang="less">
   #TeacherSeminarIng{
+
+    .app-bar-blank{
+      height: 10vh;
+      max-height: 60px;
+    }
+
+    .transition-box{
+      transition: all 0.8s;
+    }
+
+    .row-col{
+      width: 40%;
+    }
+
+    .app-bar {
+      padding: 0.1px;
+      height: 10vh;
+      max-height: 60px;
+      position: fixed;
+      z-index: 1000;
+
+
+      .back-icon {
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+
+
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
+    }
 
     .main-content{
       margin-top: 4vh;

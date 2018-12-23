@@ -1,6 +1,6 @@
 <template>
   <div id="TeacherCourseGrades">
-    <app-bar titleName="OOAD-学生成绩" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
+    <app-bar titleName="学生成绩" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
     <mu-dialog title="修改小组分数" width="360" :open.sync="openModGrade">
       <div>
         <span>正在为小组修改分数：</span>
@@ -20,7 +20,8 @@
       <mu-button slot="actions" flat color="primary" @click="openModGrade=false">放弃</mu-button>
     </mu-dialog>
     <div class="main-content">
-      <mu-expansion-panel v-for="item1 in seminars" :key="item1.name">
+      <span class="no-item-message" v-show="noItem">当前暂无小组分数哦~</span>
+      <mu-expansion-panel v-for="item1 in seminars" :key="item1.name" v-show="!noItem">
         <div slot="header" class="panel-header">{{item1.name}}</div>
         <div class="divider"></div>
         <el-collapse v-model="activeNames">
@@ -79,6 +80,7 @@
     },
     data(){
       return{
+        noItem:false,
         courseId:'',
         openModGrade:false,
         formModGrade:{
@@ -90,26 +92,26 @@
         formTempGrade:{},
         activeNames:'1',
         groupGrades:[
-          {
-            groupName:'小鸟 ',
-            groupRoundScore:4,
-            grades:[
-              {
-                index:0,
-                seminarName:'用例分析',
-                preGrade:4,
-                queGrade:4,
-                repGrade:4
-              },
-              {
-                index:1,
-                seminarName:'界面分析',
-                preGrade:4,
-                queGrade:4,
-                repGrade:4
-              }
-            ]
-          }
+          // {
+          //   groupName:'小鸟 ',
+          //   groupRoundScore:4,
+          //   grades:[
+          //     {
+          //       index:0,
+          //       seminarName:'用例分析',
+          //       preGrade:4,
+          //       queGrade:4,
+          //       repGrade:4
+          //     },
+          //     {
+          //       index:1,
+          //       seminarName:'界面分析',
+          //       preGrade:4,
+          //       queGrade:4,
+          //       repGrade:4
+          //     }
+          //   ]
+          // }
         ],
         seminars:[
           {
@@ -148,6 +150,7 @@
           url:'/course/'+this.$data.courseId+'/score'
         }).then(function (response) {
           console.log(response);
+          _this.$data.noItem = response.data.length === 0;
         })
       }
     }
@@ -157,6 +160,12 @@
 <style scoped lang="less">
   #TeacherCourseGrades{
     width: 100vw;
+
+
+    .no-item-message{
+      font-size: 18px;
+      font-weight: bold;
+    }
 
 
    .grade-input{

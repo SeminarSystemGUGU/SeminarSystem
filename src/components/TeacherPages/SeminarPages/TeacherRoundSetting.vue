@@ -22,7 +22,7 @@
           <div class="round-seminars-class">
             <el-row class="row-class">
               <el-col class="row-col" v-for="item,index in seminars" :key="index">
-                <seminar-card :seminarName="item.seminarName" :endTime="item.enrollEndTime"></seminar-card>
+                <seminar-card :seminarName="item.seminarName" :endTime="item.enrollEndTime" :courseId="courseId" :seminarId="item.id" :index="index" @deleteSeminar="deleteSeminar"></seminar-card>
               </el-col>
             </el-row>
           </div>
@@ -93,6 +93,7 @@
       },
       data(){
           return{
+            seminarId:'',
             roundInfoLoading:true,
             option1:1,
             option2:0,
@@ -109,24 +110,14 @@
             },
             seminars:[
 
-            ]
+            ],
+            courseId:''
           }
       },
       created() {
           this.$data.courseId=this.$route.query.courseId;
           this.$data.roundId=this.$route.query.roundId;
           this.loadCourseRound();
-      },
-      mounted(){
-        this.box = this.$refs.viewBox
-        // 监听这个dom的scroll事件
-        window.addEventListener('scroll', () => {
-          this.$data.titleShow=true;
-          this.$data.iconClass=this.$data.iconClassUse;
-          // console.log(" scroll " + this.$refs.viewBox.scrollTop)
-          //以下是我自己的需求，向下滚动的时候显示“我是有底线的（类似支付宝）”
-          // this.isScroll=this.$refs.viewBox.scrollTop>0
-        }, true)
       },
       methods:{
         confirmMethod(){
@@ -177,6 +168,13 @@
             _this.$data.seminars=response.data;
           })
 
+        },
+        deleteSeminar(data){
+          this.$data.seminars.splice(data.index,1);
+          this.$message({
+            type:'success',
+            message:'删除成功！'
+          })
         }
       }
     }
@@ -299,6 +297,7 @@
 
 
       .round-seminars-class{
+        margin-top: 1.5vh;
         overflow-y: hidden;
         overflow-wrap: normal;
         white-space: nowrap;

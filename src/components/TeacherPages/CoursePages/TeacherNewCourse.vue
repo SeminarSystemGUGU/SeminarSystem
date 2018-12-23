@@ -53,8 +53,11 @@
           <!--<el-button type="primary"></el-button>-->
         </div>
       </div>
-
+      <div class="button-panel">
+        <mu-button class="new-course-button" @click="newCourse">确认新建</mu-button>
+      </div>
 		</div>
+
 	</div>
 </template>
 <script>
@@ -245,6 +248,7 @@ import AppBar from '../../ReuseComponents/AppBar'
     .button-panel{
       margin-top: 20px;
       margin-bottom: 60px;
+
 
       .new-course-button{
         width: 200px;

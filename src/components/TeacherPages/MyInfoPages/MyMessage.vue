@@ -44,7 +44,8 @@
       },
 
       created() {
-
+        this.loadSeminarShareMessage();
+        this.loadTeamShareMessage();
       },
 
       methods:{

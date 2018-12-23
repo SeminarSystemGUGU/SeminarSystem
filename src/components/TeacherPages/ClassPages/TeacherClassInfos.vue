@@ -1,7 +1,8 @@
 <template>
     <div id="TeacherClassInfos">
       <app-bar :show-messages="true" title-name="OOAD-班级信息" backPath="/TeacherMyCourses"></app-bar>
-      <div class="main-content">
+      <div class="main-content" v-loading="isLoading">
+        <span class="no-item-message" v-show="noItem">当前暂无班级信息哦~</span>
         <el-collapse v-model="activeName">
           <el-collapse-item  :name="index" v-for="item,index in classes" :title="item.grade+'级'+item.klassSerial+'班'" :key="item.id">
             <div class="item-content">
@@ -41,13 +42,6 @@
                       <el-button size="small" type="primary">点击上传</el-button>
                       <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                     </el-upload>
-                    <!--<form :action="'http://kxp744.natappfree.cc/class/'+item.id" method="post" runat="server"  enctype="multipart/form-data" target="nm_iframe">-->
-                      <!--<input name="fileUpload" type="file" />-->
-                      <!--<input type="submit"  value="提交"/>-->
-
-                    <!--</form>-->
-                    <!--<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>-->
-                    <!--<el-button type="text" size="small" class="choose-file-button">选择文件</el-button>-->
                   </el-col>
                 </el-row>
               </div>
@@ -73,6 +67,8 @@
       },
       data(){
           return{
+            isLoading:true,
+            noItem:false,
             courseId:'',
             fileList:[],
             activeName:'1',
@@ -126,8 +122,9 @@
               method:'get',
               url:'/course/'+this.$data.courseId+'/class',
             }).then(function (response) {
-              // console.log(response);
               _this.$data.classes=response.data;
+              _this.$data.noItem = response.data.length === 0;
+              _this.$data.isLoading=false;
             })
           },
           linkToNewClass(){
@@ -141,6 +138,11 @@
 
 #TeacherClassInfos{
   width: 100vw;
+
+  .no-item-message{
+    font-weight: bold;
+    font-size: 18px;
+  }
 
   .upload-demo{
     .el-upload__input{

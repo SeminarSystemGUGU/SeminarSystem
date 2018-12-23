@@ -1,9 +1,8 @@
 <template>
   <div id="TeacherMyCourses">
     <app-bar titleName="我的课程" :show-messages="true" backPath="/TeacherMainPage"></app-bar>
-
       <div class="main-content" v-loading="isLoading">
-      <div class="no-course-message" v-show="isNull">当前尚无课程哦~</div>
+      <div class="no-course-message animate bounceInLeft" v-show="isNull">当前尚无课程哦~</div>
     <mu-expansion-panel v-for="item in courses" :key="item.courseName" v-show="!isNull">
       <div slot="header" class="panel-header">{{item.courseName}}
         <!--<span v-if="item.isMainCourse">（主）</span>-->
@@ -109,6 +108,11 @@
           }).then(function (response) {
             _this.$data.courses=response.data;
             _this.$data.isLoading=false;
+            if(response.data.length===0){
+              _this.$data.isNull=true;
+            }else{
+              _this.$data.isNull=false;
+            }
           })
         }
 
