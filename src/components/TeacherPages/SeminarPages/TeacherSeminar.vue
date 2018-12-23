@@ -135,7 +135,8 @@
             _this.$message({
               type:'success',
               message:'删除成功！'
-            })
+            });
+            history.back();
           }else{
             _this.$message({
               type:'error',

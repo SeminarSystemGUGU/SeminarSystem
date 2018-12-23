@@ -25,8 +25,16 @@
       },
       data(){
           return{
-            backPath:'/TeacherMainPage'
+            backPath:'/TeacherMainPage',
+            seminarShare:[
 
+            ],
+            teamShare:[
+
+            ],
+            teamValid:[
+
+            ]
           }
       },
       watch:{
@@ -38,6 +46,7 @@
       created() {
         this.loadSeminarShareMessage();
         this.loadTeamShareMessage();
+        this.loadTeamValidMessage();
       },
 
       methods:{
@@ -66,6 +75,15 @@
               console.log(error.response.data);
             })
           },
+          loadTeamValidMessage(){
+            let _this=this;
+            this.$axios({
+              method:'get',
+              url:'/request/teamvalid'
+            }).then(function (reponse) {
+
+            })
+          }
 
       }
     }
