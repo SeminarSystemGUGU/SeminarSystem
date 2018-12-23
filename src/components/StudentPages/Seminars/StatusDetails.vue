@@ -1,6 +1,6 @@
 <template>
   <div >
-    <back-bar titleName="OOAD-讨论课" :showMessages="true" :showBackBar="true" backUrl="/StuSeminarDetails"></back-bar>
+    <back-bar titleName="OOAD-讨论课" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,seminarId:seminarId,klassId:klassId}}"></back-bar>
 
     <div class="statusDetailsBack animated fadeInRight" >
       <!--讨论课已经结束-->
@@ -53,7 +53,7 @@
 
       <mu-dialog title="提示" width="360" :open.sync="registerFlag">
         确认报名？
-        <mu-button slot="actions" flat color="success" @click="registerFlag=!registerFlag">Sure</mu-button>
+        <mu-button slot="actions" flat color="success" @click="enroll">Sure</mu-button>
         <mu-button slot="actions" flat color="primary" @click="registerFlag=!registerFlag">Close</mu-button>
       </mu-dialog>
 
@@ -70,9 +70,37 @@
       components:{
         BackBar,
       },
+      created(){
+        this.$data.klassId=this.$route.query.klassId;
+        this.$data.seminarId=this.$route.query.seminarId;
+
+        let _this=this;    //根据courseId获取该课程讨论课列表
+        this.$axios({
+          method:'get',
+          url:'/seminar/'+_this.$data.seminarId+'/class/'+_this.$data.klassId,
+        }).then(function(response){
+          _this.$data.courseId=response.data.seminarEntity.courseId;
+          _this.$data.klassSeminarId=response.data.klassSeminarId;
+
+          let t=_this;           //报名情况
+          _this.$axios({
+            method:'get',
+            url:'/attendance/'+t.$data.klassSeminarId,
+          }).then(function (response) {
+            t.$data.enrollTeams=response.data;
+          })
+        });
+      },
       data(){
           return {
             status:1,
+            courseId:-1,
+            klassId:-1,
+            seminarId:-1,
+            klassSeminarId:-1,
+
+            enrollTeams:[],   //报名情况
+
             downloadFlag:false,
             registerFlag:false,
             registerOrder:[
@@ -163,6 +191,20 @@
           register(){
             this.$data.registerFlag=true;
           },
+        enroll(){
+            this.$axios({
+              method:'post',
+              url:'/attendance',
+              data:{
+                klassSeminarId:this.$data.klassSeminarId,
+                teamId:1,
+                teamOrder:1,
+              }
+            }).then(function (response) {
+
+            });
+            this.$data.registerFlag=!this.$data.registerFlag;
+        }
 
       }
 

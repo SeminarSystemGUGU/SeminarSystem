@@ -142,11 +142,11 @@
     transform-origin: top;
   }
   .container:hover .parent1   {
-    height: 21vh;
+    height: 27vh;
   }
   .container:hover .parent3   {
     transform: rotateX(0deg);
-    height: 21vh;
+    height: 27vh;
   }
 
   .itemTitle{

@@ -1,9 +1,9 @@
 <template>
     <div>
-      <back-bar :titleName="seminarDetails.title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMainSeminars',query:{courseId:courseId}}"></back-bar>
+      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMainSeminars',query:{courseId:courseId,klassId:klassId}}"></back-bar>
 
       <div class="seminarDetailsBack animated fadeInRight" align="left">
-        <span  class="tit" style="margin-left: 2vw;">{{seminarDetails.seminarTopic}}</span>
+        <span  class="tit" style="margin-left: 2vw;">{{seminarEntity.seminarName}}</span>
         <mu-list  toggle-nested class="infoList">
           <mu-list-item class="item" avatar :ripple="false" button>
             <mu-list-item-content>
@@ -33,7 +33,7 @@
             <i class="el-icon-arrow-down"></i>
             </mu-list-item-action >
             <mu-list-item-content button :ripple="false" slot="nested" class="requirContent">
-              <mu-list-item-content >{{seminarDetails.seminarContent}}</mu-list-item-content>
+              <mu-list-item-content >{{seminarEntity.introduction}}</mu-list-item-content>
             </mu-list-item-content>
           </mu-list-item>
 
@@ -42,7 +42,7 @@
             <mu-list-item-content >
               <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title >
-                {{seminarDetails.status}}
+                {{status}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
@@ -75,7 +75,7 @@
               <mu-list-item-title>报名情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.registerStatus}}
+                <!--{{seminarDetails.registerStatus}}-->
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="success" @click="changeRegister">修改</mu-button>
@@ -86,7 +86,7 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.pptEndTime}}
+                <!--{{seminarDetails.pptEndTime}}-->
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">{{seminarDetails.pptStatus}}</mu-button>
@@ -97,10 +97,10 @@
               <mu-list-item-title>报告</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.reportEndTime}}
+                <!--{{seminarDetails.reportEndTime}}-->
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="normal">{{seminarDetails.reportStatus}}</mu-button>
+            <!--<mu-button flat color="normal">{{// seminarDetails.reportStatus}}</mu-button>-->
           </mu-list-item>
 
           <!--已报名，已结束-->
@@ -109,7 +109,7 @@
               <mu-list-item-title>报名情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.registerStatus}}
+                <!--{{// seminarDetails.registerStatus}}-->
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="success" @click="changeRegister">修改</mu-button>
@@ -143,7 +143,7 @@
               <mu-list-item-title>报名情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarDetails.registerStatus}}
+                <!--{{// seminarDetails.registerStatus}}-->
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="success" @click="changeRegister">修改</mu-button>
@@ -175,9 +175,9 @@
         <!--未报名未开始-->
         <div class="dateRemind" v-if="status==1">
           <img class="iimg" src="../../../assets/schedule.svg"   />
-          开始报名时间：{{seminarDetails.regieterStartTime}}<br/>
+          开始报名时间：{{seminarEntity.enrollStartTime}}<br/>
           <img class="iimg" src="../../../assets/schedule.svg"   />
-          结束报名时间：{{seminarDetails.registerEndTime}}
+          结束报名时间：{{seminarEntity.enrollEndTime}}
         </div>
         <mu-button class="inSeminar" color="success"  @click="showStatusDetails" v-if="status==1">报名</mu-button>
 
@@ -212,18 +212,18 @@
         </mu-dialog>
 
         <!--已报名，正在进行-->
-        <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status==3">报告提交</mu-button>
-        <mu-button class="submit" color="success"  @click="submitPPT" v-if="status==3" >PPT提交</mu-button>
+        <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===3">报告提交</mu-button>
+        <mu-button class="submit" color="success"  @click="submitPPT" v-if="status===3" >PPT提交</mu-button>
 
         <mu-flex justify-content="center" align-items="center" class="conRunning">
-          <mu-button large round  class="runningSeminar" @click="inSeminar" v-if="status==3"  color="error">进入讨论课 &emsp; <i class="el-icon-d-arrow-right"/></mu-button>
+          <mu-button large round  class="runningSeminar" @click="inSeminar" v-if="status===3"  color="error">进入讨论课 &emsp; <i class="el-icon-d-arrow-right"/></mu-button>
         </mu-flex>
         <!--<mu-button class="runningSeminar" color="success"  style="margin-top: 10vh;" @click="inSeminar" v-if="status==3">进入讨论课<></mu-button>-->
 
         <!--未报名，正在进行-->
 
         <!--已报名，已结束-->
-        <mu-button class="submit" color="success"  @click="showGrades" v-if="status==5">查看成绩</mu-button>
+        <mu-button class="submit" color="success"  @click="showGrades" v-if="status===5">查看成绩</mu-button>
 
         <!--未报名，已结束-->
       </div>
@@ -239,80 +239,119 @@
       },
       created(){
         this.$data.courseId=this.$route.query.courseId;
-        this.$data.seminarDetails.seminarId=this.$route.query.seminarId;
+        this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassId=this.$route.query.klassId;
+
+        let tt=this;
+        this.$axios({
+          method:'get',
+          url:'/course/'+tt.$data.courseId+'/team',
+        }).then(function (response) {
+          tt.$data.myTeam=response.data;
+        });
 
         let _this=this;    //根据courseId获取该课程讨论课列表
          this.$axios({
           method:'get',
-          url:'/seminar/'+_this.$data.seminarDetails.seminarId+'/class/'+_this.$data.klassId,
+          url:'/seminar/'+_this.$data.seminarId+'/class/'+_this.$data.klassId,
         }).then(function(response){
+           _this.$data.reportDDL=response.data.reportDDL;
+           _this.$data.processing=response.data.status;          //课程进度
            _this.$data.seminarEntity=response.data.seminarEntity;
            _this.$data.klassSeminarId=response.data.klassSeminarId;
 
-           if(response.data.status===1)
-             _this.$data.staus=2/3;
+           let t=_this;
+           _this.$axios({
+             method:'get',
+             url:'/attendance/'+t.$data.klassSeminarId,
+           }).then(function (response) {
+             t.$data.enrollTeams=response.data;           //判断是否报名
+             let i;
+             for( i=0;i<t.$data.enrollTeams.length;i++)
+             {
+               if(t.$data.enrollTeams[i].teamId===t.$data.myTeam.teamId)
+               {
+                 t.$data.enrollState=1;     //已报名
+                 break;
+               }
+             }
 
-          // _this.$data.seminarDetails.seminarTopic=response.data.seminarName;
-          //  _this.$data.seminarDetails.seminarContent=response.data.seminarContent;
-          //  _this.$data.seminarDetails.status=response.data.status;
-          //  _this.$data.seminarDetails.regieterStartTime=response.data.signStartTime;
-          //  _this.$data.seminarDetails.registerEndTime=response.data.signEndTime;
-
-        },function(error){
-          alert(error);
+             //   判断讨论课状态   根据processing ：0未开始   1正在进行  2已经结束  3暂停
+             //                      enrollState：  0未报名   1已经报名
+             //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
+             if(t.$data.processing===0 && t.$data.enrollState===0)
+               t.$data.status=1;
+             else if(t.$data.processing===0 && t.$data.enrollState===1)
+               t.$data.status=4;
+             else if(t.$data.processing===1 && t.$data.enrollState===0)
+               t.$data.status=2;
+             else if(t.$data.processing===1 && t.$data.enrollState===1)
+               t.$data.status=3;
+             else if(t.$data.processing===2 && t.$data.enrollState===5)
+               t.$data.status=4;
+           })
+         },function(error){
+           alert(error);
         });
       },
       data(){
           return{
             open:'send',
-
+            title:'seminar',
+            myTeam:'',
+            klassId:-1,
             courseId:-1,
-            status:1,   //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
+            seminarId:-1,
+            status:-1,   //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
             klassSeminarId:-1,
             seminarEntity:{},
+            reportDDL:'',
+            processing:-1,
+            enrollState:0,
 
-            seminarDetails:{
-              seminarId:"",
-              title:"OOAD-讨论课",
-              seminarTopic:'业务流程分析',
-              roundId:2,
-              classOrder:'第二次',
-              seminarContent:'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
-              status:'正在进行',
-              registerEndTime:"2018-10-1",
-              regieterStartTime:'2018-1-1',
-              pptStatus:'未提交',
-              reportStatus:'未提交',
-              pptEndTime:'距截止时间还有一天',
-              reportEndTime:'距截止时间还有一天',
-              registerStatus:'2016(1)-第三组',
-            },
+            enrollTeams:[],  //报名小组列表
 
 
+            // seminarDetails:{
+            //   seminarId:"",
+            //   title:'',//"OOAD-讨论课",
+            //   seminarTopic:'',//'业务流程分析',
+            //   roundId:'',//2,
+            //   classOrder:'',//'第二次',
+            //   seminarContent:'',//'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
+            //   status:'',//'正在进行',
+            //   registerEndTime:'',//"2018-10-1",
+            //   regieterStartTime:'',//'2018-1-1',
+            //   pptStatus:'',//'未提交',
+            //   reportStatus:'',//'未提交',
+            //   pptEndTime:'',//'距截止时间还有一天',
+            //   reportEndTime:'',//'距截止时间还有一天',
+            //   registerStatus:'',//'2016(1)-第三组',
+            // },
 
             fileList: [{name: 'food.jpeg', url:[],}],
+
             reportFlag:false,
             pptFlag:false,
           }
       },
       methods:{
-          showStatusDetails(){
-            this.$router.push('/StuStatusDetails');
+          showStatusDetails(){      //报名
+            this.$router.push({path:'/StuStatusDetails',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});
           },
         inSeminar(){
-            this.$router.push('/StuAskQuestion');
+            this.$router.push({path:'/StuAskQuestion',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});
         },
-        //原RegisteredSeminarDetails方法
         changeRegister(){
-          this.$router.push('/StuChangeRegister');
+          this.$router.push({path:'/StuChangeRegister',query:{courseId:this.$data.courseId,klassId:this.$data.klassId,klassSeminarId:this.$data.klassSeminarId}});
         },
         submitPPT(){
           this.$data.pptFlag=true;
         },
         showGrades(){
-          this.$router.push('/StuCheckGrades');
+          this.$router.push({path:'/StuCheckGrades',query:{courseId:this.$data.courseId,klassId:this.$data.klassId,klassSeminarId:this.$data.klassSeminarId}});
         },
+
 
         submitReport(){
           this.$data.reportFlag=true;

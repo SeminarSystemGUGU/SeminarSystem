@@ -1,6 +1,6 @@
 <template>
     <div>
-      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" backUrl="/StuSeminarDetails"> </back-bar>
+      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,klassId:tklassId,klassSeminarId:klassSeminarId}}"> </back-bar>
 
       <div class="statusDetailsBack animated fadeInRight" >
       <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentTeam}}</div>
@@ -33,8 +33,35 @@
       components:{
           BackBar,
       },
+    created(){
+      this.$data.seminarId=this.$route.query.seminarId;
+      this.$data.klassId=this.$route.query.klassId;
+
+      let _this=this;    //根据courseId获取该课程讨论课列表
+      this.$axios({
+        method:'get',
+        url:'/seminar/'+_this.$data.seminarId+'/class/'+_this.$data.klassId,
+      }).then(function(response){
+        _this.$data.courseId=response.data.seminarEntity.courseId;
+        _this.$data.klassSeminarId=response.data.klassSeminarId;
+
+        let t=_this;
+        _this.$axios({
+          method:'post',
+          url:'/question/newQuestion',
+        })
+
+      });
+
+    },
       data() {
         return {
+          courseId:-1,
+          seminarId:-1,
+          klassId:-1,
+          klassSeminarId:-1,
+
+
           title:'OOAD-讨论课',
           currentTeam:'第二组',
           questionFlag:false,

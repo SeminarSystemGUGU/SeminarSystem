@@ -3,11 +3,11 @@
     <back-bar titleName="创建队伍" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMyTeam',query:{courseId:courseId}}"></back-bar>
 
     <div class="back animated fadeInRight" align="left" >
-      <mu-form label-position="left">
-        <mu-form-item  label="组名">
+      <mu-form label-position="left" :model="newTeam" class="mu-demo-form">
+        <mu-form-item  label="组名" prop="teamName">
           <mu-text-field v-model="newTeam.teamName"></mu-text-field>
         </mu-form-item>
-        <mu-form-item label="班级">
+        <mu-form-item label="班级" prop="klassId">
           <mu-select v-model="newTeam.klassId" >
             <mu-option v-for="option,index in klasses" :key="index" :label="option.id" :value="option"></mu-option>
           </mu-select>
@@ -21,65 +21,45 @@
           <mu-sub-header style="margin-top: -3vh;" inset>(人数限制3-5人，不符合限制需<span style="border-bottom: 0.5px solid darkred;color: darkred;cursor: pointer">提交申请</span>)</mu-sub-header>
           <mu-list-item avatar button :ripple="false"  :key="index"  v-for="option,index in newTeam.members" style="margin-left: -2vh;">
             <mu-list-item-action>
-              <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.identify=='组长'">
+              <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.id===newTeam.leader.id">
                 <!--头像图标-->
-                {{option.identify}}
+                组长
               </mu-avatar>
-              <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;" v-if="option.identify=='组员'">
+              <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;" v-if="option.id!==newTeam.leader.id">
                <!--头像图标-->
-                {{option.identify}}
+                组员
               </mu-avatar>
             </mu-list-item-action>
             <mu-list-item-content>
-              <mu-list-item-title style="margin-top:-2vh; "> &emsp;{{option.name}}</mu-list-item-title>
-              <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
+              <mu-list-item-title style="margin-top:-2vh; "> &emsp;{{option.studentName}}</mu-list-item-title>
+              <mu-list-item-sub-title>&emsp;{{option.account}}</mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-list-item-action style="margin-left: -4vh;">
-              <mu-button icon v-if="option.identify=='组员'" @click="deleteMember(index)">
+              <mu-button icon v-if="option.id!==newTeam.leader.id" @click="deleteMember(index)">
                <i style="margin-top: -1vh;" class="el-icon-circle-close-outline"/>
               </mu-button>
             </mu-list-item-action>
           </mu-list-item>
         </mu-list>
 
-        <mu-form label-position="left" style="margin-top: 5vh;">
-          <mu-form-item  label="搜索">
-            <mu-text-field v-model="searchNumber" placeholder="输入学号查找"><i class="el-icon-search"/></mu-text-field>
-          </mu-form-item>
-        </mu-form>
-
-        <mu-divider inset></mu-divider>
-        <mu-list textline="two-line">
-          <mu-sub-header inset>搜索结果</mu-sub-header>
-          <mu-list-item avatar button :ripple="false" :key="index"  v-for="option,index in resultMembers" >
-            <mu-list-item-action>
-              <mu-avatar color="snow" style="font-size: 18px;" >
-                <!--头像图标-->
-                <img style="width: 23px;height: 23px;" src="../../../assets/头像.png"   />
-              </mu-avatar>
-            </mu-list-item-action>
-            <mu-list-item-content>
-              <mu-list-item-title> &emsp;{{option.name}}</mu-list-item-title>
-              <mu-list-item-sub-title>&emsp;{{option.stuNo}}</mu-list-item-sub-title>
-            </mu-list-item-content>
-            <mu-list-item-action>
-              <mu-button icon @click="addMember(index)">
-                <i style="margin-top: -1vh;"  class="el-icon-circle-plus-outline"/>
-              </mu-button>
-            </mu-list-item-action>
-          </mu-list-item>
-        </mu-list>
+        <el-table :data="noTeamMember.filter(data => !search || data.account.toLowerCase().includes(search.toLowerCase()))"
+                  style="width: 90%;margin-left: 5%;margin-top: 2vh;"  max-height="250">
+          <el-table-column label="学号" prop="account" width="140"></el-table-column>
+          <el-table-column label="姓名" prop="studentName" width="70"></el-table-column>
+          <el-table-column align="right">
+            <template slot="header" slot-scope="scope">
+              <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
+            </template>
+            <template slot-scope="scope">
+              <el-button size="mini" type="success"  @click="addMember(scope.$index, scope.row)">添加</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
       <mu-button class="save" color="success" @click="createTeam" >保存</mu-button>
-      <mu-button class="dissolve" color="error" style="margin-bottom: 50px;">解散小组</mu-button>
+      <mu-button class="dissolve" color="error" style="margin-bottom: 50px;" @click="backToMyTeam">取消</mu-button>
 
     </div>
-
-    <mu-dialog title="确认删除？" width="360" :open.sync="deleteFlag" >
-      <mu-button slot="actions" flat color="success" @click="confirmDelete">Sure</mu-button>
-      <mu-button slot="actions" flat color="primary" @click="deleteFlag=!deleteFlag">Close</mu-button>
-    </mu-dialog>
-
   </div>
 </template>
 
@@ -91,9 +71,9 @@
         BackBar,
       },
       created(){
-        // 获取该课程下所有班级
-         this.$data.courseId=this.$route.query.courseId;
+        this.$data.courseId=this.$route.query.courseId;
 
+        // 获取该课程下所有班级
         let _this=this;
         this.$axios({
           method:'get',
@@ -101,8 +81,25 @@
         }).then(function (response) {
           _this.$data.klasses=response.data;
         },function (error) {
+        });
 
+        let ts=this;     //未组队成员
+        this.$axios({
+          method:'get',
+          url:'course/'+ts.$data.courseId+'/noTeam',
+        }).then(function(response){
+          ts.$data.noTeamMember=response.data;
+        },function(error){
+          alert(error);
+        });
 
+        let ttt=this;      //获取个人信息
+        this.$axios({
+          method:'get',
+          url:'user/information',
+        }).then(function (response) {
+          ttt.$data.newTeam.members.push(response.data);
+          ttt.$data.newTeam.leader=response.data;
         })
 
       },
@@ -110,95 +107,68 @@
         return{
           courseId:1,
           klasses:[],
-          teamId:'',
-
-          inTeamOrNot:true,
-          leaderOrNot:true,
-          deleteIndex:1,
-          deleteFlag:false,
-          addFlag:false,
 
           newTeam:{   //创建队伍信息
-            teamName:'咕咕鸟',
-            klassId:1,
-            members:[
-              {
-                name:'LiMing',
-                id:1,
-                stuNo:'11111',
-                identify:'组长',
-              },
-              {
-                name:'WangQIan',
-                id:2,
-                stuNo:'11112',
-                identify:'组员',
-              },
-              {
-                name:'WangQIan',
-                id:3,
-                stuNo:'11112',
-                identify:'组员',
-              },
-            ]
+            teamName:'',
+            klassId:'',
+            members:[],
+            status:'',
+            serial:'',
+            leader:'',
           },
-          searchNumber:'',  //搜索学号
-          resultMembers:[    //搜索结果
-            {
-              name:'LiMing',
-              id:1,
-              stuNo:'11111',
-            },
-          ],
+          noTeamMember:[],    //未组队成员
+          search:'',  //搜索学号
+          maxMember:5,
         }
       },
       methods:{
         deleteMember(index){
-          this.$data.deleteIndex=index;
-          this.$data.deleteFlag=!this.$data.deleteFlag;
-        },
-        confirmDelete(){
-          this.$data.deleteFlag=!this.$data.deleteFlag;
-          this.$set(this.$data.newTeam.members.splice(this.$data.deleteIndex,1));
-        },
-        addMember(index){
-          this.$data.resultMembers[index].identify="组员";
-          this.$set(this.$data.newTeam.members,this.$data.newTeam.members.length,this.$data.resultMembers[index]);
+          this.$set(this.$data.noTeamMember,0,this.$data.newTeam.members[index]);
+          this.$set(this.$data.newTeam.members.splice(index,1));
         },
         createTeam(){
-          let leaderId=0;
           let commonMembers=[];
-          for( let i=0;i<this.$data.newTeam.members.length;i++ ) {
-            if (this.$data.newTeam.members[i].identify === "组长")
-              leaderId = this.$data.newTeam.members[i].id;
-            else {
-              commonMembers.push({id: this.$data.newTeam.members[i].id});
-            }
-          }
+          for( let i=0;i<this.$data.newTeam.members.length;i++ )
+            commonMembers.push({id: this.$data.newTeam.members[i].id});
+
+          if(this.$data.newTeam.members.length<=this.$data.maxMember)    //组队合法
+            this.$data.newTeam.status=1;
+
           let _this=this;
           this.$axios({
             method:'post',
-            url:'/team/',
+            url:'/team',
             data:{
                 teamId:'',
-                team_name:_this.$data.newTeam.teamName,
-                course_id:_this.$data.courseId,
-                klass_id:_this.$data.newTeam.klassId,
+                teamName:_this.$data.newTeam.teamName,
+                courseId:_this.$data.courseId,
+                klassId:_this.$data.newTeam.klassId.id,
                 leader:{
-                    id:3,
+                    id:_this.$data.newTeam.leader.id,
                 },
                 members:commonMembers,
-              status:0,
-              serial:1,
+              status:_this.$data.newTeam.status,
+              serial:'',
             }
           }).then(function (resopnse) {
             _this.$data.teamId=resopnse.data.teamId;
-            console.log(resopnse);
+            _this.$router.push({path:'StuMyTeam',query:{courseId:_this.$data.courseId}});
           })
         },
         dissolve(){
           //组长解散小组
         },
+        addMember(index, row) {
+          const loading = this.$loading();
+          setTimeout(() => {
+            loading.close();
+          }, 500);
+          this.$set(this.$data.newTeam.members,this.$data.newTeam.members.length,row);
+          this.$set(this.$data.noTeamMember.splice(index,1));
+        },
+        backToMyTeam(){
+          this.$router.push({path:'StuMyTeam',query:{courseId:this.$data.courseId}});
+        }
        }
     }
 </script>
