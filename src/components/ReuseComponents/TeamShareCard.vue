@@ -60,7 +60,7 @@
         let _this=this;
         this.$axios({
           method:'put',
-          url:'/request/'+this.$props.item.requestId+'/teamShare',
+          url:'/request/'+this.$props.item.requestId+'/teamshare',
           data:{
             handleType:'accept'
           }
@@ -77,7 +77,7 @@
         let _this=this;
         this.$axios({
           method:'put',
-          url:'/request/'+this.$props.item.requestId+'/teamShare',
+          url:'/request/'+this.$props.item.requestId+'/teamshare',
           data:{
             handleType:'refuse'
           }
