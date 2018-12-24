@@ -128,7 +128,24 @@
         initWebSocket(){
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
-          this.$data.socket.onmessage=this.webSocketOnMessage();
+          let _this=this;
+          this.$data.socket.onmessage=function (msg) {
+            console.log(msg);
+            if(msg.data ==="200") {
+              console.log(_this.$data.currentIndex);
+            }
+            // if(msg.data==='200'){
+            //   this.$message({
+            //     type:'success',
+            //     message:'连接成功！正式开始上课！'
+            //   })
+            // }
+          };
+          this.$data.socket.addEventListener("message", function(event) {
+            console.log( event.data);
+
+            // 处理数据
+          });
         },
         webSocketOnOpen(){
           // alert('成功！')
@@ -141,7 +158,7 @@
           {
             this.$data.currentIndex++;
             console.log(this.$data.currentIndex);
-            this.$set(this.$data.currentAttendance=this.$data.enrollTeams[this.$data.currentIndex]);
+            // this.$set(this.$data.currentAttendance=this.$data.enrollTeams[this.$data.currentIndex]);
           }
           // console.log(e);
           // const redata=JSON.parse(e.);

@@ -30,13 +30,25 @@ Vue.config.productionTip = false;
 import Toast from 'muse-ui-toast';
 
 Vue.use(Toast);
+Toast.config( {
+  position: 'bottom',               // 弹出的位置
+  time: 2000,                       // 显示的时长
+  closeIcon: '',               // 关闭的图标
+  close: false,                      // 是否显示关闭按钮
+  successIcon: '',      // 成功信息图标
+  infoIcon: '',                 // 信息信息图标
+  warningIcon: '',     // 提醒信息图标
+  errorIcon: ''              // 错误信息图标
+});
+
 
 new Vue({
   el: '#app',
   router,
   created () {
     this.$axios.defaults.withCredentials=true;
-    this.$axios.defaults.baseURL='http://47.94.174.82:8081';
+    // this.$axios.defaults.baseURL='http://47.94.174.82:8081';
+    this.$axios.defaults.baseURL='http://drvhuj.natappfree.cc';
     this.$axios.interceptors.response.use(function (response) {
       return response;
     }, function (error) {
