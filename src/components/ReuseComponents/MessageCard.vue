@@ -16,8 +16,8 @@
         <div class="do-button">
           <div class="button-panel">
             <!--<span></span>-->
-            <el-button class="accept-button" type="text">同意</el-button>
-            <el-button class="reject-button" type="text">拒绝</el-button>
+            <el-button class="accept-button" type="text" @click="acceptMessage">同意</el-button>
+            <el-button class="reject-button" type="text" @click="rejectMessage">拒绝</el-button>
           </div>
         </div>
       </div>
@@ -35,14 +35,25 @@
             beenRead:false,
             messageVisible:false,
             messageBody:'组队邀请组队邀请组队邀请组队邀请组队邀请组队邀请组队邀请组队',
-
+            requestType:'',
+            requestId:''
           }
       },
       methods:{
-          seeMore(){
-            this.messageVisible=!this.messageVisible;
-            this.beenRead=true;
-          }
+        seeMore(){
+          this.messageVisible=!this.messageVisible;
+          this.beenRead=true;
+        },
+        acceptMessage(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/request/'+this.$data.requestId+'/teamShare'
+          })
+        },
+        rejectMessage(){
+
+        }
       }
     }
 </script>

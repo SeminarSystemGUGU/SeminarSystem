@@ -6,7 +6,9 @@
         <span>待办通知</span>
       </div>
       <div class="wait-message-bar">
-        <message-card></message-card>
+        <team-share-card v-for="item,index in teamShare" :item="item" :key="item.requestId"></team-share-card>
+        <team-valid-card v-for="item,index in teamValid" :item="item" :key="item.requestId"></team-valid-card>
+        <seminar-share-card v-for="item,index in seminarShare" :item="item" :key="item.requestId"></seminar-share-card>
       </div>
     </div>
   </div>
@@ -16,17 +18,31 @@
   import AppBar from '../../ReuseComponents/AppBar'
   import MessageCard from '../../ReuseComponents/MessageCard'
   import HistoryCard from '../../ReuseComponents/HistoryMessageCard'
+  import TeamShareCard from '../../ReuseComponents/TeamShareCard'
+  import TeamValidCard from '../../ReuseComponents/TeamValidCard'
+  import SeminarShareCard from '../../ReuseComponents/SeminarShareCard'
     export default {
         name: "MyMessage",
       components:{
+        TeamValidCard,
+        SeminarShareCard,
+        TeamShareCard,
         MessageCard,
         AppBar,
         HistoryCard
       },
       data(){
           return{
-            backPath:'/TeacherMainPage'
+            backPath:'/TeacherMainPage',
+            seminarShare:[
 
+            ],
+            teamShare:[
+
+            ],
+            teamValid:[
+
+            ]
           }
       },
       watch:{
@@ -38,6 +54,7 @@
       created() {
         this.loadSeminarShareMessage();
         this.loadTeamShareMessage();
+        this.loadTeamValidMessage();
       },
 
       methods:{
@@ -48,7 +65,7 @@
               url:'/request/seminarshare',
               contentType:'application/json;charset=UTF-8',
             }).then(function (response) {
-              console.log(response.data);
+              _this.$data.seminarShare=response.data;
             }).catch(function (error) {
               console.log(error.response.data);
             })
@@ -61,11 +78,20 @@
               url:'/request/teamshare',
               contentType:'application/json;charset=UTF-8',
             }).then(function (response) {
-              console.log(response.data);
+              _this.$data.teamShare=response.data;
             }).catch(function (error) {
               console.log(error.response.data);
             })
           },
+          loadTeamValidMessage(){
+            let _this=this;
+            this.$axios({
+              method:'get',
+              url:'/request/teamvalid'
+            }).then(function (reponse) {
+              _this.$data.teamValid=reponse.data;
+            })
+          }
 
       }
     }

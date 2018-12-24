@@ -21,15 +21,15 @@
     </mu-dialog>
     <div class="main-content" v-loading="isLoading">
       <span class="no-item-message" v-show="noItem">当前暂无小组分数哦~</span>
-      <mu-expansion-panel v-for="item1 in seminars" :key="item1.name" v-show="!noItem">
-        <div slot="header" class="panel-header">{{item1.name}}</div>
+      <mu-expansion-panel v-for="item1 in groupGrades" :key="item1.roundId" v-show="!noItem">
+        <div slot="header" class="panel-header">第{{item1.roundName}}轮</div>
         <div class="divider"></div>
         <el-collapse v-model="activeNames">
-          <el-collapse-item name="1" v-for="(item,index) in groupGrades" :key="index">
+          <el-collapse-item name="1" v-for="(item,index) in item1.groups" :key="index">
             <template slot="title">
               <div class="group-grades">
                 <span class="left-grades">{{item.groupName}}</span>
-                <span class="right-grades">总分：{{item.groupRoundScore}}</span>
+                <span class="right-grades">总分：</span>
               </div>
             </template>
             <!--<div class="divider"></div>-->
@@ -73,11 +73,6 @@
     components:{
       AppBar
     },
-    created(){
-      this.$data.courseId=this.$route.query.courseId;
-      this.loadCourseGrades();
-      console.log(this.$data.groupGrades[0]);
-    },
     data(){
       return{
         isLoading:true,
@@ -114,17 +109,16 @@
           //   ]
           // }
         ],
-        seminars:[
-          {
-            name:'第一轮',
-            // isMainCourse:true,
-          },
-          {
-            name:'第二轮',
-            // isMainCourse:false
-          }
+        teams:[
+
         ]
+
       }
+    },
+    created(){
+      this.$data.courseId=this.$route.query.courseId;
+      this.loadCourseGrades();
+
     },
     methods:{
       confirmModify(){
@@ -141,19 +135,54 @@
         this.$data.openModGrade=true;
       },
       linkToGrades(item){
-        this.$router.push('/TeacherCourseGrades');
+        this.$router.push('/TeacherMyCourses');
       },
 
       loadCourseGrades(){
         let _this=this;
         this.$axios({
           method:'get',
-          url:'/course/'+this.$data.courseId+'/score'
+          url:'/course/'+this.$data.courseId+'/round'
         }).then(function (response) {
-          console.log(response);
-          _this.$data.noItem = response.data.length === 0;
+          if(response.data.length===0){
+            _this.$data.noItem=true;
+          }else{
+            for(let index=0;index<response.data.length;index++){
+              _this.$data.groupGrades.push({
+                roundName:response.data[index].roundSerial,
+                roundId:response.data[index].id,
+                groups:[
+
+                ]
+              })
+            }
+            _this.loadTeams();
+          }
           _this.$data.isLoading=false;
         })
+      },
+      loadTeams(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/course/'+this.$data.courseId+'/teams'
+        }).then(function (response) {
+          _this.$data.teams=response.data;
+          _this.loadGroupRoundGrades();
+        })
+      },
+      loadGroupRoundGrades(){
+        let _this=this;
+        for(let index=0;index<this.$data.groupGrades.length;index++){
+          for(let j=0;j<this.$data.teams.length;j++){
+            this.$axios({
+              method:'get',
+              url:'/round/'+this.$data.groupGrades[index].roundId+'/team/'+this.$data.teams[j].teamId
+            }).then(function (response) {
+              console.log(response.data);
+            })
+          }
+        }
       }
     }
   }
