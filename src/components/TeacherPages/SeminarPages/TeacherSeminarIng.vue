@@ -22,18 +22,18 @@
     <div class="main-content">
       <div class="seminar-title">
         <el-row>
-          <el-col class="title-col">
+          <!--<el-col class="title-col">-->
             <span>正在进行：{{seminarTitle}}&nbsp<i class="el-icon-loading"/> </span>
-          </el-col>
-          <el-col class="stop-col">
-            <span>暂停</span>
-          </el-col>
+          <!--</el-col>-->
+          <!--<el-col class="stop-col">-->
+            <!--<span>暂停</span>-->
+          <!--</el-col>-->
         </el-row>
       </div>
       <div class="seminar-tooltip">
         <el-row>
           <el-col class="pre-col">
-            <span>正在展示：1-6小组 5分钟</span>
+            <span>正在展示：1-6小组</span>
           </el-col>
           <el-col class="que-col">
             <span>已有1位同学提问</span>
@@ -44,8 +44,8 @@
         <el-row>
           <el-col class="pre-list-col">
             <div class="list-left">
-              <div class="pre-list-item" style="background-color: lightgrey">
-                <span style="color: white;font-weight: bold">1-6</span>
+              <div class="pre-list-item" :style="chosenItemStyle">
+                <span :style="chosenStyle">1-6</span>
               </div>
               <div class="pre-list-item">
                 <span>1-6</span>
@@ -80,7 +80,7 @@
       </div>
       <div class="button-panel">
         <el-button v-show="isQuestion" type="primary">提交分数</el-button>
-        <el-button v-show="!isQuestion" type="primary">下个提问</el-button>
+        <el-button v-show="!isQuestion" type="primary" @click="webSocketSend">下个提问</el-button>
         <el-button v-show="!isQuestion" type="primary">下个展示</el-button>
       </div>
     </div>
@@ -96,6 +96,7 @@
       },
       data(){
           return{
+            chooseTeam:'',
             seminarId:'',
             classId:'',
             reportTime:'',
@@ -106,19 +107,26 @@
             socket:null,
             klassSeminarId:'',
             courseId:'',
-            webSocketAddress:''
+            webSocketAddress:'',
+            preTeams:[
+
+            ],
+            chosenStyle:{
+              color: 'white',
+              fontWeight: 'bold'
+            },
+            chosenItemStyle:{
+              backgroundColor:'lightgrey'
+            }
           }
       },
-      created() {
-          // this.initWebSocket();
-
-
+      mounted() {
         this.$data.classId=this.$route.query.classId;
         this.$data.courseId=this.$route.query.courseId;
         this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
+        this.loadPreTeams();
         this.getWebSocketAddress();
-        // this.setSeminarStatus();
       },
       methods:{
         setReportTime(){
@@ -148,6 +156,15 @@
             })
           }
         },
+        loadPreTeams(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/attendance/'+this.$data.klassSeminarId
+          }).then(function (response) {
+            _this.$data.preTeams=response.data;
+          })
+        },
         setSeminarStatus(){
           let _this=this;
           this.$axios({
@@ -175,19 +192,24 @@
         initWebSocket(){
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
-          this.$data.socket.onmessage=this.webSocketOnMessage();
+          this.$data.socket.onmessage=function (msg) {
+            console.log(msg);
+            // if(msg.data==='200'){
+            //   this.$message({
+            //     type:'success',
+            //     message:'连接成功！正式开始上课！'
+            //   })
+            // }
+          };
+          // this.$data.socket.sendmessage=function () {
+          // }
 
         },
         webSocketOnOpen(){
           // alert('成功！')
         },
         webSocketSend(){
-
-        },
-        webSocketOnMessage(e){
-          console.log(e);
-          // const redata=JSON.parse(e.);
-          // console.log(redata.value);
+          this.$data.socket.send("2");
         },
         linkBack(){
           history.back();

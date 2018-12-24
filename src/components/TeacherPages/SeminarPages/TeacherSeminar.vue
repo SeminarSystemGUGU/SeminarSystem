@@ -12,7 +12,7 @@
     </div>
     <div class="app-bar-blank"></div>
     <!--<app-bar :show-messages="true" title-name="讨论课详情" backPath="/TeacherCourseRounds"></app-bar>-->
-    <div class="main-content">
+    <div class="main-content" v-loading="isLoading" v-show="!isLoading">
       <div class="course-title">
         <span>{{seminarName}}<i v-if="seminarStatus==='2'" class="el-icon-loading"></i>
                              <i v-if="seminarStatus==='3'" class="el-icon-circle-check-outline"></i> </span>
@@ -83,7 +83,7 @@
         </el-row>
       </div>
     </div>
-    <div class="button-panel">
+    <div class="button-panel" v-show="!isLoading">
       <div>
       <el-button type="danger" class="start-button" v-if="seminarStatus===0" @click="GotoSeminar">开始讨论课</el-button>
       </div>
@@ -108,6 +108,7 @@
     },
     data(){
       return {
+        isLoading:true,
         grade:'',
         klassSerial:'',
         klassTime:'',
@@ -190,6 +191,7 @@
           _this.$data.klassSeminarId=response.data.klassSeminarId;
           _this.$data.klassLocation=response.data.klassEntity.klassLocation;
           _this.$data.klassTime=response.data.klassEntity.klassTime;
+          _this.$data.isLoading=false;
         })
       },
       loadRoundInfos(){
