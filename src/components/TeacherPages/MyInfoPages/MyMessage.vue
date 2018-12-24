@@ -75,13 +75,17 @@
               console.log(error.response.data);
             })
           },
+
+
           loadTeamValidMessage(){
             let _this=this;
             this.$axios({
               method:'get',
               url:'/request/teamvalid'
-            }).then(function (reponse) {
-
+            }).then(function (response) {
+              console.log(response.data);
+            }).catch(function (error) {
+              console.log(error.response.data);
             })
           }
 

@@ -1,17 +1,17 @@
 <template>
   <div id="MessageCard">
-    <el-card class="message-card" >
+    <el-card class="message-card" v-for="(mes,index) in message">
       <div class="card-title">
-        <el-badge value="未读" class="item" v-show="!beenRead">
-          <span>{{messagetitle}}</span>
+        <el-badge value="未读" class="item" v-show="!mes.beenRead">
+          <span>{{mes.messageTitle}}</span>
         </el-badge>
-        <span v-show="beenRead">{{messagetitle}}</span>
-        <span class="details-button" @click="seeMore">详情</span>
+        <span v-show="mes.beenRead">{{mes.messageTitle}}</span>
+        <span class="details-button" @click="seeMore(index)">详情</span>
       </div>
       <el-collapse-transition>
-      <div class="animate slideInLeft-enter card-content" v-show="messageVisible">
+      <div class="animate slideInLeft-enter card-content" v-show="mes.messageVisible">
         <div class="content-details">
-          {{messageBody}}
+          {{mes.messageBody}}
         </div>
         <div class="do-button">
           <div class="button-panel">
@@ -29,20 +29,23 @@
 <script>
     export default {
         name: "MessageCard",
+      props:['a'],
       data(){
           return{
-            messagetitle:'J2ee共享组队',
-            beenRead:false,
-            messageVisible:false,
-            messageBody:'组队邀请组队邀请组队邀请组队邀请组队邀请组队邀请组队邀请组队',
-            requestType:'',
-            requestId:''
+            message:[{
+              messageTitle:'J2ee共享组队',
+              beenRead:false,
+              messageVisible:false,
+              messageBody:'组队邀请组队邀请组队邀请组队邀请组队邀请组队邀请组队邀请组队',
+              requestType:'',
+              requestId:''
+            }],
           }
       },
       methods:{
-        seeMore(){
-          this.messageVisible=!this.messageVisible;
-          this.beenRead=true;
+        seeMore(index){
+          this.message[index].messageVisible=!this.message[index].messageVisible;
+          this.message[index].beenRead=true;
         },
         acceptMessage(){
           let _this=this;
