@@ -1,16 +1,16 @@
 <template>
     <div>
-      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,klassId:tklassId,klassSeminarId:klassSeminarId}}"> </back-bar>
+      <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,klassId:klassId,seminarId:seminarId}}"> </back-bar>
 
       <div class="statusDetailsBack animated fadeInRight" >
-      <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentTeam}}</div>
+      <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentIndex}}</div>
         <mu-paper :z-depth="1" class="demo-list-wrap">
-          <mu-list v-for="option in registerOrder" :key = "option.teamid">
+          <mu-list v-for="option,index in registerOrder" :key = "index">
             <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
               <mu-list-item-action>
                 {{option.order}}
               </mu-list-item-action>
-              <mu-list-item-title style="margin-left: 35%;font-size: 20px">{{option.teamid}}</mu-list-item-title>
+              <mu-list-item-title style="margin-left: 35%;font-size: 20px">{{option.team}}</mu-list-item-title>
             </mu-list-item>
           </mu-list>
           <mu-divider></mu-divider>
@@ -37,7 +37,7 @@
       this.$data.seminarId=this.$route.query.seminarId;
       this.$data.klassId=this.$route.query.klassId;
 
-      let _this=this;    //根据courseId获取该课程讨论课列表
+      let _this=this;
       this.$axios({
         method:'get',
         url:'/seminar/'+_this.$data.seminarId+'/class/'+_this.$data.klassId,
@@ -45,14 +45,31 @@
         _this.$data.courseId=response.data.seminarEntity.courseId;
         _this.$data.klassSeminarId=response.data.klassSeminarId;
 
-        let t=_this;
+        _this.getWebSocketAddress();
+
+        let t=_this;           //报名情况
         _this.$axios({
-          method:'post',
-          url:'/question/newQuestion',
-        })
-
+          method:'get',
+          url:'/attendance/'+t.$data.klassSeminarId,
+        }).then(function (response) {
+          t.$data.enrollTeams=response.data;
+          t.$data.registerOrder=[];
+          let x;
+          for(x=0;x<t.$data.maxMember;x++) {
+            t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
+          }
+          let i,j;
+          for(i=0;i<t.$data.registerOrder.length;i++)
+            for(j=0;j<t.$data.enrollTeams.length;j++)
+            {
+              if(t.$data.enrollTeams[j].teamOrder===i+1)
+              {
+                t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
+              }
+            }
+        });
+        _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
       });
-
     },
       data() {
         return {
@@ -60,45 +77,76 @@
           seminarId:-1,
           klassId:-1,
           klassSeminarId:-1,
-
-
           title:'OOAD-讨论课',
-          currentTeam:'第二组',
+          currentAttendance:'',    //但前展示小组
+          currentIndex:0,
+          enrollTeams:[],
           questionFlag:false,
-          registerOrder:[
-            {
-              order:"第一组",
-              teamid:"1-1",
-            },
-            {
-              order:"第二组",
-              teamid:"1-2",
-            },
-            {
-              order:"第三组",
-              teamid:"1-3",
-            },
-            {
-              order:"第四组",
-              teamid:"1-4",
-            },
-            {
-              order:"第五组",
-              teamid:"1-5",
-            },
-            {
-              order:"第六组",
-              teamid:"1-6",
-            },
-          ]
-
-
+          registerOrder:[],
+          webSocketAddress:'',
+          socket:'',
+          maxMember:6,
         }
       },
       methods:{
-          askQuestion(){
-            this.$data.questionFlag=true;
+        getRegisterTeams(){
+          let t=this;           //报名情况
+          this.$axios({
+            method:'get',
+            url:'/attendance/'+t.$data.klassSeminarId,
+          }).then(function (response) {
+              t.$data.enrollTeams=response.data;
+              t.$data.registerOrder=[];
+              let x;
+              for(x=0;x<t.$data.maxMember;x++) {
+                t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
+              }
+              let i,j;
+              for(i=0;i<t.$data.registerOrder.length;i++)
+                for(j=0;j<t.$data.enrollTeams.length;j++)
+                {
+                  if(t.$data.enrollTeams[j].teamOrder===i+1)
+                  {
+                    t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
+                  }
+                }
+            });
+        },
+        askQuestion(){
+          this.$data.questionFlag=true;
+        },
+        getWebSocketAddress(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/seminar/'+_this.$data.klassSeminarId+'/seminarEnter'
+          }).then(function (response) {
+            _this.$data.webSocketAddress=response.data;
+            _this.initWebSocket();
+          })
+        },
+        initWebSocket(){
+          this.$data.socket=new WebSocket(this.$data.webSocketAddress);
+          this.$data.socket.onopen=this.webSocketOnOpen();
+          this.$data.socket.onmessage=this.webSocketOnMessage();
+        },
+        webSocketOnOpen(){
+          // alert('成功！')
+        },
+        webSocketSend(){
+
+        },
+        webSocketOnMessage(e){
+          if(e==='2')   //切换展示小组
+          {
+            this.$data.currentIndex++;
+            console.log(this.$data.currentIndex);
+            this.$set(this.$data.currentAttendance=this.$data.enrollTeams[this.$data.currentIndex]);
           }
+          // console.log(e);
+          // const redata=JSON.parse(e.);
+          // console.log(redata.value);
+        },
 
       }
     }
@@ -112,6 +160,7 @@
     padding-left: 3vw;
     font-size: 25px;
     box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+    color:darkred;
     margin-bottom: 2vh;
   }
   .askQ{

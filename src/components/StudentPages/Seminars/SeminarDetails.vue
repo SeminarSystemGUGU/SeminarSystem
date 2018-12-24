@@ -15,7 +15,6 @@
             </mu-list-item-content>
           </mu-list-item>
           <mu-divider></mu-divider>
-
           <mu-list-item class="item" avatar :ripple="false" button>
             <mu-list-item-content>
               <mu-list-item-title>课次序号</mu-list-item-title>
@@ -26,7 +25,6 @@
             </mu-list-item-content>
           </mu-list-item>
           <mu-divider></mu-divider>
-
           <mu-list-item class="item" textline="two-line" button :ripple="false" nested :open="open === 'drafts'" @toggle-nested="open = arguments[0] ? 'drafts' : ''">
             <mu-list-item-title>课程要求</mu-list-item-title>
             <mu-list-item-action>
@@ -37,8 +35,8 @@
             </mu-list-item-content>
           </mu-list-item>
 
-          <mu-divider class="" style="height: 5px;" v-if="status==2"></mu-divider>
-          <mu-list-item class="item" avatar :ripple="false" button v-if="status==2">
+          <mu-divider class="" style="height: 5px;" v-if="status===2"></mu-divider>
+          <mu-list-item class="item" avatar :ripple="false" button v-if="status===2">
             <mu-list-item-content >
               <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title >
@@ -48,18 +46,19 @@
             <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
           </mu-list-item>
 
-          <mu-list-item class="item" avatar :ripple="false" button v-if="status==3">
+          <mu-divider class="" style="height: 5px;" v-if="status===3"></mu-divider>
+          <mu-list-item class="item" avatar :ripple="false" button v-if="status===3">
             <mu-list-item-content >
               <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title >
-                已经结束
+                正在进行
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
           </mu-list-item>
 
-          <mu-divider  v-if="status==1"></mu-divider>
-          <mu-list-item class="item" avatar :ripple="false" button v-if="status==1">
+          <mu-divider  v-if="status===1"></mu-divider>
+          <mu-list-item class="item" avatar :ripple="false" button v-if="status===1">
             <mu-list-item-content >
               <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title >
@@ -70,52 +69,55 @@
           </mu-list-item>
 
           <!--已报名，未开始-->
-          <mu-list-item avatar :ripple="false" button v-if="status==4">
+          <mu-list-item avatar :ripple="false" button v-if="status===4">
             <mu-list-item-content>
               <mu-list-item-title>报名情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <!--{{seminarDetails.registerStatus}}-->
+                未开始
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="changeRegister">修改</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails">修改</mu-button>
           </mu-list-item>
-          <mu-divider  v-if="status==4"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status==4">
+          <mu-divider  v-if="status===4"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===4">
             <mu-list-item-content>
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <!--{{seminarDetails.pptEndTime}}-->
+                <span v-if="getPPT.name===''">未上传</span>
+                {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="normal">{{seminarDetails.pptStatus}}</mu-button>
+            <mu-button flat color="normal">
+              <a :href="baseURL+getPPT.path">下载</a>
+            </mu-button>
           </mu-list-item>
-          <mu-divider  v-if="status==4"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status==4">
-            <mu-list-item-content>
-              <mu-list-item-title>报告</mu-list-item-title>
-              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
-              <mu-list-item-sub-title>
-                <!--{{seminarDetails.reportEndTime}}-->
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-            <!--<mu-button flat color="normal">{{// seminarDetails.reportStatus}}</mu-button>-->
-          </mu-list-item>
+          <!--<mu-divider  v-if="status===4"></mu-divider>-->
+          <!--<mu-list-item avatar :ripple="false" button v-if="status===4">-->
+            <!--<mu-list-item-content>-->
+              <!--<mu-list-item-title>报告</mu-list-item-title>-->
+              <!--<mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>-->
+              <!--<mu-list-item-sub-title>-->
+                <!--{{reportDDL}}-->
+              <!--</mu-list-item-sub-title>-->
+            <!--</mu-list-item-content>-->
+            <!--&lt;!&ndash;<mu-button flat color="normal">{{// seminarDetails.reportStatus}}</mu-button>&ndash;&gt;-->
+          <!--</mu-list-item>-->
 
           <!--已报名，已结束-->
-          <mu-list-item avatar :ripple="false" button v-if="status==5">
+          <mu-list-item avatar :ripple="false" button v-if="status===5">
             <mu-list-item-content>
-              <mu-list-item-title>报名情况</mu-list-item-title>
+              <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <!--{{// seminarDetails.registerStatus}}-->
+                已结束
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="changeRegister">修改</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails">详情</mu-button>
           </mu-list-item>
-          <mu-divider v-if="status==5"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status==5">
+          <mu-divider v-if="status===5"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===5">
             <mu-list-item-content>
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
@@ -125,8 +127,8 @@
             </mu-list-item-content>
             <mu-button flat color="normal">  已提交</mu-button>
           </mu-list-item>
-          <mu-divider v-if="status==5"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status==5">
+          <mu-divider v-if="status===5"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===5">
             <mu-list-item-content>
               <mu-list-item-title>报告</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
@@ -137,8 +139,31 @@
             <mu-button flat color="normal">  已提交</mu-button>
           </mu-list-item>
 
+          <!--未报名，已结束-->
+          <mu-divider v-if="status===7"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===7">
+            <mu-list-item-content>
+              <mu-list-item-title>课程情况</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                已结束
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="success" @click="showStatusDetails">详情</mu-button>
+          </mu-list-item>
+
           <!--已报名，正在进行-->
-          <mu-list-item avatar :ripple="false" button v-if="status==3">
+          <mu-divider class="" style="height: 5px;" v-if="status===3"></mu-divider>
+          <mu-list-item class="item" avatar :ripple="false" button v-if="status===3">
+            <mu-list-item-content >
+              <mu-list-item-title>课程情况</mu-list-item-title>
+              <mu-list-item-sub-title >
+                正在进行
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
+          </mu-list-item>
+          <mu-list-item avatar :ripple="false" button v-if="status===3">
             <mu-list-item-content>
               <mu-list-item-title>报名情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
@@ -146,10 +171,10 @@
                 <!--{{// seminarDetails.registerStatus}}-->
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="changeRegister">修改</mu-button>
+            <mu-button flat color="success" @click="">修改</mu-button>
           </mu-list-item>
-          <mu-divider v-if="status==3"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status==3">
+          <mu-divider v-if="status===3"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===3">
             <mu-list-item-content>
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
@@ -159,73 +184,82 @@
             </mu-list-item-content>
             <mu-button flat color="normal">  已提交</mu-button>
           </mu-list-item>
-          <mu-divider v-if="status==3"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status==3">
-            <mu-list-item-content>
-              <mu-list-item-title>报告</mu-list-item-title>
-              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
-              <mu-list-item-sub-title>
-                已提交
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-            <mu-button flat color="normal">  已提交</mu-button>
-          </mu-list-item>
+          <!--<mu-divider v-if="status==3"></mu-divider>-->
+          <!--<mu-list-item avatar :ripple="false" button v-if="status===3">-->
+            <!--<mu-list-item-content>-->
+              <!--<mu-list-item-title>报告</mu-list-item-title>-->
+              <!--<mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>-->
+              <!--<mu-list-item-sub-title>-->
+                <!--已提交-->
+              <!--</mu-list-item-sub-title>-->
+            <!--</mu-list-item-content>-->
+            <!--<mu-button flat color="normal">  已提交</mu-button>-->
+          <!--</mu-list-item>-->
         </mu-list>
 
+
         <!--未报名未开始-->
-        <div class="dateRemind" v-if="status==1">
+        <div class="dateRemind" v-if="status===1">
           <img class="iimg" src="../../../assets/schedule.svg"   />
           开始报名时间：{{seminarEntity.enrollStartTime}}<br/>
           <img class="iimg" src="../../../assets/schedule.svg"   />
           结束报名时间：{{seminarEntity.enrollEndTime}}
         </div>
-        <mu-button class="inSeminar" color="success"  @click="showStatusDetails" v-if="status==1">报名</mu-button>
-
-        <!--正在进行 -->
-        <mu-button class="inSeminar" color="success"  style="margin-top: 10vh;" @click="inSeminar" v-if="status==2">进入讨论课</mu-button>
-
+        <mu-button class="inSeminar" color="success"  @click="showStatusDetails" v-if="status===1">报名</mu-button>
 
         <!--已报名 未开始-->
-        <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status==4">报告提交</mu-button>
-        <mu-button class="submit" color="success"  @click="submitPPT" v-if="status==4" >PPT提交</mu-button>
+        <mu-button class="submit" color="success"  @click="submitPPT" v-if="status===4" >PPT提交</mu-button>
         <mu-dialog title="上传PPT" width="360" :open.sync="pptFlag">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
+            :action="baseURL+'/attendance/'+attendanceId+'/powerpoint'"
+            :limit="1"
+            :file-list="ppt">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
           </el-upload>
-          <mu-button slot="actions" flat color="success" @click="pptFlag=!pptFlag">Sure</mu-button>
+          <mu-button slot="actions" flat color="success" @click="submit">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="pptFlag=!pptFlag">Close</mu-button>
         </mu-dialog>
 
-        <mu-dialog title="上传报告" width="360" :open.sync="reportFlag">
-          <mu-button slot="actions" flat color="success" @click="reportFlag=!reportFlag">Sure</mu-button>
-          <mu-button slot="actions" flat color="primary" @click="reportFlag=!reportFlag">Close</mu-button>
-        </mu-dialog>
-
         <!--已报名，正在进行-->
-        <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===3">报告提交</mu-button>
+        <!--<mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===3">报告提交</mu-button>-->
         <mu-button class="submit" color="success"  @click="submitPPT" v-if="status===3" >PPT提交</mu-button>
-
         <mu-flex justify-content="center" align-items="center" class="conRunning">
           <mu-button large round  class="runningSeminar" @click="inSeminar" v-if="status===3"  color="error">进入讨论课 &emsp; <i class="el-icon-d-arrow-right"/></mu-button>
         </mu-flex>
         <!--<mu-button class="runningSeminar" color="success"  style="margin-top: 10vh;" @click="inSeminar" v-if="status==3">进入讨论课<></mu-button>-->
 
         <!--未报名，正在进行-->
+        <!--<mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===3">报告提交</mu-button>-->
+        <mu-flex justify-content="center" align-items="center" class="conRunning">
+          <mu-button large round  class="runningSeminar" @click="inSeminar" v-if="status===2"  color="error">进入讨论课 &emsp; <i class="el-icon-d-arrow-right"/></mu-button>
+        </mu-flex>
+        <!--<mu-button class="runningSeminar" color="success"  style="margin-top: 10vh;" @click="inSeminar" v-if="status==3">进入讨论课<></mu-button>-->
 
-        <!--已报名，已结束-->
+
+        <!--已报名，已结束，已截止-->
         <mu-button class="submit" color="success"  @click="showGrades" v-if="status===5">查看成绩</mu-button>
 
-        <!--未报名，已结束-->
+        <!--已报名，已结束，未截止-->
+        <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===5">报告提交</mu-button>
+        <mu-dialog title="上传报告" width="360" :open.sync="reportFlag">
+          <mu-dialog title="上传报告" width="360" :open.sync="reportFlag">
+            <el-upload
+              class="upload-demo"
+              :action="baseURL+'/attendance/'+attendanceId+'/report'"
+              :limit="1"
+              :file-list="report">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+            </el-upload>
+            <mu-button slot="actions" flat color="success" @click="reportFlag=!reportFlag">Sure</mu-button>
+            <mu-button slot="actions" flat color="primary" @click="reportFlag=!reportFlag">Close</mu-button>
+          </mu-dialog>
+          <mu-button slot="actions" flat color="success" @click="reportFlag=!reportFlag">Sure</mu-button>
+          <mu-button slot="actions" flat color="primary" @click="reportFlag=!reportFlag">Close</mu-button>
+        </mu-dialog>
+
       </div>
     </div>
 </template>
@@ -238,6 +272,7 @@
           BackBar,
       },
       created(){
+        this.$data.baseURL=this.$axios.defaults.baseURL;
         this.$data.courseId=this.$route.query.courseId;
         this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassId=this.$route.query.klassId;
@@ -249,7 +284,6 @@
         }).then(function (response) {
           tt.$data.myTeam=response.data;
         });
-
         let _this=this;    //根据courseId获取该课程讨论课列表
          this.$axios({
           method:'get',
@@ -259,7 +293,6 @@
            _this.$data.processing=response.data.status;          //课程进度
            _this.$data.seminarEntity=response.data.seminarEntity;
            _this.$data.klassSeminarId=response.data.klassSeminarId;
-
            let t=_this;
            _this.$axios({
              method:'get',
@@ -272,13 +305,24 @@
                if(t.$data.enrollTeams[i].teamId===t.$data.myTeam.teamId)
                {
                  t.$data.enrollState=1;     //已报名
+                 t.$data.attendanceId=t.$data.enrollTeams[i].id;
                  break;
                }
              }
-
-             //   判断讨论课状态   根据processing ：0未开始   1正在进行  2已经结束  3暂停
-             //                      enrollState：  0未报名   1已经报名
-             //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
+             if(t.$data.enrollState===1){
+              let ttt=t;      //获取长传ppt
+              t.$axios({
+                 method:'get',
+                 url:'/attendance/'+ttt.$data.attendanceId+'/ppt',
+              }).then(function (response) {
+                ttt.$data.getPPT=response.data;
+               });
+             }
+             //   判断讨论课状态       processing: 0未开始   1正在进行  2已经结束
+             //                      enrollState:  0未报名   1已经报名
+             // 报告是否截止            reportEnd:    0-未截止   1-已经截止
+             //  1-未开始，未报名    2-未报名，正在进行         3-已报名，正在进行
+             //  4-已报名，未开始    5-已报名，已结束,未截止    6-已报名，已经完成，已经截止  7-未报名，已截止
              if(t.$data.processing===0 && t.$data.enrollState===0)
                t.$data.status=1;
              else if(t.$data.processing===0 && t.$data.enrollState===1)
@@ -287,8 +331,12 @@
                t.$data.status=2;
              else if(t.$data.processing===1 && t.$data.enrollState===1)
                t.$data.status=3;
-             else if(t.$data.processing===2 && t.$data.enrollState===5)
-               t.$data.status=4;
+             else if(t.$data.processing===2 && t.$data.enrollState===1 && t.$data.reportEnd===0)
+               t.$data.status=5;
+             else if(t.$data.processing===2 && t.$data.enrollState===1 && t.$data.reportEnd===1)
+               t.$data.status=6;
+             else if(t.$data.processing===2 && t.$data.enrollState===0 )
+               t.$data.status=7;
            })
          },function(error){
            alert(error);
@@ -297,53 +345,37 @@
       data(){
           return{
             open:'send',
+            baseURL:'',
             title:'seminar',
             myTeam:'',
-            klassId:-1,
-            courseId:-1,
-            seminarId:-1,
-            status:-1,   //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
-            klassSeminarId:-1,
-            seminarEntity:{},
+            klassId:'',
+            courseId:'',
+            seminarId:'',
+            klassSeminarId:'',
+            attendanceId:'',
+            seminarEntity:'',
             reportDDL:'',
-            processing:-1,
+            getPPT:'',
+            processing:-1,   //状态判定
             enrollState:0,
-
+            reportEnd:0,
+            status:-1,     //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
             enrollTeams:[],  //报名小组列表
-
-
-            // seminarDetails:{
-            //   seminarId:"",
-            //   title:'',//"OOAD-讨论课",
-            //   seminarTopic:'',//'业务流程分析',
-            //   roundId:'',//2,
-            //   classOrder:'',//'第二次',
-            //   seminarContent:'',//'不上课了 We should eat this: Grate, Squash, Corn, and tomatillo Tacos.sdasdasd',
-            //   status:'',//'正在进行',
-            //   registerEndTime:'',//"2018-10-1",
-            //   regieterStartTime:'',//'2018-1-1',
-            //   pptStatus:'',//'未提交',
-            //   reportStatus:'',//'未提交',
-            //   pptEndTime:'',//'距截止时间还有一天',
-            //   reportEndTime:'',//'距截止时间还有一天',
-            //   registerStatus:'',//'2016(1)-第三组',
-            // },
-
-            fileList: [{name: 'food.jpeg', url:[],}],
+            ppt: [],
+            report:[],
+            webSocketAddress:'',
+            socket:'',
 
             reportFlag:false,
             pptFlag:false,
           }
       },
       methods:{
-          showStatusDetails(){      //报名
-            this.$router.push({path:'/StuStatusDetails',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});
-          },
+        showStatusDetails(){      //报名
+          this.$router.push({path:'/StuStatusDetails',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});
+        },
         inSeminar(){
             this.$router.push({path:'/StuAskQuestion',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});
-        },
-        changeRegister(){
-          this.$router.push({path:'/StuChangeRegister',query:{courseId:this.$data.courseId,klassId:this.$data.klassId,klassSeminarId:this.$data.klassSeminarId}});
         },
         submitPPT(){
           this.$data.pptFlag=true;
@@ -351,24 +383,19 @@
         showGrades(){
           this.$router.push({path:'/StuCheckGrades',query:{courseId:this.$data.courseId,klassId:this.$data.klassId,klassSeminarId:this.$data.klassSeminarId}});
         },
-
-
+        submit(){
+          let ttt=this;      //获取长传ppt
+          this.$axios({
+            method:'get',
+            url:'/attendance/'+ttt.$data.attendanceId+'/ppt',
+          }).then(function (response) {
+            ttt.$data.getPPT=response.data;
+            ttt.$data.pptFlag=!ttt.$data.pptFlag;
+          });
+        },
         submitReport(){
           this.$data.reportFlag=true;
         },
-        handleRemove(file, fileList) {
-          console.log(file, fileList);
-        },
-        handlePreview(file) {
-          console.log(file);
-        },
-        handleExceed(files, fileList) {
-          this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-        },
-        beforeRemove(file, fileList) {
-          return this.$confirm(`确定移除 ${ file.name }？`);
-        }
-
       }
     }
 </script>
@@ -464,8 +491,6 @@
       font-size: 30px;
     }
 
-
-
     .item{
       height:auto;
     }
@@ -477,6 +502,4 @@
     }
 
   }
-
-
 </style>
