@@ -15,7 +15,7 @@
   						<el-collapse-item v-for="it, i in item.seminars" :key="it.id">
   							<!--讨论课名称-->
     						<template slot="title">
-                  <span class="seminar-title">{{it.seminarName}}&nbsp;&nbsp;<i class="el-icon-edit" @click="linkToModify(it.id,courseId)"></i></span>
+                  <p class="seminar-title" style="width: 100%;overflow-x: hidden;text-overflow: ellipsis;">{{it.seminarName}}&nbsp;&nbsp;<i class="el-icon-edit" @click="linkToModify(it.id,courseId)"></i></p>
     						</template>
                 <div v-for="c, k in it.classes" :key="c.id">
     						  <div class="divider"></div>

@@ -210,7 +210,7 @@
         this.$router.push('/TeacherAfterSeminar');
       },
       linkToGrades(){
-        this.$router.push('/TeacherSeminarGrades');
+        this.$router.push({path:'/TeacherSeminarGrades',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId,courseId:this.$data,courseId}});
       },
       linkToApply(){
         this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId}});
