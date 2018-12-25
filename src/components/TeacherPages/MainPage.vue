@@ -14,18 +14,18 @@
               </div>
             </div>
       </el-card>
-      <div class="my-course-card" style="margin-top: 4vw">
+      <div class="my-course-card" style="margin-top: 10px;">
         <el-row :gutter="10" style="height: 100%">
           <el-col style="width: 3%">
             <span>&nbsp;</span>
           </el-col>
           <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3vw;">
+            <div style="margin-top: 10px;">
               <img src="../../assets/课程.png" class="menu-image"/>
             </div>
           </el-col>
           <el-col style="width: 50%;">
-            <div style="margin-top: 3vw"  @click="linkToCourses">
+            <div style="margin-top: 10px"  @click="linkToCourses">
               <span>我的课程</span>
             </div>
           </el-col>
@@ -38,12 +38,12 @@
             <span>&nbsp;</span>
           </el-col>
           <el-col style="width: 10%;text-align: right;">
-            <div style="margin-top: 3vw;">
+            <div style="margin-top: 10px;">
               <img src="../../assets/设置.png" class="menu-image"/>
             </div>
           </el-col>
           <el-col style="width: 50%;">
-            <div style="margin-top: 3vw" @click="linkTo">
+            <div style="margin-top: 10px" @click="linkTo">
               <span>账户与设置</span>
             </div>
           </el-col>

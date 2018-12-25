@@ -15,7 +15,7 @@
   						<el-collapse-item v-for="it, i in item.seminars" :key="it.id">
   							<!--讨论课名称-->
     						<template slot="title">
-                  <p class="seminar-title" style="width: 100%;overflow-x: hidden;text-overflow: ellipsis;">{{it.seminarName}}&nbsp;&nbsp;<i class="el-icon-edit" @click="linkToModify(it.id,courseId)"></i></p>
+                  <div class="seminar-title" style="width: 80%;overflow-x: hidden;text-overflow: ellipsis;white-space: nowrap"><i class="el-icon-edit" @click="linkToModify(it.id,courseId)"></i>{{it.seminarName}}&nbsp;&nbsp;</div>
     						</template>
                 <div v-for="c, k in it.classes" :key="c.id">
     						  <div class="divider"></div>
@@ -256,7 +256,7 @@ import AppBar from '../../ReuseComponents/AppBar'
 			text-align:left;
 
 			.seminar-title{
-				font-size:18px;
+				font-size:16px;
 				margin-left:3vw;
 			}
 

@@ -28,11 +28,9 @@
           <el-col class="pre-list-col">
             <div class="box-title">展示列表</div>
             <div class="pre-list">
-
               <div :class="item.teamClass" v-for="item,index in preTeams" :key="index" @click="choosePreTeam(index)">
                 {{item.teamSerial}}
               </div>
-
             </div>
           </el-col>
           <el-col class="operation-list-col">
@@ -120,6 +118,7 @@
         this.$data.courseId=this.$route.query.courseId;
         this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
+        // this.setSeminarStatus();
         // this.loadPreTeams();
         // this.getWebSocketAddress();
         this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item';
@@ -167,6 +166,14 @@
             url:'/attendance/'+this.$data.klassSeminarId
           }).then(function (response) {
             _this.$data.preTeams=response.data;
+            for(let index=0;index<response.data.preTeams;index++){
+              _this.$data.preTeams[index].push({
+                teamSerial:_this.$data.classId+'-'+response.data.preTeams[index].teamEntity.teamSerial,
+                teamClass:'pre-list-item-un',
+                id:response.data.id,
+              });
+            }
+            console.log(_this.$data.preTeams);
           })
         },
         setSeminarStatus(){

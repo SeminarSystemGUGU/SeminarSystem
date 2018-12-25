@@ -4,7 +4,7 @@
               text-color="#ffffff"
               background-color="#001C31"
               active-text-color='#ffffff'
-              active-background-color="#1476BF"
+              active-background-color="#dd5347"
               >
       <el-menu-item index="3"  class="item4menu item1-menu" >
         <div class="item-content">
@@ -162,7 +162,7 @@
       line-height: 1.4;
     }
     .item4menu {
-      background: #001C31 !important;
+      background: #001c31 !important;
       height: 100px !important;
       text-align: center;
       font-size: 17px;
@@ -173,12 +173,12 @@
     }
 
     .item4menu:hover {
-      background:#1476BF !important;
+      background:#dd5347 !important;
       color: #ffffff !important;
 
     }
     .item4menu.is-active {
-      background:#1476BF !important;
+      background:#dd5347 !important;
       color: #ffffff !important;
       width: 110%;
       box-sizing: border-box;

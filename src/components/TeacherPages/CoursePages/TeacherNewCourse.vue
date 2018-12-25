@@ -30,26 +30,72 @@
           </el-select>
         </el-form-item>
       </el-form>
+      <div class="blank-spaces"></div>
       <div class="second-form-title">
-        <span>小组分组规则：</span>
+        <span>组队基本要求：</span>
       </div>
       <el-form :model="formTeamRules" ref="formTeamRules" class="team-rule-form" label-width="120px" :rules="rulesFormTeam">
-        <el-form-item label="小组人数上限：" class="form-item" prop="teamMaxNum">
-          <el-input-number size="small" v-model="formTeamRules.teamMaxNum"></el-input-number>
-        </el-form-item>
-        <el-form-item label="小组人数下限：" class="form-item" prop="teamMinNum">
-          <el-input-number size="small" v-model="formTeamRules.teamMinNum" ></el-input-number>
-        </el-form-item>
         <el-form-item label="组队开始时间：" class="form-item" prop="teamStartDate">
           <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamStartDate" ></el-date-picker>
         </el-form-item>
         <el-form-item label="组队截止时间：" class="form-item" prop="teamEndDate">
           <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamEndDate"></el-date-picker>
         </el-form-item>
+        <el-form-item label="小组人数上限：" class="form-item" prop="teamMaxNum">
+          <el-input-number size="small" v-model="formTeamRules.teamMaxNum"></el-input-number>
+        </el-form-item>
+        <el-form-item label="小组人数下限：" class="form-item" prop="teamMinNum">
+          <el-input-number size="small" v-model="formTeamRules.teamMinNum" ></el-input-number>
+        </el-form-item>
+      </el-form>
+      <div class="blank-spaces"></div>
+      <div class="second-form-title">
+        <span>组内选修课程人数：</span><el-button type="primary" @click="newCourseSelect">新增</el-button>
+      </div>
+      <div class="tooltip1">
+        <span>均满足指选课人数均需达到要求，满足其一指任意选课人数满足即可</span>
+      </div>
+      <el-form :model="item" v-for="item ,index in formTeamRules.teamSelectNumber" ref="formTeamRules" class="team-rule-form" label-width="140px" :key="index"
+        :rules="rulesFormTeam">
+        <el-form-item label="课程：" prop="courseId">
+          <el-select placeholder="请选择课程" size="small" v-model="item.courseId" class="form-item"></el-select>
+        </el-form-item>
+        <el-form-item label="该课程人数上限：" prop="teamSelectMaxNum">
+          <el-input-number size="small" v-model="item.teamSelectMaxNum"></el-input-number>
+        </el-form-item>
+        <el-form-item label="该课程人数下限：" prop="teamSelectMinNum">
+          <el-input-number size="small" v-model="item.teamSelectMinNum"></el-input-number>
+        </el-form-item>
+        <el-form-item>
+          <el-button size="small" type="danger" @click="deleteCourseSelect(index)">删除该要求</el-button>
+        </el-form-item>
+      </el-form>
+      <el-form :model="formTeamRules" ref="formTeamRules" class="team-rule-form">
+        <el-form-item prop="orAnd" label="选修课人数要求：">
+          <el-switch active-color="#13ce66"
+                     inactive-color="#ff4949"
+                     active-text="均满足"
+                     inactive-text="满足其一"
+                     v-model="formTeamRules.orAnd"></el-switch>
+        </el-form-item>
+
+      </el-form>
+      <div class="blank-spaces"></div>
+      <div class="second-form-title">
+        <span>冲突课程：</span><el-button type="primary" @click="newConflictCourse">新增</el-button><br/>
+      </div>
+      <div class="tooltip1">
+        <span>选修了不同冲突课程的学生不可同组，同课程名不同教师也为不同课程</span>
+      </div>
+      <el-form :model="formTeamRules.teamConflict" ref="formTeamRules" label-width="100px" class="team-rule-form" :rules="rulesFormTeam">
+        <el-form-item prop="courseId" label="冲突课程：" v-for="item,index in formTeamRules.teamConflict" :key="index">
+          <el-select size="small" class="form-item1" v-model="item.courseId" >
+          </el-select>&nbsp;<el-button size="small" type="danger" @click.prevent="deleteConflictCourse(index)">删除</el-button>
+        </el-form-item>
       </el-form>
       <div class="special-team-rules">
-        <el-button type="primary">特殊分组规则</el-button>
         <div class="special-team-form">
+
           <!--<el-button type="primary"></el-button>-->
         </div>
       </div>
@@ -106,6 +152,9 @@ import AppBar from '../../ReuseComponents/AppBar'
       }
 			return{
 			  rulesFormTeam:{
+			    courseId:[
+            {required:true,message:'请选择课程！',trigger:'change'}
+          ],
 			    teamMaxNum:[
             {required:true,message:'请输入最大组队人数',trigger:'change'},
             {validator:validateTeam,trigger:'change'}
@@ -155,6 +204,19 @@ import AppBar from '../../ReuseComponents/AppBar'
           teamMaxNum:0,
           teamStartDate:'',
           teamEndDate:'',
+          orAnd:false,
+          teamSelectNumber:[
+            {
+              courseId:'',
+              teamSelectMinNum:0,
+              teamSelectMaxNum:0
+            }
+          ],
+          teamConflict:[
+            {
+              courseId:''
+            },
+          ]
         },
         scoreRate:{
           preRate:'',
@@ -167,6 +229,24 @@ import AppBar from '../../ReuseComponents/AppBar'
 
     },
     methods:{
+		  deleteConflictCourse(index){
+		    this.$data.formTeamRules.teamConflict.splice(index,1);
+      },
+		  newConflictCourse(){
+        this.$data.formTeamRules.teamConflict.push({
+          courseId:''
+        })
+      },
+		  deleteCourseSelect(index){
+		    this.$data.formTeamRules.teamSelectNumber.splice(index,1);
+      },
+		  newCourseSelect(){
+		    this.$data.formTeamRules.teamSelectNumber.push({
+          courseId:'',
+          teamSelectMaxNum:'',
+          teamSelectMinNum:''
+        })
+      },
       /**
        * 提交课程
        */
@@ -235,12 +315,35 @@ import AppBar from '../../ReuseComponents/AppBar'
 </script>
 <style lang="less">
 #TeacherNewCourse{
+
+  .blank-spaces{
+    height: 5vh;
+  }
+
+  .tooltip1{
+    margin-top: 1vh;
+    font-size: 12px;
+    color: darkgrey;
+    text-align: left;
+  }
+
+
 	.main-content{
 		width:88%;
 		max-width:500px;
 		margin-left:auto;
 		margin-right:auto;
 		margin-top:3vh;
+
+
+
+
+
+    .form-item1{
+      text-align: left;
+      margin-left: 0;
+      width: 50%;
+    }
 
 
 
@@ -307,6 +410,7 @@ import AppBar from '../../ReuseComponents/AppBar'
         margin-left: auto;
         margin-right: auto;
       }
+
 
       .the-select{
         width: 120px;

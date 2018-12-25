@@ -52,6 +52,7 @@
           </el-collapse-item>
         </el-collapse>
       </div>
+      <div class="use-blank"></div>
       <div class="new-button-panel">
         <mu-button color="primary" class="new-button" @click="linkToNewClass">新建班级</mu-button>
       </div>
@@ -138,6 +139,11 @@
 
 #TeacherClassInfos{
   width: 100vw;
+
+  .use-blank{
+    height: 100px;
+    width: 100vw;
+  }
 
   .no-item-message{
     font-weight: bold;
