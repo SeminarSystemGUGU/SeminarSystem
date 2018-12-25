@@ -19,13 +19,23 @@
 
     <div class="main-content">
       <mu-paper :z-depth="1">
-        <mu-data-table :columns="columns" :data="reports" stripe>
-          <template slot-scope="scope">
-            <td>{{scope.row.round}}</td>
-            <td style="text-align: left">{{scope.row.groupName}}</td>
-            <td style="text-align: left">{{scope.row.preMaterials}}</td>
-          </template>
-        </mu-data-table>
+        <el-table :data="reports">
+          <el-table-column label="顺序">
+            <template slot-scope="scope">
+              {{scope.row.teamOrder}}
+            </template>
+          </el-table-column>
+          <el-table-column label="小组名">
+            <template slot-scope="scope">
+              {{scope.row.teamEntity.teamName}}
+            </template>
+          </el-table-column>
+          <el-table-column label="PPT材料">
+            <template slot-scope="scope">
+              {{scope.row.pptName}}
+            </template>
+          </el-table-column>
+        </el-table>
       </mu-paper>
     </div>
   </div>
@@ -44,22 +54,24 @@
         klassSeminarId:'',
         iconClass:'back-icon-use',
         columns:[
-          {title:'顺序',name:'No'},
-          {title:'小组名称',name:'groupName'},
+          {title:'顺序',name:'teamOrder'},
+          {title:'小组名称',name:'teamName'},
           {title:'展示材料',name:'preMaterials'}
         ],
         reports:[
           {
-            groupName:'咕咕鸟',
-            round:'1',
-            preMaterials:'无'
+            id: 73,
+            isPresent: 0,
+            klassSeminarId: 23,
+            pptName: null,
+            pptUrl: null,
+            reportName: null,
+            reportUrl: null,
+            teamEntity: {id: 22, klassId: 23, courseId: 16, leaderId: 211, teamName: "3-1", teamSerial: 1, status: 1},
+            teamSerial: 1,
+            teamId: 22,
+            teamOrder: 1,
           },
-          {
-            groupName:'咕咕鸟',
-            round:'2',
-            preMaterials:'无'
-          },
-
         ]
       }
     },
@@ -77,8 +89,11 @@
           method:'get',
           url:'/attendance/'+this.$data.klassSeminarId
         }).then(function (response) {
-
+          _this.$data.reports=response.data;
         })
+      },
+      loadTeamMaterial(){
+
       }
     }
   }

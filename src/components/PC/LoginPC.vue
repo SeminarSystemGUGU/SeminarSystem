@@ -49,6 +49,7 @@
     .login-button{
       width: 150px;
       height: 50px;
+      /*background-color: dodgerblue;*/
       background-color: #dd5347;
       font-size: 18px;
       outline: none;
@@ -77,6 +78,7 @@
         float: right;
         width: 150px;
         background-color: #dd5347;
+        /*background-color: dodgerblue;*/
         height: 51px;
         right: 0;
         line-height: 50px;
@@ -135,10 +137,10 @@
         /*position: fixed;*/
         /*float: left;*/
         color: white;
-        margin-top: 170px;
-        float: right;
-        margin-right: 160px;
-        /*margin-left: 720px;*/
+        margin-top: 200px;
+        float: left;
+        /*margin-right: 160px;*/
+        margin-left: 120px;
         font-size: 50px;
         font-weight: lighter;
         font-family: "Roboto","Helvetica",arial,sans-serif;;

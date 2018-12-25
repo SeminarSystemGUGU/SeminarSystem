@@ -63,7 +63,7 @@
           <el-col class="row-col">
             <span>要求：</span>
           </el-col>
-          <el-col class="row-col">
+          <el-col class="row-col1">
             <span>{{seminarRequirments}}</span>
           </el-col>
         </el-row>
@@ -256,6 +256,10 @@
       width: 40%;
     }
 
+    .row-col{
+      width: 70%;
+    }
+
     .app-bar {
       padding: 0.1px;
       height: 10vh;
@@ -337,6 +341,9 @@
 
       .row-col{
         width: 50%;
+      }
+      .row-col1{
+        width: 100%;
       }
 
       .course-title{
