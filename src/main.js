@@ -47,8 +47,8 @@ new Vue({
   router,
   created () {
     this.$axios.defaults.withCredentials=true;
-    // this.$axios.defaults.baseURL='http://47.94.174.82:8081';
-    this.$axios.defaults.baseURL='http://eg87my.natappfree.cc';
+    this.$axios.defaults.baseURL='http://47.94.174.82:8081';
+    // this.$axios.defaults.baseURL='http://tnq7wg.natappfree.cc';
     this.$axios.interceptors.response.use(function (response) {
       return response;
     }, function (error) {
