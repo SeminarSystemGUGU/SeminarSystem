@@ -29,10 +29,6 @@
 
       <div class="lastCon" align="left">
         <div class="card">
-          <span class="subTit">小组人数：</span>
-          <p class="subc">123</p>
-        </div>
-        <div class="card">
           <span class="subTit">组队开始时间：</span>
           <div class="subc">{{courseInfo.teamStartTime}}</div>
         </div>
@@ -40,18 +36,6 @@
           <span class="subTit">组队结束时间：</span>
           <div class="subc">{{courseInfo.teamEndTime}}</div>
         </div>
-        <div class="card">
-          <span class="subTit">组员性别要求：</span>
-          <p class="subc">123</p>
-        </div>
-        <div class="card">
-          <span class="subTit">组员星座要求：</span>
-          <p class="subc">123</p>
-        </div>
-        <!--<div class="card">-->
-          <!--<span class="subTit">冲突课程：</span>-->
-          <!--<p class="subc">123</p>-->
-        <!--</div>-->
         <mu-button  class="require" color="success"  @click="showRequirement">
           组队要求
         </mu-button>
@@ -82,6 +66,8 @@
           method:'get',
           url:'course/'+this.$data.courseId,
         }).then(function (response) {
+          response.data.teamStartTime=response.data.teamStartTime.slice(0,10);
+          response.data.teamEndTime=response.data.teamEndTime.slice(0,10);
           _this.$data.courseInfo=response.data;
         })
       },
@@ -97,4 +83,9 @@
 
 <style scoped>
   @import "../../../less/CourseInfo.less";
+  @media screen and (min-width: 1024px ){
+    .content {
+      margin-top: 13vh;
+    }
+  }
 </style>

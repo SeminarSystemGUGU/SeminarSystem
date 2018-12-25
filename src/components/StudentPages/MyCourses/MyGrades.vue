@@ -2,7 +2,7 @@
   <div align="center">
     <back-bar titleName="我的成绩" :showMessages="true" :showBackBar="true" backUrl="/StuMyCourses"></back-bar>
 
-    <div class="animated fadeInRight" style="z-index:1;" >
+    <div class="contenT animated fadeInRight" style="z-index:1;max-width: 600px;" >
     <div class="panel-group " id="accordion" align="left" >
       <div class="title">
         我的成绩
@@ -236,6 +236,11 @@
       font-size: 20px;
     }
 
+  }
+  @media screen and (min-width: 1024px ){
+    .contenT {
+      margin-top: 13vh;
+    }
   }
 
 </style>

@@ -49,8 +49,6 @@ import StuStatusDetails from '../components/StudentPages/Seminars/StatusDetails'
 import StuResetEmail from '../components/StudentPages/Account/ResetEmail'
 import StuResetPassword from '../components/StudentPages/Account/ResetPassword'
 import StuAskQuestion from '../components/StudentPages/Seminars/AskQuestion'
-import StuRegisteredSeminarDetails from '../components/StudentPages/RegisteredSeminarDetails'
-import StuChangeRegister from '../components/StudentPages/Seminars/ChangeRegister'
 import StuCheckGrades from '../components/StudentPages/Seminars/CheckGrades'
 import StuCourseInfo from '../components/StudentPages/MyCourses/CourseInfo'
 import StuConfirmAccount from '../components/StudentPages/Account/ConfrimAccount'
@@ -255,14 +253,6 @@ export default new Router({
     {
       path:'/StuAskQuestion',
       component:StuAskQuestion
-    },
-    {
-      path:'/StuRegisteredSeminarDetails',
-      component:StuRegisteredSeminarDetails,
-    },
-    {
-      path:'/StuChangeRegister',
-      component:StuChangeRegister
     },
     {
       path:'/StuCheckGrades',

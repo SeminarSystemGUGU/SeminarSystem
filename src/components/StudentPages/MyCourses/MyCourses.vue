@@ -139,17 +139,9 @@
     .parent1    {
       height: 9vh;
       overflow: hidden;
-      transition-property: height;
-      transition-duration: 1s;
-      perspective: 1000px;
-      transform-style: preserve-3d;
     }
     .parent3    {
       height: 9vh;
-      transition-property: all;
-      transition-duration: 1s;
-      transform: rotateX(-90deg);
-      transform-origin: top;
     }
     .container:hover .parent1   {
       height: 27vh;
@@ -171,8 +163,44 @@
       margin-top: 10px;
       width: 100%;
       height: 5vh;
-      /*border-bottom: 1px solid gray;*/
-      /*background-color: #c7e1f0;*/
+      border-radius: 5px;
+    }
+    .subItem{
+      color:gray;
+      font-size: 20px;
+    }
+  }
+  @media screen and (min-width: 1024px ){
+    .container:nth-child(1)  {
+      margin-top: 13vh;
+    }
+    .parent1 {
+      height: 9vh;
+      overflow: hidden;
+    }
+    .parent3    {
+      height: 9vh;
+    }
+    .container:hover .parent1   {
+      height: 27vh;
+    }
+    .container:hover .parent3   {
+      transform: rotateX(0deg);
+      height: 27vh;
+    }
+    .itemTitle{
+      padding-top: 10px;
+      padding-left: 2vw;
+      width: 100%;
+      height:7vh;
+      font-size: 30px;
+    }
+    .subList {
+      padding-top: 1vh;
+      padding-left: 3vw;
+      margin-top: 10px;
+      width: 100%;
+      height: 5vh;
       border-radius: 5px;
     }
     .subItem{

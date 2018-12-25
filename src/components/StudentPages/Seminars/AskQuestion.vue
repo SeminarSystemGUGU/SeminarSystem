@@ -1,9 +1,8 @@
 <template>
     <div>
       <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,klassId:klassId,seminarId:seminarId}}"> </back-bar>
-
       <div class="statusDetailsBack animated fadeInRight" >
-      <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentIndex}}</div>
+      <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{enrollTeams[currentIndex].teamEntity.teamName}}</div>
         <mu-paper :z-depth="1" class="demo-list-wrap">
           <mu-list v-for="option,index in registerOrder" :key = "index">
             <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
@@ -15,13 +14,11 @@
           </mu-list>
           <mu-divider></mu-divider>
         </mu-paper>
-
         <mu-button class="askQ" color="success"  @click="askQuestion">发起提问</mu-button>
         <mu-dialog title="发起提问？" width="360" :open.sync="questionFlag" :overlay="false">
           <mu-button slot="actions" flat color="success" @click="confirmQuestion">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="questionFlag=!questionFlag">Close</mu-button>
         </mu-dialog>
-
       </div>
     </div>
 </template>
@@ -45,29 +42,7 @@
         _this.$data.courseId=response.data.seminarEntity.courseId;
         _this.$data.klassSeminarId=response.data.klassSeminarId;
         _this.getWebSocketAddress();
-
-        let t=_this;           //报名情况
-        _this.$axios({
-          method:'get',
-          url:'/attendance/'+t.$data.klassSeminarId,
-        }).then(function (response) {
-          t.$data.enrollTeams=response.data;
-          t.$data.registerOrder=[];
-          let x;
-          for(x=0;x<t.$data.maxMember;x++) {
-            t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
-          }
-          let i,j;
-          for(i=0;i<t.$data.registerOrder.length;i++)
-            for(j=0;j<t.$data.enrollTeams.length;j++)
-            {
-              if(t.$data.enrollTeams[j].teamOrder===i+1)
-              {
-                t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
-              }
-            }
-        });
-        _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+        _this.getRegisterTeams();
       });
     },
       data() {
@@ -77,8 +52,9 @@
           klassId:-1,
           klassSeminarId:-1,
           title:'OOAD-讨论课',
-          currentAttendance:'',    //但前展示小组
+          currentAttendance:'',    //当前展示小组
           currentIndex:0,
+          currentName:'',
           enrollTeams:[],
           questionFlag:false,
           registerOrder:[],
@@ -89,7 +65,7 @@
       },
       methods:{
         getRegisterTeams(){
-          let t=this;           //报名情况
+          let t=this;                   //报名情况
           this.$axios({
             method:'get',
             url:'/attendance/'+t.$data.klassSeminarId,
@@ -106,9 +82,12 @@
                 {
                   if(t.$data.enrollTeams[j].teamOrder===i+1)
                   {
-                    t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
+                    t.$data.registerOrder[i].team=t.$data.enrollTeams[j].teamEntity.teamName;
                   }
                 }
+
+                t.$data.currentAttendance=response.data[t.$data.currentIndex];
+
             });
         },
         askQuestion(){

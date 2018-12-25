@@ -1,5 +1,5 @@
 <template>
-  <div align="center">
+  <div >
     <back-bar titleName="创建队伍" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMyTeam',query:{courseId:courseId}}"></back-bar>
 
     <div class="back animated fadeInRight" align="left" >
@@ -176,6 +176,7 @@
   .back{
     margin-top: 12vh;
     width:100% ;
+    max-width: 600px;
   }
   .newMember{
     width: 100%;

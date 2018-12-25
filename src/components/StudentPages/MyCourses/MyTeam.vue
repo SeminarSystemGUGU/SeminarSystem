@@ -1,8 +1,8 @@
 <template>
-  <div align="center">
+  <div>
     <back-bar titleName="我的组队" :showMessages="true" :showBackBar="true" backUrl="/StuMyCourses"></back-bar>
 
-    <div class="animated fadeInRight">
+    <div class="animated fadeInRight" style="max-width: 600px;margin-left: 5%;">
     <div>
     <div class="panel-group" id="accordion" align="left" >
       <div class="title">
@@ -60,8 +60,9 @@
       <div class="title" >
         未组队学生
       </div>
-      <div class="subContent">
-        <span class="subItem"  data-toggle="collapse"  data-target="#demo31"  onclick="">未组队学生列表(点击展开)</span>
+      <div class="subContent" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
+        <span class="subItem"  data-toggle="collapse"  data-target="#demo31"   onclick="" @click="loading">
+          未组队学生列表(点击展开)</span>
         <div id="demo31" class="collapse out">
           <table class="table table-bordered">
             <thead>
@@ -129,6 +130,7 @@
           url:'course/'+_this.$data.courseId+'/noTeam',
         }).then(function(response){
           _this.$data.noTeamMembers=response.data;
+          _this.loading();
         },function(error){
           alert(error);
         });
@@ -145,6 +147,7 @@
         noTeamMembers:[],    //未组队成员
         maxMember:5,
         members:[],
+        loading2:false,
       }
     },
     methods:{
@@ -153,6 +156,12 @@
       },
       createTeam(){
         this.$router.push({path:'/CreateTeam',query:{courseId:this.$data.courseId}});
+      },
+      loading(){
+        this.$data.loading2 = true;
+        setTimeout(() => {
+          this.$data.loading2 = false;
+        }, 2000);
       },
     }
   }

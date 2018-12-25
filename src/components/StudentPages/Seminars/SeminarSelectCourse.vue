@@ -7,7 +7,7 @@
             <div class="itemTitle" @click="linkToSeminars(option.id,option.klassId)">
               <i class="el-icon-document"/>
               {{option.courseName}}&emsp;{{option.id}}
-              <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 1vh "/>
+              <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 0.6vh "/>
             </div>
       </div>
     </div>
@@ -76,8 +76,21 @@
       margin-top: 13vh;
     }
     .itemTitle{
-      padding-top: 18px;
+      padding-top: 13px;
       padding-left: 4vw;
+      height:6vh;
+      font-size: 30px;
+    }
+
+  }
+  @media screen and (min-width: 1024px ){
+    .container:nth-child(1)  {
+      margin-top: 13vh;
+    }
+    .itemTitle{
+      padding-top: 10px;
+      padding-left: 2vw;
+      width: 100%;
       height:7vh;
       font-size: 30px;
     }
