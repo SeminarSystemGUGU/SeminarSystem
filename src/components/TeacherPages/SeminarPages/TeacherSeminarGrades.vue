@@ -77,6 +77,10 @@
 
       };
       return{
+        courseId:'',
+        klassSeminarId:'',
+        klassId:'',
+        roundId:'',
         tableData:[
           {
             teamName:'咕咕鸟',
@@ -123,8 +127,16 @@
             this.$data.dialogVisible = false;
           }
         })
-
+      },
+      loadStuScore(){
+        let _this=this;
+        this.$axios({
+          method:'get',
+          url:'/'
+        })
       }
+    },
+    created() {
     }
   }
 </script>

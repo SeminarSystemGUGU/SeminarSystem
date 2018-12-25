@@ -1,24 +1,19 @@
 <template>
-    <div>
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="1">
-          <svg style="height: 60px;width: 400px;">
-            <!-- Symbol-->
-            <symbol id="s-text">
-              <text style="font-size:40px;" text-anchor="middle" x="50%" y="50%" dy=".35em">讨论课管理系统</text>
-            </symbol>
-            <!-- Duplicate symbols-->
-            <use class="text" xlink:href="#s-text"></use>
-            <use class="text" xlink:href="#s-text"></use>
-            <use class="text" xlink:href="#s-text"></use>
-            <use class="text" xlink:href="#s-text"></use>
-            <use class="text" xlink:href="#s-text"></use>
-          </svg>
-        </el-menu-item>
-      <div class="line" title="返回登录页">
-        <i class="icon-first-power2"/>退出登录
+    <div id="Nav">
+      <div class="navigator">
+        <div class="left-menu">
+          <div class="system-icon">
+            <img class="icon" src="../../assets/系统.png" />
+            <!--<span class="system-title">讨论课管理系统</span>-->
+          </div>
+        </div>
+        <div class="right-menu">
+          <div class="menu-title">
+            <span>登出</span>
+          </div>
+        </div>
       </div>
-      </el-menu>
+      <div class="blank-space"></div>
     </div>
 </template>
 
@@ -33,70 +28,81 @@
     }
 </script>
 
-<style>
-  @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+<style lang="less">
+  #Nav{
+    width: 100vw;
 
-  .text {
-    fill: none;
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    stroke-dasharray: 70;
-    stroke-dashoffset: 0;
-    -webkit-animation: stroke 6s infinite linear;
-    animation: stroke 6s infinite linear;
-  }
-  .text:nth-child(5n + 1) {
-    stroke: #2a5caa;
-    -webkit-animation-delay: -1.2s;
-    animation-delay: -1.2s;
-  }
-  .text:nth-child(5n + 2) {
-    stroke: #5d76ba;
-    -webkit-animation-delay: -2.4s;
-    animation-delay: -2.4s;
-  }
-  .text:nth-child(5n + 3) {
-    stroke: #5d76ba;
-    -webkit-animation-delay: -3.6s;
-    animation-delay: -3.6s;
-  }
-  .text:nth-child(5n + 4) {
-    stroke: #5d76ba;
-    -webkit-animation-delay: -4.8s;
-    animation-delay: -4.8s;
-  }
-  .text:nth-child(5n + 5) {
-    stroke: #5d76ba;
-    -webkit-animation-delay: -6s;
-    animation-delay: -6s;
-  }
-  @-webkit-keyframes stroke {
-    100% {
-      stroke-dashoffset: -400;
+    .navigator{
+      padding: 0;
+      width: 100%;
+      height: 50px;
+      left: 0;
+      top:0;
+      box-shadow: 0px 0px 3px #333333;
+      border-bottom: 1px solid whitesmoke;
+      position: fixed;
+      background-color: white;
+      z-index: 1000;
+
+      .right-menu{
+        position: fixed;
+        padding: 0;
+        margin: 0;
+        top:0;
+        float: right;
+        width: 150px;
+        background-color: #dd5347;
+        height: 51px;
+        right: 0;
+        line-height: 50px;
+
+        .menu-title{
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+          color: white;
+          font-weight: normal;
+          font-size: 14px;
+          /*display: inline-block;*/
+        }
+      }
+      .system-icon{
+        width: 60px;
+        height: 50px;
+      }
+
+      .left-menu{
+        /*margin-top: 10px;*/
+        margin-left: 20px;
+        line-height: 50px;
+        width: 60px;
+        text-align: left;
+        /*width: 100px;*/
+        /*height: 50px;*/
+        /*line-height: 7vh;*/
+        /*.system-title{*/
+        /*margin-left: 10px;*/
+        /*line-height: 50px;*/
+        /*color: #dd5347;*/
+        /*font-weight: bold;*/
+        /*}*/
+        .icon{
+          width: 30px;
+          height: 30px;
+        }
+      }
     }
-  }
-  @keyframes stroke {
-    100% {
-      stroke-dashoffset: -400;
+
+    .blank-space{
+      width: 100vw;
+      display: block;
+      height: 50px;
     }
+    /*height: 100vw;*/
   }
-  svg {
-    position: absolute;
-    width: 800px;
-    /*height: 100%;*/
-  }
-  .line{
-    float: right;
-    margin-top: 20px;
-    line-height: 19px;
-    margin-right: 100px;
-    font-size: 19px;
-    cursor: pointer;
-    transition: all 0.5s;
-  }
-  .line:hover{
-    font-size: 20px;
-    color: darkred;
-    line-height: 20px;
-  }
+
+  /* Main styles */
+
+
+
 </style>

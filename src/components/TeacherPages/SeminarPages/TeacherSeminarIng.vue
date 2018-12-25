@@ -10,7 +10,6 @@
     <div class="app-bar">
       <div :class="iconClass" ref="iconUse">
         <i class="el-icon-back" @click="linkBack"></i>
-        <!--<span class="">轮次设置</span>-->
         <transition name="slide-fade" class="transition-box">
           <span class="title">讨论课</span>
         </transition>
@@ -18,71 +17,55 @@
       </div>
     </div>
     <div class="app-bar-blank"></div>
-    <!--<AppBar title-name="讨论课-正在进行"></AppBar>-->
     <div class="main-content">
       <div class="seminar-title">
-        <el-row>
-          <!--<el-col class="title-col">-->
-            <span>正在进行：{{seminarTitle}}&nbsp<i class="el-icon-loading"/> </span>
-          <!--</el-col>-->
-          <!--<el-col class="stop-col">-->
-            <!--<span>暂停</span>-->
-          <!--</el-col>-->
-        </el-row>
+        <div class="title-content">
+          <span>正在进行：{{seminarTitle}}<i class="el-icon-loading"/> </span>
+        </div>
       </div>
-      <div class="seminar-tooltip">
-        <el-row>
-          <el-col class="pre-col">
-            <span>正在展示：1-6小组</span>
-          </el-col>
-          <el-col class="que-col">
-            <span>已有1位同学提问</span>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="seminar-main">
-        <el-row>
+      <div class="seminar-bar">
+        <el-row class="bar-row">
           <el-col class="pre-list-col">
-            <div class="list-left">
-              <div class="pre-list-item" :style="chosenItemStyle">
-                <span :style="chosenStyle">1-6</span>
-              </div>
-              <div class="pre-list-item">
-                <span>1-6</span>
-              </div>
-              <div class="pre-list-item">
-                <span>1-6</span>
+            <div class="box-title">展示列表</div>
+            <div class="pre-list">
+
+              <div :class="item.teamClass" v-for="item,index in preTeams" :key="index" @click="choosePreTeam(index)">
+                {{item.teamSerial}}
               </div>
 
-              <div class="pre-list-item">
-                <span>1-6</span>
-              </div>
             </div>
           </el-col>
-          <el-col class="grade-list-col">
-            <span class="grade-input-title">展示分数：</span>
-            <input class="grade-input"/>
+          <el-col class="operation-list-col">
+            <div class="operation-box">
+              <div class="operation-box-title">
+                <span>正在展示</span><br/>
+                <span>{{chooseTeam}}</span>
+                <span>{{chooseTeamName}}</span><br/>
+                <i class="el-icon-loading"></i>
+              </div>
+              <div class="operation-grade">
+                <span>展示得分</span><br/>
+                <input class="grade-input"/>
+              </div>
+            </div>
+            <div class="button-panel">
+              <mu-button color="error">下组展示</mu-button>
+              <mu-button color="error">抽取提问</mu-button>
+            </div>
           </el-col>
-          <el-col class="que-list-col">
-            <div class="list-right">
-              <div class="pre-list-item">
-                <span>1-6</span>
-              </div>
-              <div class="pre-list-item">
-                <span>1-6</span>
-              </div>
-              <div class="pre-list-item">
-                <span>1-6</span>
-              </div>
+          <el-col class="ques-list-col">
+            <div class="ques-title">提问列表</div>
+            <div class="pre-list-item">
+              1-6
+            </div>
+            <div class="pre-list-item-un">
+              1-7
             </div>
           </el-col>
         </el-row>
       </div>
-      <div class="button-panel">
-        <el-button v-show="isQuestion" type="primary">提交分数</el-button>
-        <el-button v-show="!isQuestion" type="primary" @click="webSocketSend">下个提问</el-button>
-        <el-button v-show="!isQuestion" type="primary">下个展示</el-button>
-      </div>
+
+
     </div>
   </div>
 </template>
@@ -91,12 +74,15 @@
   import AppBar from '../../ReuseComponents/AppBar'
     export default {
         name: "TeacherSeminarIng",
+
       components:{
           AppBar
       },
       data(){
           return{
-            chooseTeam:'',
+            chooseTeamIndex:0,
+            chooseTeam:'1-6',
+            chooseTeamName:'咕咕鸟',
             seminarId:'',
             classId:'',
             reportTime:'',
@@ -109,7 +95,16 @@
             courseId:'',
             webSocketAddress:'',
             preTeams:[
-
+              {
+                teamSerial:'1-6',
+                teamName:'咕咕鸟',
+                teamClass:'pre-list-item-un'
+              },
+              {
+                teamSerial:'1-7',
+                teamName:'晚晚鸟',
+                teamClass:'pre-list-item-un'
+              }
             ],
             chosenStyle:{
               color: 'white',
@@ -125,10 +120,19 @@
         this.$data.courseId=this.$route.query.courseId;
         this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
-        this.loadPreTeams();
-        this.getWebSocketAddress();
+        // this.loadPreTeams();
+        // this.getWebSocketAddress();
+        this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item';
+
       },
       methods:{
+        choosePreTeam(index){
+          this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item-un';
+          this.$data.chooseTeamIndex=index;
+          this.$data.chooseTeamName=this.$data.preTeams[this.$data.chooseTeamIndex].teamName;
+          this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item';
+
+        },
         setReportTime(){
           let reportTime=this.$data.reportTime;
           if(this.$data.reportTime) {
@@ -194,22 +198,35 @@
           this.$data.socket.onopen=this.webSocketOnOpen();
           this.$data.socket.onmessage=function (msg) {
             console.log(msg);
-            // if(msg.data==='200'){
-            //   this.$message({
-            //     type:'success',
-            //     message:'连接成功！正式开始上课！'
-            //   })
-            // }
+            if(msg.data==='200'){
+              this.$message({
+                type:'success',
+                message:'连接成功！正式开始上课！'
+              })
+            }
           };
-          // this.$data.socket.sendmessage=function () {
-          // }
+
 
         },
         webSocketOnOpen(){
           // alert('成功！')
         },
         webSocketSend(){
-          this.$data.socket.send("2");
+          this.$data.socket.send("1");
+        },
+        loadQuestion(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/question/nextQuestion',
+            params:{
+              attendanceId:this.$data.chooseTeam
+            }
+          }).then(function (response) {
+
+          }).catch(function (error) {
+
+          })
         },
         linkBack(){
           history.back();
@@ -235,9 +252,6 @@
       transition: all 0.8s;
     }
 
-    .row-col{
-      width: 40%;
-    }
 
     .app-bar {
       padding: 0.1px;
@@ -271,116 +285,162 @@
     }
 
     .main-content{
-      margin-top: 4vh;
+      /*margin-top: 4vh;*/
+
       .seminar-title{
-        /*background-color: dodgerblue;*/
-        margin-left: 5vw;
+        /*color: black;*/
         text-align: left;
-        font-size: 20px;
         font-weight: bold;
-
-
-        .title-col{
-          width: 80%;
-          overflow: hidden;
-        }
-
-        .stop-col{
-          width: 20%;
-          color: orangered;
-        }
-
-
+        font-size: 25px;
+        padding-left: 8px;
       }
 
-      .seminar-tooltip{
+
+      .seminar-bar{
         margin-top: 2vh;
-        text-align: left;
-        margin-left: 3vw;
-        font-size: 14px;
-        color: dodgerblue;
+        width: 100%;
+
+        .bar-row{
+          width: 100%;
+
+          .pre-list-col{
+            width: 26%;
+            /*background-color: darkkhaki;*/
+
+            .box-title{
+              text-align: left;
+              font-weight: bold;
+              margin-left: 2px;
+              /*margin-bottom: 5px;*/
+            }
+
+            .pre-list-item{
+              line-height: 55px;
+              margin-top: 4px;
+              margin-left: 2px;
+              width: 55px;
+              height: 55px;
+              background-color: #dd6161;
+              border-radius: 50%;
+              box-shadow: 1px 1px 4px darkgrey;
+              color: white;
+            }
+
+            .pre-list-item-un{
+              line-height: 55px;
+              margin-top: 4px;
+              margin-left: 2px;
+              width: 55px;
+              height: 55px;
+              background-color: white;
+              border-radius: 50%;
+              box-shadow: 1px 1px 4px darkgrey;
+            }
 
 
-        .pre-col{
-          width: 60%;
-        }
-
-        .que-col{
-          width: 40%;
-        }
-
-
-      }
-
-
-      .button-panel{
-        margin-top: 4vh;
-
-        .el-button{
-          width: 40%;
-          height: 50px;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          margin-top: 10px;
-        }
-      }
-
-      .seminar-main{
-        margin-top: 3vh;
-
-        .list-left {
-          width: 80%;
-          border-right: 0.5px solid lightgrey;
-          .pre-list-item {
-            height: 50px;
-            line-height: 50px;
-            font-size: 19px;
           }
-        }
 
-        .list-right {
-          width: 80%;
-          border-left: 1px solid lightgrey;
-          .pre-list-item {
-            height: 50px;
-            line-height: 50px;
-            font-size: 19px;
+          .operation-list-col{
+            width: 44%;
+            /*background-color: darkgrey;*/
+            .operation-box{
+              padding: 1px;
+              width: 98%;
+              margin-left: auto;
+              margin-right: auto;
+              height: 200px;
+              background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); /* Safari 5.1 - 6.0 */
+              background: -o-linear-gradient(right, #00b2ee, #63b8ff); /* Opera 11.1 - 12.0 */
+              background: -moz-linear-gradient(right, #00b2ee, #63b8ff); /* Firefox 3.6 - 15 */
+              background: linear-gradient(right, dodgerblue , 	#87cefa); /* 标准的语法（必须放在最后） */
+              border-radius: 6px;
+              box-shadow: 0 0 6px lightgrey;
+
+              .operation-box-title{
+                margin-top: 5px;
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+                .el-icon-loading{
+                  font-size: 30px;
+                }
+              }
+
+              .operation-grade{
+                margin-top: 20px;
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+                .grade-input{
+                  width: 60px;
+                  background-color: transparent;
+                  outline: none;
+                  border: none;
+                  border-bottom:1px solid #ffffff;
+                }
+              }
+
+
+
+            }
+
+            .button-panel{
+              margin-top: 20px;
+
+              .mu-button{
+                margin-top: 10px;
+                width: 120px;
+                background-color: #dd6161;
+              }
+            }
+
           }
-        }
-        .grade-input-title{
-          display: block;
-          margin-top: 3vh;
-          font-weight: bold;
-        }
+
+          .ques-list-col{
+            /*float: right;*/
+            width: 26%;
+
+            .ques-title{
+              text-align: right;
+              font-weight: bold;
+              margin-right: 1px;
+            }
+            .pre-list-item{
+              float: right;
+              line-height: 55px;
+              margin-top: 4px;
+              margin-right: 2px;
+              width: 55px;
+              height: 55px;
+              background-color: #dd6161;
+              border-radius: 50%;
+              box-shadow: 1px 1px 4px darkgrey;
+              color: white;
+            }
+
+            .pre-list-item-un{
+              float: right;
+              line-height: 55px;
+              margin-top: 4px;
+              margin-right: 2px;
+              width: 55px;
+              height: 55px;
+              background-color: white;
+              border-radius: 50%;
+              box-shadow: 1px 1px 4px darkgrey;
+            }
+            /*background-color: #4cae4c;*/
+          }
 
 
-        .grade-input{
-          margin-top: 11px;
-          height: 13vh;
-          width: 60%;
-          font-size: 40px;
-          text-align: center;
-          outline: none;
-        }
 
 
-        .pre-list-col{
-          width: 24%;
+
+
+
+
         }
 
-        .que-list-col{
-          width: 24%;
-          float: right;
-        }
-
-        .grade-list-col{
-          margin-left: 4vw;
-          /*margin-left: auto;*/
-          /*margin-right: auto;*/
-          width: 45%;
-          font-size: 20px;
-        }
 
       }
 
