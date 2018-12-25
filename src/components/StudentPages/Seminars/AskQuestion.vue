@@ -17,8 +17,8 @@
         </mu-paper>
 
         <mu-button class="askQ" color="success"  @click="askQuestion">发起提问</mu-button>
-
-        <mu-dialog title="Dialog" width="360" :open.sync="questionFlag">
+        <mu-dialog title="发起提问？" width="360" :open.sync="questionFlag" :overlay="false">
+          <mu-button slot="actions" flat color="success" @click="confirmQuestion">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="questionFlag=!questionFlag">Close</mu-button>
         </mu-dialog>
 
@@ -44,7 +44,6 @@
       }).then(function(response){
         _this.$data.courseId=response.data.seminarEntity.courseId;
         _this.$data.klassSeminarId=response.data.klassSeminarId;
-
         _this.getWebSocketAddress();
 
         let t=_this;           //报名情况
@@ -114,6 +113,19 @@
         },
         askQuestion(){
           this.$data.questionFlag=true;
+        },
+        confirmQuestion(){        //确认提问
+          let _this=this;
+          this.$axios({
+            method:'post',
+            url:'/question/newQuestion',
+            params:{
+              attendaId:_this.$data.enrollTeams[_this.$data.currentIndex].id,
+            }
+          }).then(function (response) {
+            _this.$toast.success("提问成功！");
+            _this.$data.questionFlag=!_this.$data.questionFlag;
+          });
         },
         getWebSocketAddress(){
           let _this=this;

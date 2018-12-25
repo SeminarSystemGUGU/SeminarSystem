@@ -48,14 +48,16 @@
           <span class="subTit">组员星座要求：</span>
           <p class="subc">123</p>
         </div>
-        <div class="card">
-          <span class="subTit">冲突课程：</span>
-          <p class="subc">123</p>
-        </div>
+        <!--<div class="card">-->
+          <!--<span class="subTit">冲突课程：</span>-->
+          <!--<p class="subc">123</p>-->
+        <!--</div>-->
+        <mu-button  class="require" color="success"  @click="showRequirement">
+          组队要求
+        </mu-button>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -67,7 +69,7 @@
       },
       data(){
           return{
-            courseId:0,
+            courseId:-1,
             courseName:'OOAD',
             courseInfo:{},
           }
@@ -82,6 +84,12 @@
         }).then(function (response) {
           _this.$data.courseInfo=response.data;
         })
+      },
+      methods:{
+        showRequirement(){
+          this.$router.push({path:'/StuTeamRequire',query:{courseId:this.$data.courseId}});
+
+        },
       }
 
     }

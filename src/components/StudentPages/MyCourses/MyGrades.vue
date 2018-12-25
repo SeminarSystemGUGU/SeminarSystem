@@ -86,9 +86,6 @@
         </div>
       </div>
     </div>
-
-      <mu-button class="exportGrades" color="success" >导出成绩</mu-button>
-
     </div>
   </div>
 </template>
@@ -103,20 +100,44 @@
     created(){
       this.$data.courseId=this.$route.query.courseId;
 
-      let _this=this;
+      let tt=this;
       this.$axios({
         method:'get',
-        url:'/course/'+this.$data.courseId+'/score',
-      }).then(function (response){
-        _this.$data.scores=response.data;
-      })
+        url:'/course/'+tt.$data.courseId+'/team',
+      }).then(function (response) {
+        tt.$data.teamId=response.data.teamId;
+        let _this=tt;
+        tt.$axios({
+          method:'get',
+          url:'/course/'+_this.$data.courseId+'/round',
+        }).then(function (response){
+          let i;
+          for(i=0;i<response.data.length;i++)
+          {
+            _this.$data.rounds.push({
+              roundName:'第'+response.data.roundSerial+'轮',
+              roundId:response.data[i].id,
+              // scores:[],
+            });
+            let t=_this;
+            _this.$axios({
+              method:'get',
+              url:'/round/'+response.data[i].id+'/team/'+t.$data.teamId+'/roundscore',
+            }).then(function (response) {
+              // _this.$data.rounds[i].scores=response.data;
+            })
+          }
+        })
+      });
+
+
     },
     data(){
       return{
         title:"OOAD",
         round:"第一轮",
-        courseId:0,
-        scores:[],
+        teamId:-1,
+        courseId:-1,
         rounds:[
           {
             roundName:'第一轮',
@@ -197,13 +218,7 @@
     color:gray;
     font-size: 14px;
   }
-  .exportGrades{
-    font-size: 18px;
-    margin-top: 10vh;
-    width: 90%;
-    height:6vh;
-    opacity: 0.9;
-  }
+
   @media screen and (min-width: 481px ){
     .title{
       font-size: 30px;
@@ -215,10 +230,6 @@
     .subItem{
       font-size: 20px;
       margin-left: 1vw;
-    }
-    .exportGrades{
-      font-size: 25px;
-      margin-top: 10vh;
     }
     table{
       margin-left: 2vw;

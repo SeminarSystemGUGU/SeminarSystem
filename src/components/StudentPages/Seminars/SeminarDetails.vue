@@ -35,17 +35,18 @@
             </mu-list-item-content>
           </mu-list-item>
 
+          <!--未报名、正在进行-->
           <mu-divider class="" style="height: 5px;" v-if="status===2"></mu-divider>
           <mu-list-item class="item" avatar :ripple="false" button v-if="status===2">
             <mu-list-item-content >
               <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title >
-                {{status}}
+                正在进行
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">查看详情</mu-button>
           </mu-list-item>
-
+          <!--已报名，正在进行-->
           <mu-divider class="" style="height: 5px;" v-if="status===3"></mu-divider>
           <mu-list-item class="item" avatar :ripple="false" button v-if="status===3">
             <mu-list-item-content >
@@ -54,9 +55,41 @@
                 正在进行
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">查看详情</mu-button>
           </mu-list-item>
-
+          <!--<mu-list-item avatar :ripple="false" button v-if="status===3">-->
+            <!--<mu-list-item-content>-->
+              <!--<mu-list-item-title>报名情况</mu-list-item-title>-->
+              <!--<mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>-->
+              <!--<mu-list-item-sub-title>-->
+                <!--&lt;!&ndash;{{// seminarDetails.registerStatus}}&ndash;&gt;-->
+              <!--</mu-list-item-sub-title>-->
+            <!--</mu-list-item-content>-->
+            <!--<mu-button flat color="success" @click="">修改</mu-button>-->
+          <!--</mu-list-item>-->
+          <mu-divider v-if="status===3"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===3">
+            <mu-list-item-content>
+              <mu-list-item-title>PPT</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                已提交
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="normal">  已提交</mu-button>
+          </mu-list-item>
+          <!--<mu-divider v-if="status==3"></mu-divider>-->
+          <!--<mu-list-item avatar :ripple="false" button v-if="status===3">-->
+          <!--<mu-list-item-content>-->
+          <!--<mu-list-item-title>报告</mu-list-item-title>-->
+          <!--<mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>-->
+          <!--<mu-list-item-sub-title>-->
+          <!--已提交-->
+          <!--</mu-list-item-sub-title>-->
+          <!--</mu-list-item-content>-->
+          <!--<mu-button flat color="normal">  已提交</mu-button>-->
+          <!--</mu-list-item>-->
+          <!--未开始、未报名-->
           <mu-divider  v-if="status===1"></mu-divider>
           <mu-list-item class="item" avatar :ripple="false" button v-if="status===1">
             <mu-list-item-content >
@@ -65,9 +98,8 @@
                 未开始
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">查看详情</mu-button>
           </mu-list-item>
-
           <!--已报名，未开始-->
           <mu-list-item avatar :ripple="false" button v-if="status===4">
             <mu-list-item-content>
@@ -77,7 +109,7 @@
                 未开始
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">修改</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">修改</mu-button>
           </mu-list-item>
           <mu-divider  v-if="status===4"></mu-divider>
           <mu-list-item avatar :ripple="false" button v-if="status===4">
@@ -104,8 +136,7 @@
             <!--</mu-list-item-content>-->
             <!--&lt;!&ndash;<mu-button flat color="normal">{{// seminarDetails.reportStatus}}</mu-button>&ndash;&gt;-->
           <!--</mu-list-item>-->
-
-          <!--已报名，已结束-->
+          <!--已报名，已结束、未截止-->
           <mu-list-item avatar :ripple="false" button v-if="status===5">
             <mu-list-item-content>
               <mu-list-item-title>课程情况</mu-list-item-title>
@@ -114,7 +145,7 @@
                 已结束
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">详情</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">详情</mu-button>
           </mu-list-item>
           <mu-divider v-if="status===5"></mu-divider>
           <mu-list-item avatar :ripple="false" button v-if="status===5">
@@ -138,7 +169,39 @@
             </mu-list-item-content>
             <mu-button flat color="normal">  已提交</mu-button>
           </mu-list-item>
-
+          <!--已报名，已结束、已截止-->
+          <mu-list-item avatar :ripple="false" button v-if="status===6">
+            <mu-list-item-content>
+              <mu-list-item-title>课程情况</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                已结束
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="success" @click="showStatusDetails(status)">详情</mu-button>
+          </mu-list-item>
+          <mu-divider v-if="status===5"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===5">
+            <mu-list-item-content>
+              <mu-list-item-title>PPT</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                已提交
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="normal">  已提交</mu-button>
+          </mu-list-item>
+          <mu-divider v-if="status===5"></mu-divider>
+          <mu-list-item avatar :ripple="false" button v-if="status===5">
+            <mu-list-item-content>
+              <mu-list-item-title>报告</mu-list-item-title>
+              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
+              <mu-list-item-sub-title>
+                已提交
+              </mu-list-item-sub-title>
+            </mu-list-item-content>
+            <mu-button flat color="normal">  已提交</mu-button>
+          </mu-list-item>
           <!--未报名，已结束-->
           <mu-divider v-if="status===7"></mu-divider>
           <mu-list-item avatar :ripple="false" button v-if="status===7">
@@ -149,52 +212,8 @@
                 已结束
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">详情</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">详情</mu-button>
           </mu-list-item>
-
-          <!--已报名，正在进行-->
-          <mu-divider class="" style="height: 5px;" v-if="status===3"></mu-divider>
-          <mu-list-item class="item" avatar :ripple="false" button v-if="status===3">
-            <mu-list-item-content >
-              <mu-list-item-title>课程情况</mu-list-item-title>
-              <mu-list-item-sub-title >
-                正在进行
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails">查看详情</mu-button>
-          </mu-list-item>
-          <mu-list-item avatar :ripple="false" button v-if="status===3">
-            <mu-list-item-content>
-              <mu-list-item-title>报名情况</mu-list-item-title>
-              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
-              <mu-list-item-sub-title>
-                <!--{{// seminarDetails.registerStatus}}-->
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-            <mu-button flat color="success" @click="">修改</mu-button>
-          </mu-list-item>
-          <mu-divider v-if="status===3"></mu-divider>
-          <mu-list-item avatar :ripple="false" button v-if="status===3">
-            <mu-list-item-content>
-              <mu-list-item-title>PPT</mu-list-item-title>
-              <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
-              <mu-list-item-sub-title>
-                已提交
-              </mu-list-item-sub-title>
-            </mu-list-item-content>
-            <mu-button flat color="normal">  已提交</mu-button>
-          </mu-list-item>
-          <!--<mu-divider v-if="status==3"></mu-divider>-->
-          <!--<mu-list-item avatar :ripple="false" button v-if="status===3">-->
-            <!--<mu-list-item-content>-->
-              <!--<mu-list-item-title>报告</mu-list-item-title>-->
-              <!--<mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>-->
-              <!--<mu-list-item-sub-title>-->
-                <!--已提交-->
-              <!--</mu-list-item-sub-title>-->
-            <!--</mu-list-item-content>-->
-            <!--<mu-button flat color="normal">  已提交</mu-button>-->
-          <!--</mu-list-item>-->
         </mu-list>
 
 
@@ -205,7 +224,7 @@
           <img class="iimg" src="../../../assets/schedule.svg"   />
           结束报名时间：{{seminarEntity.enrollEndTime}}
         </div>
-        <mu-button class="inSeminar" color="success"  @click="showStatusDetails" v-if="status===1">报名</mu-button>
+        <mu-button class="inSeminar" color="success"  @click="showStatusDetails(status)" v-if="status===1">报名</mu-button>
 
         <!--已报名 未开始-->
         <mu-button class="submit" color="success"  @click="submitPPT" v-if="status===4" >PPT提交</mu-button>
@@ -216,7 +235,6 @@
             :limit="1"
             :file-list="ppt">
             <el-button size="small" type="primary">点击上传</el-button>
-            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
           </el-upload>
           <mu-button slot="actions" flat color="success" @click="submit">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="pptFlag=!pptFlag">Close</mu-button>
@@ -228,15 +246,11 @@
         <mu-flex justify-content="center" align-items="center" class="conRunning">
           <mu-button large round  class="runningSeminar" @click="inSeminar" v-if="status===3"  color="error">进入讨论课 &emsp; <i class="el-icon-d-arrow-right"/></mu-button>
         </mu-flex>
-        <!--<mu-button class="runningSeminar" color="success"  style="margin-top: 10vh;" @click="inSeminar" v-if="status==3">进入讨论课<></mu-button>-->
 
         <!--未报名，正在进行-->
-        <!--<mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===3">报告提交</mu-button>-->
         <mu-flex justify-content="center" align-items="center" class="conRunning">
           <mu-button large round  class="runningSeminar" @click="inSeminar" v-if="status===2"  color="error">进入讨论课 &emsp; <i class="el-icon-d-arrow-right"/></mu-button>
         </mu-flex>
-        <!--<mu-button class="runningSeminar" color="success"  style="margin-top: 10vh;" @click="inSeminar" v-if="status==3">进入讨论课<></mu-button>-->
-
 
         <!--已报名，已结束，已截止-->
         <mu-button class="submit" color="success"  @click="showGrades" v-if="status===5">查看成绩</mu-button>
@@ -251,7 +265,6 @@
               :limit="1"
               :file-list="report">
               <el-button size="small" type="primary">点击上传</el-button>
-              <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
             </el-upload>
             <mu-button slot="actions" flat color="success" @click="reportFlag=!reportFlag">Sure</mu-button>
             <mu-button slot="actions" flat color="primary" @click="reportFlag=!reportFlag">Close</mu-button>
@@ -371,8 +384,8 @@
           }
       },
       methods:{
-        showStatusDetails(){      //报名
-          this.$router.push({path:'/StuStatusDetails',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});
+        showStatusDetails(status){      //报名
+          this.$router.push({path:'/StuStatusDetails',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId,status:status}});
         },
         inSeminar(){
             this.$router.push({path:'/StuAskQuestion',query:{klassId:this.$data.klassId,seminarId:this.$data.seminarId}});

@@ -4,13 +4,13 @@
 
     <div class="statusDetailsBack animated fadeInRight" >
       <!--讨论课已经结束-->
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===4">
-        <mu-list v-for="option in registerOrder" :key = "option.teamid">
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===5">
+        <mu-list v-for="option,index in registerOrder" :key = "option.team">
           <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
             <mu-list-item-action>
               {{option.order}}
             </mu-list-item-action>
-            <mu-list-item-title style="margin-left: 20%;font-size: 20px">{{option.teamid}}</mu-list-item-title>
+            <mu-list-item-title style="margin-left: 20%;font-size: 20px">这个报名的是：{{option.team}}</mu-list-item-title>
           </mu-list-item>
         </mu-list>
         <mu-divider></mu-divider>
@@ -18,7 +18,7 @@
 
       <!--正在进行讨论课-->
       <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===3">
-        <mu-list v-for="option in ppt" :key = "option.order">
+        <mu-list v-for="option,index in registerOrder" :key = "index">
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
               {{option.order}}
@@ -50,13 +50,11 @@
         </mu-list>
         <mu-divider></mu-divider>
       </mu-paper>
-
       <mu-dialog title="提示" width="360" :open.sync="registerFlag" :overlay="false">
         确认报名？
         <mu-button slot="actions" flat color="success" @click="enroll">Sure</mu-button>
         <mu-button slot="actions" flat color="primary" @click="registerFlag=!registerFlag">Close</mu-button>
       </mu-dialog>
-
 
       <!--修改报名-->
       <mu-paper :z-depth="1" class="demo-list-wrap"  v-if="status===2">
@@ -73,12 +71,10 @@
         <mu-divider></mu-divider>
       </mu-paper>
       <mu-button class="cancleR" slot="actions"  v-if="status===2" color="error" @click="cancleFlag=!cancleFlag">取消报名</mu-button>
-
       <mu-dialog title="确认修改报名？" width="360" :open.sync="changeFlag" :overlay="false">
         <mu-button slot="actions" flat color="success" @click="confirmChange">Sure</mu-button>
         <mu-button slot="actions" flat color="primary" @click="changeFlag=!changeFlag">Close</mu-button>
       </mu-dialog>
-
       <mu-dialog title="取消报名" width="360" :open.sync="cancleFlag" :overlay="false">
         <mu-button slot="actions" flat color="success" @click="cancle">Sure</mu-button>
         <mu-button slot="actions" flat color="primary" @click="cancleFlag=!cancleFlag">Close</mu-button>
@@ -98,6 +94,14 @@
       created(){
         this.$data.klassId=this.$route.query.klassId;
         this.$data.seminarId=this.$route.query.seminarId;
+        if(this.$route.query.status===1 )
+          this.$data.status=1;
+        else if(this.$route.query.status===4)
+          this.$data.status=2;
+        else if(this.$route.query.status===2 || this.$route.query.status===3)   //ppt
+          this.$data.status=3;
+        else if(this.$route.query.status===5 || this.$route.query.status===7)   //顺序
+          this.$data.status=5;
 
         let _this=this;    //根据courseId获取该课程讨论课列表
         this.$axios({
@@ -121,22 +125,18 @@
             _this.$data.registerOrder=[];
             let x;
             for(x=0;x<t.$data.maxMember;x++) {
-              t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
+              t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:'',pptName:'',pptPath:'',attenddaceId:''});
             }
-            console.log(t.$data.registerOrder);
-
             let i,j;
             for(i=0;i<t.$data.registerOrder.length;i++)
               for(j=0;j<t.$data.enrollTeams.length;j++)
               {
                 if(t.$data.enrollTeams[j].teamOrder===i+1)
                 {
+                  t.$data.registerOrder[i].attendanceId=t.$data.enrollTeams[j].id;
                   t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
                 }
               }
-
-            //讨论课未开始
-            _this.$data.status=1;
 
             let tt=_this;           //我的队伍信息
             _this.$axios({
@@ -150,16 +150,31 @@
                 if(tt.$data.enrollTeams[i].teamId===tt.$data.myTeam.teamId)   //已报名
                 {
                   tt.$data.attendanceId=tt.$data.enrollTeams[i].id;   //获取attendanceId
-                  tt.$data.status=2;     //修改报名
                 }
               }
             });
+
+            if(tt.$data.status===3)  //获取ppt
+            {
+              let x;
+              for(x=0;x<tt.$data.registerOrder.length;x++) {
+                let ts = tt;
+                tt.$axios({
+                  method: 'get',
+                  url: '/attendance/'+ts.$data.registerOrder[x].attendanceId+'/ppt',
+                }).then(function (response) {
+                  ts.$data.registerOrder[x].pptName=response.data.name;
+                  ts.$data.registerOrder[x].pptPath=response.data.path;
+                })
+              }
+            }
+
           });
         });
       },
       data(){
           return {
-            status:-1,   //该页面状态  1-报名   2-修改报名  3-正在进行  4-已经结束
+            status:-1,   //该页面状态  1-报名   2-修改报名  3-正在进行(显示ppt)  4-已经结束（显示成绩）  5-已经结束、未报名(显示序列)
             courseId:-1,
             klassId:-1,
             seminarId:-1,
@@ -231,7 +246,6 @@
               _this.$data.attendanceId=response.data;
               _this.$data.registerFlag=!_this.$data.registerFlag;
               _this.$toast.success("报名成功！");
-
               _this.$data.status=2;
 
               const loading = _this.$loading();
@@ -250,8 +264,6 @@
                 for(x=0;x<t.$data.maxMember;x++) {
                   t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
                 }
-                console.log(t.$data.registerOrder);
-
                 let i,j;
                 for(i=0;i<t.$data.registerOrder.length;i++)
                   for(j=0;j<t.$data.enrollTeams.length;j++)
@@ -286,8 +298,6 @@
               for(x=0;x<t.$data.maxMember;x++) {
                 t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
               }
-              console.log(t.$data.registerOrder);
-
               let i,j;
               for(i=0;i<t.$data.registerOrder.length;i++)
                 for(j=0;j<t.$data.enrollTeams.length;j++)
@@ -353,8 +363,5 @@
     height:6vh;
     opacity: 0.9;
   }
-  /*.listItem:nth-child(even){*/
-    /*background-color: burlywood;*/
-  /*}*/
 
 </style>

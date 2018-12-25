@@ -155,15 +155,14 @@
             _this.$router.push({path:'StuMyTeam',query:{courseId:_this.$data.courseId}});
           })
         },
-        dissolve(){
-          //组长解散小组
-        },
         addMember(index, row) {
           const loading = this.$loading();
           setTimeout(() => {
             loading.close();
           }, 500);
           this.$set(this.$data.newTeam.members,this.$data.newTeam.members.length,row);
+
+          // this.$set(this.$data.newTeam.members.unshift(row));
           this.$set(this.$data.noTeamMember.splice(index,1));
         },
         backToMyTeam(){

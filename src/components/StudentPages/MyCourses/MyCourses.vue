@@ -28,7 +28,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
   </div>
@@ -90,7 +89,6 @@
   .parent1    {
     height: 8vh;
     overflow: hidden;
-
     transition-property: height;
     transition-duration: 1s;
     perspective: 1000px;
@@ -116,7 +114,7 @@
     padding-left: 4vw;
     width: 100%;
     height:7vh;
-    font-size: 20px;
+    font-size: 18px;
 
     box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
 
@@ -132,45 +130,41 @@
   }
   .subItem{
     color:gray;
-    font-size: 18px;
+    font-size: 16px;
   }
-
   @media screen and (min-width: 481px ){
     .container:nth-child(1)  {
-      margin-top: 13vh;
+      margin-top: 11vh;
     }
     .parent1    {
-      height: 11vh;
+      height: 9vh;
       overflow: hidden;
-
       transition-property: height;
       transition-duration: 1s;
       perspective: 1000px;
       transform-style: preserve-3d;
     }
     .parent3    {
-      height: 11vh;
+      height: 9vh;
       transition-property: all;
       transition-duration: 1s;
       transform: rotateX(-90deg);
       transform-origin: top;
     }
     .container:hover .parent1   {
-      height: 21vh;
+      height: 27vh;
     }
     .container:hover .parent3   {
       transform: rotateX(0deg);
-      height: 21vh;
+      height: 27vh;
     }
-
     .itemTitle{
       padding-top: 20px;
       padding-left: 4vw;
       width: 100%;
-      height:8vh;
-      font-size: 30px;
+      height:7vh;
+      font-size: 27px;
     }
-
     .subList {
       padding-top: 1vh;
       padding-left: 3vw;
@@ -183,7 +177,7 @@
     }
     .subItem{
       color:gray;
-      font-size: 25px;
+      font-size: 20px;
     }
   }
 

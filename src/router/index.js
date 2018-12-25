@@ -54,6 +54,9 @@ import StuChangeRegister from '../components/StudentPages/Seminars/ChangeRegiste
 import StuCheckGrades from '../components/StudentPages/Seminars/CheckGrades'
 import StuCourseInfo from '../components/StudentPages/MyCourses/CourseInfo'
 import StuConfirmAccount from '../components/StudentPages/Account/ConfrimAccount'
+import StuMyTeamDetails from '../components/StudentPages/MyCourses/MyTeamDetails'
+import StuTeamRequire from '../components/StudentPages/MyCourses/TeamRequire'
+
 
 
 
@@ -187,6 +190,14 @@ export default new Router({
     {
       path:'/StuMyCourses',
       component:StuMyCourses
+    },
+    {
+      path:'/StuMyTeamDetails',
+      component:StuMyTeamDetails,
+    },
+    {
+      path:'/StuTeamRequire',
+      component:StuTeamRequire
     },
     {
       path:'/CreateTeam',

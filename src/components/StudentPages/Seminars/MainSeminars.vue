@@ -2,15 +2,15 @@
   <div>
     <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/SeminarSelectCourse',query:{courseID:courseId,klassId:klassId}}"></back-bar>
 
-    <div  class="animated fadeInRight" align="left" >
+    <div  class="animated fadeInRight" align="left">
       <div class="con">
-      <div class="container" v-for="option,index in  rounds">
-        <div class="parent1">
-          <div >
+      <div class="container" v-for="option,index in  rounds" :key="index">
+        <div :class="sp1[option.seminars.length]">
+          <div>
             <div class="itemTitle"> 第{{index+1}}轮</div>
-            <div class="parent3">
+            <div :class="sp3[option.seminars.length]">
               <!-- Content  -->
-              <div class="subList" @click="linkToDetails(item.id)" v-for="item in option.seminars">
+              <div class="subList" @click="linkToDetails(item.id)" v-for="item,index in option.seminars" :key="index">
                 <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarName}}</span>
                 <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
               </div>
@@ -70,45 +70,15 @@
         courseId:1,
         allRounds:[],    //当前课程下所有轮次
         klassId:-1,    //当前班级ID
-        rounds:[
-          // {
-          //   roundName:'第一轮',
-          //   roundId:1,
-          //   seminars:[
-          //     {
-          //       seminarTopic:'业务流程',
-          //       seminarID:1,
-          //     },
-          //     {
-          //       seminarTopic:'关系模型',
-          //       seminarID:2,
-          //     }
-          //   ]
-          // },
-          // {
-          //   roundName:'第二轮',
-          //   roundId:2,
-          //   seminars:[
-          //     {
-          //       seminarTopic:'controller',
-          //       seminarID:3,
-          //     },
-          //     {
-          //       seminarTopic:'XXXX',
-          //       seminarID:4,
-          //     },
-          //   ]
-          // },
-        ],  //发布的讨论课所在round
+        rounds:[],  //发布的讨论课所在round
+        sp1:['','parent11','parent12','parent13','parent14'],
+        sp3:['','parent31','parent32','parent33','parent34'],
       }
     },
     methods:{
       linkToDetails(seminarId){
         this.$router.push({path:'/StuSeminarDetails',query:{ courseId:this.$data.courseId,seminarId:seminarId,klassId:this.$data.klassId} });
       },
-      // linkToRegisteredDetails(){
-      //   this.$router.push('/StuRegisteredSeminarDetails')
-      // }
     }
   }
 </script>
@@ -121,32 +91,51 @@
   }
   .container  {
     width: 100%;
-    /*height: 20vh;*/
     position: relative;
     border-radius: 5px;
   }
-  .parent1    {
+  .parent11,.parent12,.parent13,.parent14    {
     height: 8vh;
     overflow: hidden;
-
     transition-property: height;
     transition-duration: 1s;
     perspective: 1000px;
     transform-style: preserve-3d;
   }
-  .parent3    {
+  .parent31,.parent32,.parent33,.parent34    {
     height: 8vh;
     transition-property: all;
     transition-duration: 1s;
     transform: rotateX(-90deg);
     transform-origin: top;
   }
-  .container:hover .parent1   {
-    height: 27vh;
+  .container:hover .parent11   {
+    height:13vh;
   }
-  .container:hover .parent3   {
+  .container:hover .parent31   {
     transform: rotateX(0deg);
-    height: 27vh;
+    height:13vh;
+  }
+  .container:hover .parent12  {
+    height:20vh;
+  }
+  .container:hover .parent32   {
+    transform: rotateX(0deg);
+    height:20vh;
+  }
+  .container:hover .parent13   {
+    height:27vh;
+  }
+  .container:hover .parent33   {
+    transform: rotateX(0deg);
+    height:27vh;
+  }
+  .container:hover .parent14   {
+    height:34vh;
+  }
+  .container:hover .parent34   {
+    transform: rotateX(0deg);
+    height:34vh;
   }
 
   .itemTitle{
