@@ -302,7 +302,26 @@ import AppBar from '../../ReuseComponents/AppBar'
         })
 
 
-        if (form1 === true && form2 === true && form3 === true) {
+        //if (form1 === true && form2 === true && form3 === true) {
+          //转换冲突课程数组
+          let teamConflict=this.$data.formTeamRules.teamConflict;
+          let conflictList=[];
+          for(var i=0;i<teamConflict.length;i++){
+            conflictList.push({
+              id:teamConflict[i].courseId
+            });
+          }
+          //转换其他课程组队限制
+          let teamStrategy=this.$data.formTeamRules.teamSelectNumber;
+          let newTeamStrategy=[];
+          for(var i=0;i<teamStrategy.length;i++){
+            newTeamStrategy.push({
+              courseId:teamStrategy[i].courseId,
+              minMember:teamStrategy[i].teamSelectMinNum,
+              maxMember:teamStrategy[i].teamSelectMaxNum,
+            });
+          }
+
           this.$axios({
             method: 'post',
             url: '/course',
@@ -318,9 +337,9 @@ import AppBar from '../../ReuseComponents/AppBar'
               teamEndTime: this.$data.formTeamRules.teamEndDate,
               maxMember: this.$data.formTeamRules.teamMaxNum,
               minMember: this.$data.formTeamRules.teamMinNum,
-              courseMemberLimitStrategyList: this.$data.formTeamRules.teamSelectNumber,
+              courseMemberLimitStrategyList: newTeamStrategy,
               isAnd: this.$data.formTeamRules.orAnd,
-              conflictCourseList:this.$data.formTeamRules.teamConflict
+              conflictCourseList:conflictList
             }
           }).then(function (response) {
             if (response.data) {
@@ -336,7 +355,7 @@ import AppBar from '../../ReuseComponents/AppBar'
               message:'创建失败！'
             })
           })
-        }
+        //}
       }
     }
 	}
