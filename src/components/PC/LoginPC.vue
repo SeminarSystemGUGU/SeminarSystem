@@ -138,9 +138,9 @@
         /*float: left;*/
         color: white;
         margin-top: 200px;
-        float: left;
-        /*margin-right: 160px;*/
-        margin-left: 120px;
+        float: right;
+        margin-right: 200px;
+        /*margin-left: 120px;*/
         font-size: 50px;
         font-weight: lighter;
         font-family: "Roboto","Helvetica",arial,sans-serif;;

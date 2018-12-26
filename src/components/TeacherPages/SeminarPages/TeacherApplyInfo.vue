@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column label="PPT材料">
             <template slot-scope="scope">
-              {{scope.row.pptName}}
+              {{scope.row.name}}
             </template>
           </el-table-column>
         </el-table>
@@ -90,10 +90,20 @@
           url:'/attendance/'+this.$data.klassSeminarId
         }).then(function (response) {
           _this.$data.reports=response.data;
+          _this.loadTeamMaterial();
         })
       },
       loadTeamMaterial(){
-
+        for(let index=0;index<this.$data.reports.length;index++) {
+          let _this = this;
+          this.$axios({
+            method: 'get',
+            url: '/attendance/' + this.$data.reports[index].id+'/ppt'
+          }).then(function (response) {
+            _this.$data.reports[index].name=response.data.name;
+            _this.$data.reports[index].file=response.data.file;
+          })
+        }
       }
     }
   }
