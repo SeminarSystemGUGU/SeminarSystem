@@ -45,4 +45,9 @@
 
 <style scoped>
   @import "../../../less/CourseInfo.less";
+  @media screen and (min-width: 1024px ){
+    .content {
+      margin-top: 13vh;
+    }
+  }
 </style>

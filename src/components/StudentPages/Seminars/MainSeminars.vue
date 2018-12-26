@@ -189,5 +189,31 @@
     }
 
   }
+  @media screen and (min-width: 1024px ){
+    .con  {
+      margin-top: 7vh;
+    }
+    .itemTitle{
+      padding-top: 20px;
+      padding-left: 4vw;
+      height:7vh;
+      font-size: 33px;
+    }
+
+    .subList {
+      padding-top: 1vh;
+      padding-left: 3vw;
+      margin-top: 10px;
+      width: 100%;
+      height: 5vh;
+      /*background-color: #c7e1f0;*/
+      border-radius: 5px;
+    }
+    .subItem{
+      color:gray;
+      font-size: 25px;
+    }
+
+  }
 
 </style>

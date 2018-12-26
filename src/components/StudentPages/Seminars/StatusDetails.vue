@@ -3,39 +3,6 @@
     <back-bar titleName="OOAD-讨论课" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,seminarId:seminarId,klassId:klassId}}"></back-bar>
 
     <div class="statusDetailsBack animated fadeInRight" >
-      <!--讨论课已经结束-->
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===5">
-        <mu-list v-for="option,index in registerOrder" :key = "option.team">
-          <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
-            <mu-list-item-action>
-              {{option.order}}
-            </mu-list-item-action>
-            <mu-list-item-title style="margin-left: 20%;font-size: 20px">这个报名的是：{{option.team}}</mu-list-item-title>
-          </mu-list-item>
-        </mu-list>
-        <mu-divider></mu-divider>
-      </mu-paper>
-
-      <!--正在进行讨论课-->
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===3">
-        <mu-list v-for="option,index in registerOrder" :key = "index">
-          <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
-            <mu-list-item-action>
-              {{option.order}}
-            </mu-list-item-action>
-            <mu-list-item-title style="margin-left: 20%;font-size: 20px;height:8vh;">
-              <mu-button flat color="success" style="margin-top: 1vh;"large @click="download">{{option.pptName}}</mu-button>
-            </mu-list-item-title>
-          </mu-list-item>
-        </mu-list>
-        <mu-divider></mu-divider>
-      </mu-paper>
-      <mu-dialog title="提示" width="360" :open.sync="downloadFlag">
-        是否下载该PPT!
-        <mu-button slot="actions" flat color="success" @click="downloadFlag=!downloadFlag">Sure</mu-button>
-        <mu-button slot="actions" flat color="primary" @click="downloadFlag=!downloadFlag">Close</mu-button>
-      </mu-dialog>
-
       <!--报名阶段-->
       <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===1">
         <mu-list v-for="option,index in registerOrder" :key = "index">
@@ -50,12 +17,6 @@
         </mu-list>
         <mu-divider></mu-divider>
       </mu-paper>
-      <mu-dialog title="提示" width="360" :open.sync="registerFlag" :overlay="false">
-        确认报名？
-        <mu-button slot="actions" flat color="success" @click="enroll">Sure</mu-button>
-        <mu-button slot="actions" flat color="primary" @click="registerFlag=!registerFlag">Close</mu-button>
-      </mu-dialog>
-
       <!--修改报名-->
       <mu-paper :z-depth="1" class="demo-list-wrap"  v-if="status===2">
         <mu-list v-for="option,index in registerOrder" :key = "index">
@@ -70,6 +31,45 @@
         </mu-list>
         <mu-divider></mu-divider>
       </mu-paper>
+      <!--正在进行讨论课-->
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===3">
+        <mu-list v-for="option,index in registerOrder" :key = "index">
+          <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
+            <mu-list-item-action>
+              {{option.order}}
+            </mu-list-item-action>
+            <mu-list-item-title style="margin-left: 20%;font-size: 20px;height:8vh;">
+              <mu-button flat color="success" style="margin-top: 1vh;" large @click="download" v-if="option.pptName!==''"><a :href="baseURL+'option.pptPath'">{{option.pptName}}</a></mu-button>
+              <mu-button flat disabled v-if="option.pptName===''" style="margin-top: 1vh;"large>未上传</mu-button>
+            </mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+        <mu-divider></mu-divider>
+      </mu-paper>
+      <!--讨论课已经结束-->
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===5">
+        <mu-list v-for="option,index in registerOrder" :key = "option.team">
+          <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
+            <mu-list-item-action>
+              {{option.order}}
+            </mu-list-item-action>
+            <mu-list-item-title style="margin-left: 20%;font-size: 20px">{{option.team}}</mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+        <mu-divider></mu-divider>
+      </mu-paper>
+     <!--所有弹窗-->
+      <mu-dialog title="提示" width="360" :open.sync="registerFlag" :overlay="false">
+        确认报名？
+        <mu-button slot="actions" flat color="success" @click="enroll">Sure</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="registerFlag=!registerFlag">Close</mu-button>
+      </mu-dialog>
+      <mu-dialog title="提示" width="360" :open.sync="downloadFlag">
+        是否下载该PPT!
+        <mu-button slot="actions" flat color="success" @click="downloadFlag=!downloadFlag">Sure</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="downloadFlag=!downloadFlag">Close</mu-button>
+      </mu-dialog>
+
       <mu-button class="cancleR" slot="actions"  v-if="status===2" color="error" @click="cancleFlag=!cancleFlag">取消报名</mu-button>
       <mu-dialog title="确认修改报名？" width="360" :open.sync="changeFlag" :overlay="false">
         <mu-button slot="actions" flat color="success" @click="confirmChange">Sure</mu-button>
@@ -92,6 +92,7 @@
         BackBar,
       },
       created(){
+        this.$data.baseURL=this.$axios.defaults.baseURL;
         this.$data.klassId=this.$route.query.klassId;
         this.$data.seminarId=this.$route.query.seminarId;
         if(this.$route.query.status===1 )
@@ -103,7 +104,7 @@
         else if(this.$route.query.status===5 || this.$route.query.status===7)   //顺序
           this.$data.status=5;
 
-        let _this=this;    //根据courseId获取该课程讨论课列表
+        let _this=this;
         this.$axios({
           method:'get',
           url:'/seminar/'+_this.$data.seminarId+'/class/'+_this.$data.klassId,
@@ -134,7 +135,7 @@
                 if(t.$data.enrollTeams[j].teamOrder===i+1)
                 {
                   t.$data.registerOrder[i].attendanceId=t.$data.enrollTeams[j].id;
-                  t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
+                  t.$data.registerOrder[i].team=t.$data.enrollTeams[j].teamEntity.teamName;
                 }
               }
 
@@ -168,7 +169,6 @@
                 })
               }
             }
-
           });
         });
       },
@@ -185,39 +185,14 @@
             myTeam:'',      //我的队伍
             maxMember:6,      //限制最大组数
             enrollOrder:-1,     //报名顺序
+            registerOrder:[],     //展示顺序
 
             downloadFlag:false,
             registerFlag:false,
             cancleFlag:false,
             changeFlag:false,
+            baseURL:'',
 
-            registerOrder:[],     //展示顺序
-            ppt:[
-              {
-                order:"第一组",
-                pptName:"1-1业务流程.ppt",
-              },
-              {
-                order:"第二组",
-                pptName:"1-2业务流程.ppt",
-              },
-              {
-                order:"第三组",
-                pptName:"1-3业务流程.ppt",
-              },
-              {
-                order:"第四组",
-                pptName:"1-4业务流程.ppt",
-              },
-              {
-                order:"第五组",
-                pptName:"1-5业务流程.ppt",
-              },
-              {
-                order:"第六组",
-                pptName:"1-6业务流程.ppt",
-              },
-            ],
           }
       },
       methods: {

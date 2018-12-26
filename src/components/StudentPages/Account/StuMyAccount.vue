@@ -10,7 +10,7 @@
         <div class="top-card">
           <span style="font-size: 20px;font-weight: bold">{{studentInfo.studentName}}</span>
           <div class="top-image">
-            <!--<span style="color: white">{{studentInfo.studentName.substring(1)}}</span>-->
+            <span style="color: white">{{studentInfo.studentName.slice(-2)}}</span>
           </div>
         </div>
         <div class="middle-card">
@@ -59,11 +59,7 @@
     name: "StuMyAccount",
     data(){
       return{
-        studentInfo:{
-          // studentName:'李大海',
-          // account:'24320162202999',
-          // email:'123124@qq.com',
-        }
+        studentInfo:{}
       }
     },
     created(){

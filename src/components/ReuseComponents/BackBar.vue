@@ -13,8 +13,7 @@
             </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item  command="selectCourse" >讨论课</el-dropdown-item>
-            <el-dropdown-item command="newNews">新消息</el-dropdown-item>
-            <el-dropdown-item command="settings">设置</el-dropdown-item>
+            <el-dropdown-item command="myInfo">个人中心</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -29,14 +28,11 @@
       linkBack(backurl){
         this.$router.push(backurl);
       },
-      // linkToSelectCourse(){
-      //   this.$router.push('/SeminarSelectCourse');
-      // },
       handleCommand(command) {
-       if(command=="selectCourse")
-       {
+       if(command==="selectCourse")
          this.$router.push('/SeminarSelectCourse');
-       }
+       else if(command==='myInfo')
+         this.$router.push('/StuMyAccount');
       }
     }
   }
@@ -83,8 +79,6 @@
     .app-bar-title{
       margin-top: 3.5vw;
       font-size:32px;
-      display: inline-block;
-      color: #409EFF;
     }
     .el-dropdown-link{
       display:inline-block;
@@ -97,6 +91,30 @@
     }
     .el-icon-menu{
       margin-top: 13px;
+      font-size: 40px;
+      color:#409EFF;
+    }
+
+  }
+  @media screen and (min-width: 1024px ){
+    .reset-app-bar{
+      height:65px;
+    }
+    .app-bar-title{
+      margin-top: 1.5vw;
+      font-size:30px;
+    }
+    .el-dropdown-link{
+      display:inline-block;
+      height:35px;
+      line-height:35px;
+    }
+    .el-icon-back{
+      margin-top: 2px;
+      font-size: 40px;
+    }
+    .el-icon-menu{
+      margin-top: 4px;
       font-size: 40px;
       color:#409EFF;
     }
