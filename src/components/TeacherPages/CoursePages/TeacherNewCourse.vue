@@ -58,7 +58,9 @@
       <el-form :model="item" v-for="item ,index in formTeamRules.teamSelectNumber" ref="formTeamRules" class="team-rule-form" label-width="140px" :key="index"
         :rules="rulesFormTeam">
         <el-form-item label="课程：" prop="courseId">
-          <el-select placeholder="请选择课程" size="small" v-model="item.courseId" class="form-item"></el-select>
+          <el-select placeholder="请选择课程" size="small" v-model="item.courseId" class="form-item">
+            <el-option v-for="course,index in courseList" :key="index" :value="course.id" :label="course.courseName"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="该课程人数上限：" prop="teamSelectMaxNum">
           <el-input-number size="small" v-model="item.teamSelectMaxNum"></el-input-number>
@@ -87,9 +89,10 @@
       <div class="tooltip1">
         <span>选修了不同冲突课程的学生不可同组，同课程名不同教师也为不同课程</span>
       </div>
-      <el-form :model="formTeamRules.teamConflict" ref="formTeamRules" label-width="100px" class="team-rule-form" :rules="rulesFormTeam">
-        <el-form-item prop="courseId" label="冲突课程：" v-for="item,index in formTeamRules.teamConflict" :key="index">
-          <el-select size="small" class="form-item1" v-model="item.courseId" >
+      <el-form :model="item" v-for="item,index in formTeamRules.teamConflict" :key="index" ref="formTeamRules" label-width="100px" class="team-rule-form" :rules="rulesFormTeam">
+        <el-form-item prop="courseId" label="冲突课程：" >
+          <el-select size="small" class="form-item1" v-model="item.courseId">
+            <el-option v-for="course in courseList" :value="course.id" :label="course.courseName"></el-option>
           </el-select>&nbsp;<el-button size="small" type="danger" @click.prevent="deleteConflictCourse(index)">删除</el-button>
         </el-form-item>
       </el-form>
@@ -206,15 +209,16 @@ import AppBar from '../../ReuseComponents/AppBar'
           teamEndDate:'',
           orAnd:false,
           teamSelectNumber:[
-            {
-              courseId:'',
-              teamSelectMinNum:0,
-              teamSelectMaxNum:0
-            }
+            // {
+            //   courseId:'',
+            //   teamSelectMinNum:0,
+            //   teamSelectMaxNum:0
+            // }
           ],
           teamConflict:[
             {
-              courseId:''
+              courseId:'',
+              name:''
             },
           ]
         },
@@ -223,10 +227,14 @@ import AppBar from '../../ReuseComponents/AppBar'
           quesRate:'',
           repRate:'',
         },
+        courseList:[],
 			}
 		},
     watch:{
 
+    },
+    created(){
+		  this.loadCourse();
     },
     methods:{
 		  deleteConflictCourse(index){
@@ -247,6 +255,21 @@ import AppBar from '../../ReuseComponents/AppBar'
           teamSelectMinNum:''
         })
       },
+
+      loadCourse(){
+		    let _this=this;
+        this.$axios({
+          method: 'get',
+          url: '/course/allcourse',
+          withCredentials: true,
+        }).then(function (response) {
+          _this.$data.courseList=response.data;
+          console.log(_this.$data.courseList);
+        }).catch(function (error) {
+
+        })
+      },
+
       /**
        * 提交课程
        */
@@ -266,11 +289,11 @@ import AppBar from '../../ReuseComponents/AppBar'
             form1=true
           }
         });
-        this.$refs['formTeamRules'].validate((valid2)=>{
-          if(valid2){
-            form2=true
-          }
-        })
+        // this.$refs['formTeamRules'].validate((valid2)=>{
+        //   if(valid2){
+        //     form2=true
+        //   }
+        // })
 
         this.$refs['formNewCourse'].validate((valid3)=>{
           if(valid3){
@@ -290,16 +313,21 @@ import AppBar from '../../ReuseComponents/AppBar'
               introduction: this.$data.formNewCourse.courseDetails,
               presentationPercentage: preScore * 10,
               questionPercentage: quesScore * 10,
-              reportPercentage: repScore*10,
+              reportPercentage: repScore * 10,
               teamStartTime: this.$data.formTeamRules.teamStartDate,
-              teamEndTime: this.$data.formTeamRules.teamEndDate
+              teamEndTime: this.$data.formTeamRules.teamEndDate,
+              maxMember: this.$data.formTeamRules.teamMaxNum,
+              minMember: this.$data.formTeamRules.teamMinNum,
+              courseMemberLimitStrategyList: this.$data.formTeamRules.teamSelectNumber,
+              isAnd: this.$data.formTeamRules.orAnd,
+              conflictCourseList:this.$data.formTeamRules.teamConflict
             }
           }).then(function (response) {
             if (response.data) {
               _this.$message({
                 type:'success',
                 message:'创建成功！'
-              })
+              });
               _this.$router.push('/TeacherMyCourses');
             }
           }).catch(function (error) {
