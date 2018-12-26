@@ -92,7 +92,7 @@
       <el-form :model="item" v-for="item,index in formTeamRules.teamConflict" :key="index" ref="formTeamRules" label-width="100px" class="team-rule-form" :rules="rulesFormTeam">
         <el-form-item prop="courseId" label="冲突课程：" >
           <el-select size="small" class="form-item1" v-model="item.courseId">
-            <el-option v-for="course in courseList" :value="course.id" :label="course.courseName"></el-option>
+            <el-option v-for="course in courseList" :key="course.id" :value="course.id" :label="course.courseName"></el-option>
           </el-select>&nbsp;<el-button size="small" type="danger" @click.prevent="deleteConflictCourse(index)">删除</el-button>
         </el-form-item>
       </el-form>

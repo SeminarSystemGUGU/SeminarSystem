@@ -1,5 +1,21 @@
 <template>
   <div id="Test">
+    <el-dialog :visible.sync="dialogVisible" width="30%" class="dialog-login" title="登录您的账号">
+      <form class="input-panel" :action="baseURL+'/user/login'" method="post" >
+        <div class="input-account">
+          <el-input  class="login-input"  name="username" id="username" placeholder="请输入账号" v-model="account" ></el-input>
+        </div>
+        <div class="input-password">
+          <!--<span>密码：</span>-->
+          <el-input class="login-input" name="password" type="password"  id="password" placeholder="请输入密码" v-model="password" ></el-input>
+        </div>
+
+        <div class="button-panel">
+          <!--<button class="login-button" ref="loginButton" @click="LogIn">登录</button>-->
+          <button class="login-button" ref="loginButton" type="submit">登录</button>
+        </div>
+      </form>
+    </el-dialog>
     <div class="navigator">
       <div class="left-menu">
         <div class="system-icon">
@@ -8,7 +24,7 @@
         </div>
       </div>
       <div class="right-menu">
-        <div class="menu-title">
+        <div class="menu-title" @click="dialogVisible=true">
           <span>立即登录</span>
         </div>
       </div>
@@ -19,7 +35,7 @@
         <span>Welcome!</span><br/>
         <span>欢迎使用讨论课管理系统</span><br/>
         <span>体验更智能的翻转课堂</span><br/>
-        <button class="login-button">立即登录</button>
+        <button class="login-button" @click="dialogVisible=true">立即登录</button>
       </div>
     </div>
   </div>
@@ -32,7 +48,9 @@
     name: "test",
     data() {
       return {
-
+        dialogVisible:false,
+        username:'',
+        password:'',
       };
     },
     mounted(){
@@ -46,6 +64,43 @@
 <style lang="less">
   #Test{
     width: 100vw;
+
+    .dialog-login{
+      min-width: 300px;
+    }
+
+    .button-panel{
+      margin-top: 20px;
+      .login-button{
+        height: 40px;
+        width: 120px;
+      }
+    }
+
+    .input-password{
+      /*font-size: 14px;*/
+      margin-top: 30px;
+      /*width: 150px;*/
+    }
+
+    .login-input{
+      font-family: "微软雅黑 Light";
+      font-size: 12px;
+      outline: none;
+
+      /*border-color: #dd5347;*/
+      /*border: none;*/
+      /*border: 1px solid #dd5347;*/
+      /*border-bottom: 1.5px solid #dd5347;*/
+    }
+    .el-input__inner{
+      border-radius: 0;
+      border-width: 1.2px;
+      width: 200px;
+      border-color: #dd5347;
+    }
+
+
     .login-button{
       width: 150px;
       height: 50px;

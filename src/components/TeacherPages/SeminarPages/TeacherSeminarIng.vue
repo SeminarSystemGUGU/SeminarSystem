@@ -256,9 +256,10 @@
                 teamSerial:_this.$data.classSerial+'-'+response.data[index].teamEntity.teamSerial,
                 teamClass:'pre-list-item-un',
                 id:response.data.id,
-                klassSeminarId: response.data.klassSeminarId,
-                teamOrder:response.data.teamOrder,
+                klassSeminarId: response.data[index].klassSeminarId,
+                teamOrder:response.data[index].teamOrder,
                 status:0,
+                teamId:response.data[index].teamEntity.id,
                 preScore:0,
               });
             }
@@ -366,7 +367,13 @@
 
 
           //下一个提问
-          
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/question/nextQuestion',
+          }).then(function (response) {
+            _this.$data.quesTeams.push(response.data);
+          })
           this.$data.chooseTeamIndex=this.$data.quesTeamIndex;
           this.$data.formModifyQuestion.quesScore=this.$data.quesTeams[this.$data.chooseTeamIndex].quesScore;
           this.$data.chooseTeamName=this.$data.quesTeams[this.$data.chooseTeamIndex].teamSerial;
