@@ -12,7 +12,7 @@
         <div class="animate slideInLeft-enter card-content" v-show="messageVisible">
           <div class="content-details">
             <span>类型：</span>
-            <span>共享组队</span><br/>
+            <span>共享讨论课</span><br/>
             <span>主课程：</span>
             <span>{{item.mainCourseName}}</span><br/>
             <span>从课程：</span>
