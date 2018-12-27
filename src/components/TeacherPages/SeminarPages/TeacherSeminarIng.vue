@@ -20,9 +20,9 @@
     <div class="main-content">
       <div class="seminar-title">
         <div class="title-content">
-          <span>正在进行：{{seminarTitle}}<i class="el-icon-loading"/> </span>
+          <span>正在进行：{{seminarName}}<i class="el-icon-loading"/> </span>
         </div>
-        <span>展示小组：{{preTeams[preTeamIndex].teamStatus}}</span>
+        <span>展示小组：{{preTeams[preTeamIndex].teamSerial}}</span>
       </div>
       <div class="seminar-bar">
         <el-row class="bar-row">
@@ -44,8 +44,8 @@
                 <span v-if="teamStatus===0">准备展示</span><br/>
                 <!--<span>{{chooseTeam}}</span>-->
                 <span>{{chooseTeamName}}</span><br/>
-
-                <i v-if="teamStatus===2||teamStatus===4" class="el-icon-circle-check-outline"></i>
+                <span>{{questionName}}</span> <br v-if="teamStatus===3||teamStatus===4" />
+                <i v-if="teamStatus===2" class="el-icon-circle-check-outline"></i>
                 <i v-if="teamStatus===1||teamStatus===3" class="el-icon-loading"></i>
                 <i v-if="teamStatus===0" class="el-icon-time"></i>
               </div>
@@ -62,13 +62,13 @@
             </div>
             <div class="button-panel">
               <mu-button color="error" @click="nextPreTeam">下组展示</mu-button>
-              <mu-button color="error" @click="loadQuestion">抽取提问</mu-button>
+              <mu-button color="error" @click="webSocketSend">抽取提问</mu-button>
             </div>
           </el-col>
           <el-col class="ques-list-col">
             <div class="ques-title">提问列表</div>
             <div :class="item.teamClass" v-for="item,index in quesTeams"  @click="choosePreTeam(index,3)">
-              {{item.teamSerial}}
+              {{classSerial+'-'+item.teamEntity.teamSerial}}
             </div>
           </el-col>
         </el-row>
@@ -94,10 +94,16 @@
           }else{
             return this.$data.quesTeams[this.$data.chooseTeamIndex].status+this.$data.chooseType;
           }
+        },
+        questionName(){
+          if(this.$data.chooseType==3){
+            return this.$data.quesTeams[this.$data.chooseTeamIndex].studentEntity.studentName;
+          }
         }
       },
       data(){
           return{
+            seminarName:'',
             chooseType:0,  //0:pre  3:ques
             chooseTeamIndex:0,
             preTeamIndex:0,
@@ -111,7 +117,6 @@
             reportTime:'',
             openSimple:false,
             iconClass:'back-icon-use',
-            seminarTitle:'业务流程分析',
             isQuestion:false,
             socket:null,
             klassSeminarId:'',
@@ -126,39 +131,42 @@
             preTeams:[
             ],
             quesTeams:[
-              {
-                id:0,
-                teamSerial: '1-6',
-                quesScore:0,
-                status:0,
-                teamClass:'pre-list-item-un'
-              },
-              {
-                id:1,
-                teamSerial: '1-8',
-                quesScore:0,
-                status:0,
-                teamClass:'pre-list-item-un'
-              },
-              {
-                id:2,
-                teamSerial: '1-10',
-                quesScore:0,
-                status:0,
-                teamClass:'pre-list-item-un'
-              }
+              // {
+              //   id:0,
+              //   teamSerial: '1-6',
+              //   quesScore:0,
+              //   status:0,
+              //   teamClass:'pre-list-item-un'
+              // },
+              // {
+              //   id:1,
+              //   teamSerial: '1-8',
+              //   quesScore:0,
+              //   status:0,
+              //   teamClass:'pre-list-item-un'
+              // },
+              // {
+              //   id:2,
+              //   teamSerial: '1-10',
+              //   quesScore:0,
+              //   status:0,
+              //   teamClass:'pre-list-item-un'
+              // }
             ],
 
           }
       },
       mounted() {
+
         this.$data.classId=this.$route.query.classId;
+        this.$data.roundId=this.$route.query.roundId;
         this.$data.courseId=this.$route.query.courseId;
         this.$data.seminarId=this.$route.query.seminarId;
         this.$data.classSerial=this.$route.query.classSerial;
+        this.$data.seminarName=this.$route.query.seminarName;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
         this.loadPreTeams();
-        // this.getWebSocketAddress();
+        this.getWebSocketAddress();
 
       },
       methods:{
@@ -166,23 +174,56 @@
          * 修改展示小组的成绩
          **/
         modifyTeamPreScore(){
-          this.$data.preTeams[this.$data.chooseTeamIndex].preScore=this.$data.formModify.preScore;
+
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.preTeams[this.$data.preTeamIndex].teamId
+              +'/klassSeminar/'+this.$data.klassSeminarId+'/presentation',
+            params:{
+              score:this.$data.formModify.preScore
+            }
+          }).then(function (response) {
+            _this.$message({
+              type:'success',
+              message:'修改成功！'
+            })
+            _this.$data.preTeams[_this.$data.chooseTeamIndex].preScore=_this.$data.formModify.preScore;
+          })
         },
         /**
          * 下一个展示小组
          **/
         nextPreTeam(){
-          this.$data.preTeams[this.$data.preTeamIndex].status=2;
-          // this.$data.preTeams[this.$data.preTeamIndex].preScore=this.formModify.preScore;
-          if(this.$data.preTeamIndex===this.$data.preTeams.length-1){
-            this.$message({
-              type:'success',
-              message:'展示组已全部展示完！'
-            })
-          }
-          this.$data.preTeamIndex++;
-          this.$data.preTeams[this.$data.preTeamIndex].status=1;
-          this.choosePreTeam(this.$data.preTeamIndex,0);
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.preTeams[this.$data.preTeamIndex].teamId
+            +'/klassSeminar/'+this.$data.klassSeminarId+'/presentation',
+            params:{
+              score:this.$data.preTeams[this.$data.preTeamIndex].preScore
+            }
+          }).then(function (response) {
+              _this.$message({
+                type:'success',
+                message:'打分成功！'
+              })
+              _this.$data.preTeams[_this.$data.preTeamIndex].status=2;
+              // _this.$data.preTeams[_this.$data.preTeamIndex].preScore=_this.formModify.preScore;
+              if(_this.$data.preTeamIndex===_this.$data.preTeams.length-1){
+                _this.$message({
+                  type:'success',
+                  message:'展示组已全部展示完！'
+                })
+              }else {
+                _this.$data.preTeamIndex++;
+                _this.$data.preTeams[_this.$data.preTeamIndex].status=1;
+                _this.$data.socket.send('1;' + _this.$data.preTeams[_this.$data.preTeamIndex].id);    //发送下一组的id
+              }
+              // _this.$data.preTeams[_this.$data.preTeamIndex]
+            _this.choosePreTeam(_this.$data.preTeamIndex,0);
+          })
+
         },
         /**
          * 选择列表中某一个队伍
@@ -204,9 +245,10 @@
             this.$data.chooseTeamName = this.$data.preTeams[this.$data.chooseTeamIndex].teamSerial;
             this.$data.preTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
             this.$data.chooseType=0;
+
           }else{
             this.$data.formModifyQuestion.quesScore=this.$data.quesTeams[this.$data.chooseTeamIndex].quesScore;
-            this.$data.chooseTeamName=this.$data.quesTeams[this.$data.chooseTeamIndex].teamSerial;
+            this.$data.chooseTeamName=this.$data.classId+'-'+this.$data.quesTeams[this.$data.chooseTeamIndex].teamEntity.teamSerial;
             this.$data.quesTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
             this.$data.chooseType=3;
           }
@@ -252,18 +294,23 @@
           }).then(function (response) {
             // _this.$data.preTeams=response.data;
             for(let index=0;index<response.data.length;index++){
+              if(response.data[index].score!==null){
+                response.data[index].status=1;
+                _this.$data.chooseTeamIndex=index;
+                _this.$data.preTeamIndex=index;
+              }
               _this.$data.preTeams.push({
                 teamSerial:_this.$data.classSerial+'-'+response.data[index].teamEntity.teamSerial,
                 teamClass:'pre-list-item-un',
-                id:response.data.id,
+                id:response.data[index].id,
                 klassSeminarId: response.data[index].klassSeminarId,
                 teamOrder:response.data[index].teamOrder,
-                status:0,
+                status:1,
                 teamId:response.data[index].teamEntity.id,
                 preScore:0,
               });
             }
-            _this.choosePreTeam(0,0);
+            _this.choosePreTeam(index,0);
             _this.$data.preTeams[_this.$data.preTeamIndex].status=1;
             // _this.$data.preTeams[_this.$data.chooseTeamIndex].teamClass='pre-list-item';
             console.log(_this.$data.preTeams);
@@ -303,17 +350,29 @@
          * 初始化websocket
          */
         initWebSocket(){
+          let _this=this;
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
+          console.log('1111');
           this.$data.socket.onopen=this.webSocketOnOpen();
+          this.$data.socket.onclose=this.webSocketClose;
           this.$data.socket.onmessage=function (msg) {
             console.log(msg);
             if(msg.data==='200'){
-              this.$message({
+              _this.$message({
                 type:'success',
                 message:'连接成功！正式开始上课！'
               })
+            }else if(msg.data=='1'){
+              // console.log('发提问啊！！！');
+              _this.loadQuestion();
             }
           };
+        },
+        /**
+         * websocket关闭
+         **/
+        webSocketClose(e){
+          console.log(e);
         },
         /**
          * websocket打开时
@@ -325,13 +384,29 @@
          * websocket发送消息
          */
         webSocketSend(){
-          this.$data.socket.send("1");
+          this.$data.socket.send("2");
+
         },
         /**
          * 修改提问小组的分数
          */
         modifyQuesScore(){
-          this.$data.quesTeams[this.$data.chooseTeamIndex].quesScore=this.$data.formModifyQuestion.quesScore;
+
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.quesTeams[this.$data.chooseTeamIndex].teamEntity.id+'/klassSeminar/'
+              +this.$data.klassSeminarId+'/question/'+this.$data.quesTeams[this.$data.chooseTeamIndex].questionEntity.id,
+            params:{
+              score:this.$data.formModifyQuestion.quesScore
+            }
+          }).then(function (response) {
+            _this.$message({
+              type:'success',
+              message:'修改成功！'
+            })
+            _this.$data.quesTeams[_this.$data.chooseTeamIndex].quesScore=_this.$data.formModifyQuestion.quesScore;
+          })
         },
         /**
          * 获取下一个提问,id为attendanceid
@@ -350,52 +425,61 @@
             }
           }
           if(this.$data.quesTeams.length!==0) {
+            console.log('提问打分');
             this.$data.quesTeams[this.$data.quesTeamIndex].status = 1;
             //提问打分
             let _this=this;
+
             this.$axios({
               method:'put',
-              url:'/question/'+this.$data.quesTeams[this.$data.quesTeamIndex].id+'/score',
+              url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.quesTeams[this.$data.quesTeamIndex].teamEntity.id+'/klassSeminar/'
+                +this.$data.klassSeminarId+'/question/'+this.$data.quesTeams[this.$data.quesTeamIndex].questionEntity.id,
               params:{
                 score:this.$data.quesTeams[this.$data.quesTeamIndex].quesScore
               }
             }).then(function (response) {
               _this.$data.quesTeamIndex++;
+              _this.loadNextQuestion();
             })
+          }else {
+            this.loadNextQuestion();
           }
 
-
-
           //下一个提问
+          console.log('加载问题');
+          console.log(this.$data.preTeams[this.$data.preTeamIndex].id);
+
+        },
+        loadNextQuestion(){
           let _this=this;
           this.$axios({
             method:'get',
             url:'/question/nextQuestion',
+            params:{
+              attendanceId:this.$data.preTeams[this.$data.preTeamIndex].id
+            }
           }).then(function (response) {
-            _this.$data.quesTeams.push(response.data);
+            _this.$data.quesTeams.push({
+              questionEntity:response.data.questionEntity,
+              studentEntity:response.data.studentEntity,
+              teamEntity:response.data.teamEntity,
+              status:0,
+ //===============================             // teamSerial
+            });
+            _this.$data.chooseTeamIndex=_this.$data.quesTeamIndex;
+            _this.$data.formModifyQuestion.quesScore=_this.$data.quesTeams[_this.$data.chooseTeamIndex].quesScore;
+            _this.$data.chooseTeamName=_this.$data.classSerial+'-'+_this.$data.quesTeams[_this.$data.chooseTeamIndex].teamEntity.teamSerial;
+            _this.$data.quesTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
+            _this.$data.chooseType=3;
           })
-          this.$data.chooseTeamIndex=this.$data.quesTeamIndex;
-          this.$data.formModifyQuestion.quesScore=this.$data.quesTeams[this.$data.chooseTeamIndex].quesScore;
-          this.$data.chooseTeamName=this.$data.quesTeams[this.$data.chooseTeamIndex].teamSerial;
-          this.$data.quesTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
-          this.$data.chooseType=3;
 
-          // let _this=this;
-          // this.$axios({
-          //   method:'get',
-          //   url:'/question/nextQuestion',
-          //   params:{
-          //     attendanceId:this.$data.chooseTeam
-          //   }
-          // }).then(function (response) {
-          //
-          // }).catch(function (error) {
-          //
-          // })
         },
         linkBack(){
           history.back();
         }
+      },
+      destroyed() {
+          this.webSocketClose();
       }
 
     }

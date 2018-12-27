@@ -13,10 +13,10 @@
         <span v-if="status==='2'">已完成</span>
       </div>
       <div class="edit-panel">
-        <i class="el-icon-edit" @click="linkToModify"></i>
+        <i v-show="isMainCourse" class="el-icon-edit" @click="linkToModify"></i>
       </div>
       <div class="close-panel">
-        <i class="el-icon-close" @click="deleteSeminar"></i>
+        <i v-show="isMainCourse" class="el-icon-close" @click="deleteSeminar"></i>
       </div>
     </el-card>
     <!--</div>-->
@@ -25,7 +25,7 @@
 <script>
     export default {
         name: "SeminarCard",
-      props:['seminarName','endTime','seminarId','index','courseId'],
+      props:['seminarName','endTime','seminarId','index','courseId','isMainCourse'],
       data(){
           return{
             // seminarName:'对象模型',

@@ -6,7 +6,14 @@
     </div>
     <div class="main-content">
       <div class="main-title">
-        <span>选择轮次：</span>
+        <span>课程：</span>
+        <mu-select>
+          <mu-option label="1" value="1"></mu-option>
+          <mu-option label="全部" value="0"></mu-option>
+        </mu-select>
+      </div>
+      <div class="main-title">
+        <span>轮次：</span>
         <mu-select>
           <mu-option label="1" value="1"></mu-option>
           <mu-option label="全部" value="0"></mu-option>

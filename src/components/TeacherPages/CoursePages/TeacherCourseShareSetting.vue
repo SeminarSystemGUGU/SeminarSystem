@@ -58,6 +58,7 @@ import AppBar from '../../ReuseComponents/AppBar'
     },
     created(){
 		  this.$data.courseId=this.$route.query.courseId;
+		  console.log(this.$data.courseId);
 		  this.loadCourseShareInfo();
     },
 		methods:{

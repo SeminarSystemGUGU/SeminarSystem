@@ -5,6 +5,12 @@
       <div class="divider"></div>
     </div>
     <div class="main-content">
+      <div class="select-course">
+        <span>选择课程：</span>
+        <el-select v-model="currentCourseId">
+          <el-option v-for="item in options" :key="item.id" :value="item.id" :label="item.courseName"></el-option>
+        </el-select>
+      </div>
       <div class="main-title">
         <span>班级列表</span>
       </div>
@@ -43,14 +49,39 @@
                 className:'二班',
                 classForm:'',
               }
-            ]
+            ],
+            options:[
+
+            ],
+            currentCourseId:'',
           }
+      },
+      created(){
+        this.loadAllCourses();
+      },
+      methods:{
+        loadAllCourses(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/course'
+          }).then(function (response) {
+            _this.$data.options=response.data;
+          })
+        }
       }
     }
 </script>
 
 <style lang="less">
 #TeacherAddStu{
+
+  .select-course{
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
   .title{
     margin-top: 20px;
     text-align: left;

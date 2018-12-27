@@ -158,7 +158,9 @@
             klassSeminarId:_this.$data.klassSeminarId,
             classId:this.$data.classId,
             classSerial:this.$data.klassSerial,
-            seminarId:this.$data.seminarId}});
+            seminarId:this.$data.seminarId,
+            roundId:this.$data.roundId,
+            seminarName:this.$data.seminarName}});
       },
       GotoSeminar(){
         let _this=this;
@@ -174,7 +176,9 @@
                 klassSeminarId:_this.$data.klassSeminarId,
                 classId:_this.$data.classId,
                 classSerial:_this.$data.klassSerial,
-                seminarId:_this.$data.seminarId}});
+                seminarId:_this.$data.seminarId,
+                roundId:_this.$data.roundId,
+                seminarName:_this.$data.seminarName}});
           }
         })
 

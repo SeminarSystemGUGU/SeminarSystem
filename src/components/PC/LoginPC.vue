@@ -51,9 +51,11 @@
         dialogVisible:false,
         username:'',
         password:'',
+        baseURL:''
       };
     },
     mounted(){
+      this.$data.baseURL=this.$axios.defaults.baseURL;
     },
     methods: {
 

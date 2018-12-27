@@ -15,7 +15,7 @@
   						<el-collapse-item v-for="it, i in item.seminars" :key="it.id">
   							<!--讨论课名称-->
     						<template slot="title">
-                  <div class="seminar-title"><i class="el-icon-edit" @click="linkToModify(it.id,courseId)"></i>{{it.seminarName}}&nbsp;&nbsp;</div>
+                  <div class="seminar-title"><i v-show="isMainCourse" class="el-icon-edit" @click="linkToModify(it.id,courseId)"></i>{{it.seminarName}}&nbsp;&nbsp;</div>
     						</template>
                 <div v-for="c, k in it.classes" :key="c.id">
     						  <div class="divider"></div>
@@ -33,7 +33,7 @@
         <div class="bottom-blank"></div>
   		</div>
     <div class="footer-new-course">
-      <mu-button class="new-course-button" @click="linkToNewSeminar" color="info"><i class="el-icon-plus"/>新建讨论课</mu-button>
+      <mu-button v-show="isMainCourse" class="new-course-button" @click="linkToNewSeminar" color="info"><i class="el-icon-plus"/>新建讨论课</mu-button>
     </div>
 
 	</div>
@@ -51,6 +51,7 @@ import AppBar from '../../ReuseComponents/AppBar'
           noItem:false,
           courseId:'',
           roundLoading:true,
+          isMainCourse:true,
           rounds:[
             {
               id:'',
@@ -91,9 +92,23 @@ import AppBar from '../../ReuseComponents/AppBar'
       created(){
         this.$data.courseId=this.$route.query.courseId;
         this.loadCourseRounds();
+        this.loadIfMainCourse();
       },
 
       methods:{
+        loadIfMainCourse(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/course/'+this.$data.courseId+'/isMainSeminar'
+          }).then(function (response) {
+            if(response.data===true){
+              _this.$data.isMainCourse=true;
+            }else{
+              _this.$data.isMainCourse=false;
+            }
+          })
+        },
         loadCourseRounds(){
          let _this=this;
          this.$axios({
