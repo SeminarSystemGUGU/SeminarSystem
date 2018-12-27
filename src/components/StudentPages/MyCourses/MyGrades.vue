@@ -3,20 +3,51 @@
     <back-bar titleName="我的成绩" :showMessages="true" :showBackBar="true" backUrl="/StuMyCourses"></back-bar>
 
     <div class="contenT animated fadeInRight" style="z-index:1;max-width: 600px;" >
-    <div class="panel-group " id="accordion" align="left" >
-      <div class="title">
-        我的成绩
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne"  onclick="">
-          {{rounds[0].roundName}}
+      <div class="panel-group "  id="accordion" align="left" >
+        <div class="title">
+          我的成绩  <span v-if="state===0">(未组队)</span>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse in" >
-          <div class="panel-body" style="padding:1vh 0;">
-            <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo11"  onclick="">{{rounds[0].seminars[0].seminarTopic}}</span>
-              <div id="demo11" class="collapse in" style="margin-top: 1vh;">
-                <table class="table table-bordered">
+        <!--<div class="panel panel-default"  v-for="option,index in rounds" :key="index">-->
+          <!--<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"    onclick="">-->
+            <!--{{option.roundName}}-->
+            <!--<span v-if="option.scoreEntities===null">当前成绩为空</span>-->
+          <!--</div>-->
+          <!--<div  class="panel-collapse collapse in" >-->
+            <!--<div class="panel-body" style="padding:1vh 0;">-->
+              <!--<div class="subContent" v-for="item,index in option.scoreEntities" :key="index">-->
+                <!--<span class="subItem"  data-toggle="collapse"  data-target="#demo11"  onclick="">{{item.seminarEntity.seminarName}}</span>-->
+                <!--<div id="demo11" class="collapse in" style="margin-top: 1vh;">-->
+                  <!--<table class="table table-bordered">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                      <!--<th>展示</th>-->
+                      <!--<th>提问</th>-->
+                      <!--<th>报告</th>-->
+                      <!--<th>本轮成绩</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                      <!--<td>{{item.presentationScore}}</td>-->
+                      <!--<td>{{item.questionScore}}</td>-->
+                      <!--<td>{{item.reportScore}}</td>-->
+                      <!--<td>{{item.totalScore}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                  <!--</table>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      </div>
+      <el-collapse v-model="activeName" accordion align="left"  v-if="state===1">
+        <el-collapse-item :title="option.roundName" :name="index"  v-for="option,index in rounds" :key="index">
+          <span v-if="option.scoreEntities===null">当前成绩为空</span>
+          <el-collapse v-model="active" accordion align="left" style="width: 90%;margin-left: 3vw;">
+            <el-collapse-item :title="item.seminarName" :name="index+10"   v-for="item,index in option.scoreEntities" :key="index">
+              <div  style="margin-top: 1vh;">
+                <table class="table " style="width:90%;margin-left:3vw;">
                   <thead>
                   <tr>
                     <th>展示</th>
@@ -27,65 +58,19 @@
                   </thead>
                   <tbody>
                   <tr>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5.0</td>
+                    <td>{{item.presentationScore}}</td>
+                    <td>{{item.questionScore}}</td>
+                    <td>{{item.reportScore}}</td>
+                    <td>{{item.totalScore}}</td>
                   </tr>
-
                   </tbody>
                 </table>
               </div>
-            </div>
+            </el-collapse-item>
+          </el-collapse>
+        </el-collapse-item>
+      </el-collapse>
 
-            <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo12"  onclick="">{{rounds[0].seminars[1].seminarTopic}}</span>
-              <div id="demo12" class="collapse in" style="margin-top: 1vh;">
-                <table class="table table-bordered">
-                  <thead>
-                  <tr>
-                    <th>展示</th>
-                    <th>提问</th>
-                    <th>报告</th>
-                    <th>本轮成绩</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>5.0</td>
-                  </tr>
-
-                  </tbody>
-                </table>
-
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default" style="border: 0;">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo">
-          {{rounds[1].roundName}}
-        </div>
-        <div id="collapseTwo" class="panel-collapse collapse">
-          <div class="panel-body" style="padding:1vh 0;">
-            <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo21"  onclick="">{{rounds[1].seminars[0].seminarTopic}}</span>
-              <div id="demo21" class="collapse in">
-                Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                vice lomo.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     </div>
   </div>
 </template>
@@ -105,70 +90,49 @@
         method:'get',
         url:'/course/'+tt.$data.courseId+'/team',
       }).then(function (response) {
-        tt.$data.teamId=response.data.teamId;
-        let _this=tt;
-        tt.$axios({
-          method:'get',
-          url:'/course/'+_this.$data.courseId+'/round',
-        }).then(function (response){
-          let i;
-          for(i=0;i<response.data.length;i++)
-          {
-            _this.$data.rounds.push({
-              roundName:'第'+response.data.roundSerial+'轮',
-              roundId:response.data[i].id,
-              // scores:[],
-            });
-            let t=_this;
+        tt.$data.teamId = response.data.teamId;
+        if (tt.$data.teamId === ''||tt.$data.teamId ===null) {
+          tt.$data.state=0;
+          tt.$toast.error("未组队，还没有成绩");
+        }
+        else{
+          tt.$data.state=1;
+          let _this = tt;
+          tt.$axios({
+            method: 'get',
+            url: '/course/' + _this.$data.courseId + '/round',
+          }).then(function (response) {
+            let i;
+            for (i = 0; i < response.data.length; i++) {
+              _this.$data.rounds.push({
+                roundName: '第' + response.data.roundSerial + '轮',
+                roundId: response.data[i].id,
+                scoreEntities: [],
+              });
+            let t = _this;
             _this.$axios({
-              method:'get',
-              url:'/round/'+response.data[i].id+'/team/'+t.$data.teamId+'/roundscore',
+              method: 'get',
+              url: '/round/' + response.data[i].id + '/team/' + t.$data.teamId + '/roundscore',
+              params: {
+                courseId: t.$data.courseId,
+              }
             }).then(function (response) {
-              // _this.$data.rounds[i].scores=response.data;
+              _this.$data.rounds[i].scoreEntities = response.data.seminarScoreEntities;
             })
           }
         })
+      }
       });
-
-
     },
     data(){
       return{
-        title:"OOAD",
-        round:"第一轮",
+        // title:"",
         teamId:-1,
+        state:'',
         courseId:-1,
-        rounds:[
-          {
-            roundName:'第一轮',
-            roundId:1,
-            seminars:[
-              {
-                seminarTopic:'业务流程',
-                seminarId:'1',
-              },
-              {
-                seminarTopic:'关系模型',
-                seminarId:'2',
-              }
-            ]
-          },
-          {
-            roundName:'第二轮',
-            roundId:2,
-            seminars:[
-              {
-                seminarTopic:'controller',
-                seminarId:'3',
-              },
-              {
-                seminarTopic:'XXXX',
-                seminarId:'4',
-              }
-            ]
-          }
-        ],
-        seminarName:"业务流程",
+        rounds:[],
+        activeName:'',
+        active:'',
       }
     },
     methods:{
@@ -180,7 +144,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="less">
   #accordion{
     margin-top: 13vh;
     width:100%;
@@ -217,6 +181,11 @@
   .subItem{
     color:gray;
     font-size: 14px;
+  }
+  .el-collapse-item__header{
+    padding-left: 3vw;
+    font-size: 18px;
+
   }
 
   @media screen and (min-width: 481px ){

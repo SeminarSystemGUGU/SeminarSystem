@@ -18,7 +18,7 @@
         <mu-divider inset></mu-divider>
         <mu-list textline="two-line">
           <mu-sub-header inset>已有成员</mu-sub-header>
-          <mu-sub-header style="margin-top: -3vh;" inset>(人数限制3-5人，不符合限制需<span style="border-bottom: 0.5px solid darkred;color: darkred;cursor: pointer">提交申请</span>)</mu-sub-header>
+          <!--<mu-sub-header style="margin-top: -3vh;" inset>(人数限制3-5人，不符合限制需<span style="border-bottom: 0.5px solid darkred;color: darkred;cursor: pointer">提交申请</span>)</mu-sub-header>-->
           <mu-list-item avatar button :ripple="false"  :key="index"  v-for="option,index in newTeam.members" style="margin-left: -2vh;">
             <mu-list-item-action>
               <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;" v-if="option.id===newTeam.leader.id">
@@ -133,13 +133,14 @@
 
           if(this.$data.newTeam.members.length<=this.$data.maxMember)    //组队合法
             this.$data.newTeam.status=1;
+          else
+            this.$data.newTeam.status=0;
 
           let _this=this;
           this.$axios({
             method:'post',
             url:'/team',
             data:{
-                teamId:'',
                 teamName:_this.$data.newTeam.teamName,
                 courseId:_this.$data.courseId,
                 klassId:_this.$data.newTeam.klassId.id,
@@ -147,8 +148,8 @@
                     id:_this.$data.newTeam.leader.id,
                 },
                 members:commonMembers,
-              status:_this.$data.newTeam.status,
-              serial:'',
+              // status:_this.$data.newTeam.status,
+              // serial:'',
             }
           }).then(function (resopnse) {
             _this.$data.teamId=resopnse.data.teamId;
@@ -161,8 +162,6 @@
             loading.close();
           }, 500);
           this.$set(this.$data.newTeam.members,this.$data.newTeam.members.length,row);
-
-          // this.$set(this.$data.newTeam.members.unshift(row));
           this.$set(this.$data.noTeamMember.splice(index,1));
         },
         backToMyTeam(){

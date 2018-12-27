@@ -213,18 +213,18 @@
           <img class="iimg" src="../../../assets/schedule.svg"   />
           结束报名时间：{{seminarEntity.enrollEndTime}}
         </div>
-        <mu-button class="inSeminar" color="success"  @click="showStatusDetails(status)" v-if="status===1">报名</mu-button>
+        <mu-button class="inSeminar" color="success"  @click="showStatusDetails(status)" v-if="status===1" :disabled="ddl===1">报名</mu-button>
 
         <!--已报名 未开始-->
         <mu-button class="submit" color="success"  @click="submitPPT" v-if="status===4" >PPT提交</mu-button>
         <mu-dialog title="上传PPT" width="360" :open.sync="pptFlag">
-          <el-upload
-            class="upload-demo"
-            :action="baseURL+'/attendance/'+attendanceId+'/powerpoint'"
-            :limit="1"
-            :file-list="ppt">
+          <!--<el-upload-->
+            <!--class="upload-demo"-->
+            <!--:action="baseURL+'/attendance/'+attendanceId+'/powerpoint'"-->
+            <!--:limit="1"-->
+            <!--:file-list="ppt">-->
             <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
+          <!--</el-upload>-->
           <mu-button slot="actions" flat color="success" @click="submit">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="pptFlag=!pptFlag">Close</mu-button>
         </mu-dialog>
@@ -248,13 +248,13 @@
         <mu-button class="submit"  style="margin-top: 5vh;" color="success"  @click="submitReport" v-if="status===5">报告提交</mu-button>
         <mu-dialog title="上传报告" width="360" :open.sync="reportFlag">
           <mu-dialog title="上传报告" width="360" :open.sync="reportFlag">
-            <el-upload
-              class="upload-demo"
-              :action="baseURL+'/attendance/'+attendanceId+'/report'"
-              :limit="1"
-              :file-list="report">
+            <!--<el-upload-->
+              <!--class="upload-demo"-->
+              <!--:action="baseURL+'/attendance/'+attendanceId+'/report'"-->
+              <!--:limit="1"-->
+              <!--:file-list="report">-->
               <el-button size="small" type="primary">点击上传</el-button>
-            </el-upload>
+            <!--</el-upload>-->
             <mu-button slot="actions" flat color="success" @click="reportFlag=!reportFlag">Sure</mu-button>
             <mu-button slot="actions" flat color="primary" @click="reportFlag=!reportFlag">Close</mu-button>
           </mu-dialog>
@@ -295,6 +295,15 @@
            _this.$data.processing=response.data.status;          //课程进度
            _this.$data.seminarEntity=response.data.seminarEntity;
            _this.$data.klassSeminarId=response.data.klassSeminarId;
+           _this.$data.seminarEntity.enrollStartTime=_this.$data.seminarEntity.enrollStartTime.slice(0,10);
+           _this.$data.seminarEntity.enrollEndTime=_this.$data.seminarEntity.enrollEndTime.slice(0,10);
+
+           // let nowDate=_this.getNowDate();       //组队是否截止
+           // if(nowDate<=_this.$data.seminarEntity.enrollEndTime)
+           //   _this.$data.ddl=0;
+           // else if(nowDate>_this.$data.seminarEntity.enrollEndTime)
+           //   _this.$data.ddl=1;
+
            let t=_this;
            _this.$axios({
              method:'get',
@@ -370,6 +379,7 @@
             report:[],
             webSocketAddress:'',
             socket:'',
+            ddl:0,
 
             reportFlag:false,
             pptFlag:false,
@@ -401,6 +411,21 @@
         submitReport(){
           this.$data.reportFlag=true;
         },
+        getNowDate() {
+          let date = new Date();
+          let seperator1 = "-";
+          let year = date.getFullYear();
+          let month = date.getMonth() + 1;
+          let strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          let currentdate = year + seperator1 + month + seperator1 + strDate;
+          return currentdate;
+        }
       }
     }
 </script>

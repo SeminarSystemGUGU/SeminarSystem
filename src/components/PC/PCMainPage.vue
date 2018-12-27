@@ -35,7 +35,8 @@
     data(){
       return{
         height:'',
-        isTeacherPages:false
+        isTeacherPages:false,
+
       }
     },
     watch:{

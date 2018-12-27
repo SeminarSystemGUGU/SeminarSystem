@@ -40,7 +40,7 @@
             </mu-list-item-action>
             <mu-list-item-title style="margin-left: 20%;font-size: 20px;height:8vh;">
               <mu-button flat color="success" style="margin-top: 1vh;" large @click="download" v-if="option.pptName!==''"><a :href="baseURL+'option.pptPath'">{{option.pptName}}</a></mu-button>
-              <mu-button flat disabled v-if="option.pptName===''" style="margin-top: 1vh;"large>未上传</mu-button>
+              <mu-button flat disabled v-if="option.pptName===''" style="margin-top: 1vh;" large>未上传</mu-button>
             </mu-list-item-title>
           </mu-list-item>
         </mu-list>
@@ -208,48 +208,52 @@
           this.$data.changeFlag=true;
         },
         enroll(){        //确定报名
-            let _this=this;
-            this.$axios({
-              method:'post',
-              url:'/attendance',
-              data:{
-                klassSeminarId:_this.$data.klassSeminarId,
-                teamId:_this.$data.myTeam.teamId,
-                teamOrder:_this.$data.enrollOrder,
-              }
-            }).then(function (response) {
-              _this.$data.attendanceId=response.data;
-              _this.$data.registerFlag=!_this.$data.registerFlag;
-              _this.$toast.success("报名成功！");
-              _this.$data.status=2;
-
-              const loading = _this.$loading();
-              setTimeout(() => {
-                loading.close();
-              }, 500);
-
-              let t=_this;           //重新获取报名情况
-              _this.$axios({
-                method:'get',
-                url:'/attendance/'+t.$data.klassSeminarId,
-              }).then(function (response) {
-                t.$data.enrollTeams=response.data;
-                _this.$data.registerOrder=[];
-                let x;
-                for(x=0;x<t.$data.maxMember;x++) {
-                  t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:''});
+            if(this.$data.myTeam.teamId===null) {
+              this.$toast.error("您还未组队,无法报名讨论课！");
+              this.$data.registerFlag = !this.$data.registerFlag;
+            }
+            else {
+              let _this = this;
+              this.$axios({
+                method: 'post',
+                url: '/attendance',
+                data: {
+                  klassSeminarId: _this.$data.klassSeminarId,
+                  teamId: _this.$data.myTeam.teamId,
+                  teamOrder: _this.$data.enrollOrder,
                 }
-                let i,j;
-                for(i=0;i<t.$data.registerOrder.length;i++)
-                  for(j=0;j<t.$data.enrollTeams.length;j++)
-                  {
-                    if(t.$data.enrollTeams[j].teamOrder===i+1)
-                    {
-                      t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
-                    }
+              }).then(function (response) {
+                _this.$data.attendanceId = response.data;
+                _this.$data.registerFlag = !_this.$data.registerFlag;
+                _this.$toast.success("报名成功！");
+                _this.$data.status = 2;
+
+                const loading = _this.$loading();
+                setTimeout(() => {
+                  loading.close();
+                }, 500);
+
+                let t = _this;           //重新获取报名情况
+                _this.$axios({
+                  method: 'get',
+                  url: '/attendance/' + t.$data.klassSeminarId,
+                }).then(function (response) {
+                  t.$data.enrollTeams = response.data;
+                  _this.$data.registerOrder = [];
+                  let x;
+                  for (x = 0; x < t.$data.maxMember; x++) {
+                    t.$data.registerOrder.push({order: '第' + (x + 1) + '组', team: ''});
                   }
+                  let i, j;
+                  for (i = 0; i < t.$data.registerOrder.length; i++)
+                    for (j = 0; j < t.$data.enrollTeams.length; j++) {
+                      if (t.$data.enrollTeams[j].teamOrder === i + 1) {
+                        t.$data.registerOrder[i].team = t.$data.enrollTeams[j].teamEntity.teamName;
+                      }
+                    }
+                });
               });
-            });
+            }
         },
         confirmChange(){
           let _this=this;
@@ -279,7 +283,7 @@
                 {
                   if(t.$data.enrollTeams[j].teamOrder===i+1)
                   {
-                    t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
+                    t.$data.registerOrder[i].team=t.$data.enrollTeams[j].teamEntity.teamName;
                   }
                 }
             });
@@ -315,15 +319,13 @@
                 {
                   if(t.$data.enrollTeams[j].teamOrder===i+1)
                   {
-                    t.$data.registerOrder[i].team+='这个组没名，ID是'+t.$data.enrollTeams[j].teamId;
+                    t.$data.registerOrder[i].team=t.$data.enrollTeams[j].teamEntity.teamName;
                   }
                 }
             });
           })
         }
-
       }
-
     }
 </script>
 

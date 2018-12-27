@@ -9,7 +9,7 @@
         我的队伍
       </div>
       <div class="cF" v-if="teamState===0">当前未组队</div>
-      <div  class="panel panel-default" style="background-color: #67C23A;opacity: 0.8;color:white" v-if="teamState===1" @click="showMyTeamDetails">
+      <div  class="panel panel-default" style="background-color: #67C23A;opacity: 0.8;color:white" v-if="teamState!==0" @click="showMyTeamDetails">
         <div class="panel-heading" style="background-color: #67C23A;color:white" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"  onclick="">
           {{myTeam.teamName}}
           <i style="float: right;margin-right: 5vw;margin-top: 0.6vh " class="el-icon-arrow-right"></i>
@@ -82,7 +82,7 @@
           </table>
         </div>
       </div>
-      <mu-button class="butnCT" color="success" @click="createTeam" v-if="teamState===0">
+      <mu-button class="butnCT" color="success" @click="createTeam" v-if="teamState===0&&ddl===0&&follow===0">
         创建小组<i class="el-icon-circle-plus-outline" style="margin-left: 3vw;"/>
       </mu-button>
     </div>
@@ -100,6 +100,29 @@
     },
     created(){
       this.$data.courseId=parseInt(this.$route.query.courseId);
+
+      let _is=this;
+      this.$axios({
+        method:'get',
+        url:'course/'+this.$data.courseId,
+      }).then(function (response) {
+        response.data.teamStartTime=response.data.teamStartTime.slice(0,10);
+        response.data.teamEndTime=response.data.teamEndTime.slice(0,10);
+        _is.$data.teamStartTime=response.data.teamStartTime;
+        _is.$data.teamEndTime=response.data.teamEndTime;
+
+        // if(response.data.seminarMainCourseId!==null)    //是否是从课程
+        //   _is.$data.follow=1;
+        // else  if(response.data.seminarMainCourseId===null)
+        //   _is.$data.follow=0;
+
+        // let nowDate=_is.getNowDate();       //组队是否截止
+        // if(nowDate<=_is.$data.teamEndTime)
+        //   _is.$data.ddl=0;
+        // else if(nowDate>_is.$data.teamEndTime)
+        //   _is.$data.ddl=1;
+      });
+
 
       let tt=this;       //获取个人账号
       this.$axios({
@@ -147,6 +170,10 @@
         noTeamMembers:[],    //未组队成员
         maxMember:5,
         members:[],
+        teamStartTime:'',
+        teamEndTime:'',
+        follow:0,
+        ddl:0,    //组队截止   1-截止
         loading2:false,
       }
     },
@@ -161,8 +188,23 @@
         this.$data.loading2 = true;
         setTimeout(() => {
           this.$data.loading2 = false;
-        }, 2000);
+        }, 500);
       },
+      getNowDate() {
+        let date = new Date();
+        let seperator1 = "-";
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+        }
+        let currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+      }
     }
   }
 </script>

@@ -53,8 +53,10 @@
               password: this.$data.password,
             }
           }).then(function (response) {
-            if(response.data===true)
-              _this.$router.push('/StuMyAccount');
+            if(response.data===true) {
+              _this.$toast.success("请重新登陆！");
+              _this.$router.push('/');
+            }
             else
               alert("修改失败！");
           }, function (error) {

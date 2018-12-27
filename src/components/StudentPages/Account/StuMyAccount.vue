@@ -49,7 +49,7 @@
       <div style="height: 1.5px;background-color: whitesmoke;width: 100vw"></div>
     </div>
     <div class="logout">
-      <mu-button color="error" class="logout-button">退出登录</mu-button>
+      <mu-button color="error" class="logout-button" @click="logout">退出登录</mu-button>
     </div>
   </div>
 </template>
@@ -87,7 +87,10 @@
       },
       linkToEmail(){
         this.$router.push('/StuResetEmail');
-      }
+      },
+      logout(){
+        this.$router.push('/');
+      },
     }
   }
 </script>
