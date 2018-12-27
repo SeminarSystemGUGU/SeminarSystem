@@ -68,7 +68,7 @@
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getPPT.path">下载</a>
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''">下载</a>
             </mu-button>
           </mu-list-item>
 
@@ -110,10 +110,13 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                已提交
+                <span v-if="getPPT.name===''">未上传</span>
+                {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="normal">  已提交</mu-button>
+            <mu-button flat color="normal">
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''" >下载</a>
+            </mu-button>
           </mu-list-item>
 
           <!--已报名，已结束、未截止-->
@@ -133,10 +136,13 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-               已提交
+                <span v-if="getPPT.name===''">未上传</span>
+                {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="normal">  已提交</mu-button>
+            <mu-button flat color="normal">
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''" >下载</a>
+            </mu-button>
           </mu-list-item>
           <mu-divider v-if="status===5"></mu-divider>
           <mu-list-item avatar :ripple="false" button v-if="status===5">
@@ -144,12 +150,12 @@
               <mu-list-item-title>报告</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getPPT.name===''">未上传</span>
+                <span v-if="getReport.name===''">未上传</span>
                 {{getReport.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getReport.path">下载</a>
+              <a :href="baseURL+getReport.path"  v-if="getReport.name===''">下载</a>
             </mu-button>
           </mu-list-item>
           <!--已报名，已结束、已截止-->
@@ -174,7 +180,7 @@
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getPPT.path">下载</a>
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''">下载</a>
             </mu-button>
           </mu-list-item>
           <mu-divider v-if="status===6"></mu-divider>
@@ -183,12 +189,12 @@
               <mu-list-item-title>报告</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getPPT.name===''">未上传</span>
+                <span v-if="getReport.name===''">未上传</span>
                 {{getReport.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getReport.path">下载</a>
+              <a :href="baseURL+getReport.path" v-if="getReport.name!==''">下载</a>
             </mu-button>
           </mu-list-item>
           <!--未报名，已结束-->

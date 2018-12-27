@@ -105,7 +105,7 @@
             let i;
             for (i = 0; i < response.data.length; i++) {
               _this.$data.rounds.push({
-                roundName: '第' + response.data.roundSerial + '轮',
+                roundName: '第' + response.data[i].roundSerial + '轮',
                 roundId: response.data[i].id,
                 scoreEntities: [],
               });

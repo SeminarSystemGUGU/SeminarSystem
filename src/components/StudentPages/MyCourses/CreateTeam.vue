@@ -123,7 +123,7 @@
       },
       methods:{
         deleteMember(index){
-          this.$set(this.$data.noTeamMember,0,this.$data.newTeam.members[index]);
+          this.$set(this.$data.noTeamMember,this.$data.noTeamMember.length,this.$data.newTeam.members[index]);
           this.$set(this.$data.newTeam.members.splice(index,1));
         },
         createTeam(){

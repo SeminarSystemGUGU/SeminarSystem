@@ -25,15 +25,15 @@
               <mu-list-item-content>
                 <mu-list-item-title style=" display: inline"> &emsp;{{option.studentName}}</mu-list-item-title>
                 <mu-button v-if="option.id!==myTeam.leader.id" style="margin-left: 15%;display: inline;position: relative;top: 11px;left:30%"
-                           flat color="error" @click="kickout(option.id)">移出</mu-button>
+                           flat color="error" @click="kickout(option.id)" :disabled="status===2">移出</mu-button>
                 <mu-list-item-sub-title >&emsp;{{option.account}}</mu-list-item-sub-title>
               </mu-list-item-content>
             </mu-list-item>
           </mu-list>
-          <div v-if="ddl===0&&follow===0">
+          <div v-if="ddl===0&&follow===0&&status!==2">
           <span style="font-size: 22px;margin-left: 1vh; ">添加成员
-          <span v-if="status===0" style="margin-left: 27%;font-size: 17px;">
-            人员超限，<mu-button style="cursor: pointer;" flat color="error" @click="askFlag=!askFlag">提交审核</mu-button>
+          <span v-if="status===0" style="margin-left: 1%;font-size: 17px;">
+            （队伍状态不合法，需<mu-button style="cursor: pointer;font-size: 17px" flat color="error" @click="askFlag=!askFlag">提交审核</mu-button>）
           </span>
           <span v-if="status===2" style="margin-left: 27%;font-size: 17px;">
             <mu-button style="cursor: pointer;" flat color="error" >待审核</mu-button>
@@ -53,10 +53,9 @@
               </template>
             </el-table-column>
           </el-table>
-          <mu-button class="dissolve" color="error"  @click="dissolve">解散小组</mu-button>
           </div>
+          <mu-button class="dissolve" color="error"  @click="dissolve" v-if="ddl===0&&follow===0">解散小组</mu-button>
         </div>
-
         <!--组队后 队员界面  -->
         <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState===2 " >
           <span style="font-size: 22px;margin-left: 1vh; ">{{myTeam.teamName}}</span>

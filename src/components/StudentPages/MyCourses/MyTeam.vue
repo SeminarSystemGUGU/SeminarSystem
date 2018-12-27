@@ -8,7 +8,7 @@
       <div class="title">
         我的队伍
       </div>
-      <div class="cF" v-if="teamState===0">当前未组队</div>
+      <div class="cF" style="" v-if="teamState===0">当前未组队</div>
       <div  class="panel panel-default" style="background-color: #67C23A;opacity: 0.8;color:white" v-if="teamState!==0" @click="showMyTeamDetails">
         <div class="panel-heading" style="background-color: #67C23A;color:white" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"  onclick="">
           {{myTeam.teamName}}
@@ -18,36 +18,35 @@
       <div class="title">
         其他队伍
       </div>
-      <div class="panel panel-default" style="border: 0;">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo"  onclick="">
-          其他组
+      <div style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
+      <div class="panel panel-default" style="border: 0;" v-for="option,index in allTeams" >
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  :href="'#collapseTwo'+index"    onclick="">
+          {{option.teamName}}
+          <!--<span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>-->
+          <!--<span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>-->
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse">
+        <div :id="'collapseTwo'+index" class="panel-collapse collapse" >
           <div class="panel-body" style="padding:1vh 0;">
-            <div class="subContent">
-              <span class="subItem"  data-toggle="collapse"  data-target="#demo21"></span>
-              <div id="demo21" class="collapse in">
+            <div class="subContent" >
+              <div  class="collapse in">
                 <table class="table table-bordered">
                   <thead>
                   <tr>
                     <th>身份</th>
                     <th>姓名</th>
                     <th>学号</th>
-                    <th>备注</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
-                    <td>组长</td>
-                    <td>Li</td>
-                    <td>243201222</td>
-                    <td>J2EE</td>
+                    <td style="color:darkred">组长</td>
+                    <td>{{option.leader.studentName}}</td>
+                    <td>{{option.leader.account}}</td>
                   </tr>
-                  <tr>
+                  <tr v-for="item,index in option.members" v-if="item.id!==option.leader.id">
                     <td>组员</td>
-                    <td>Wang</td>
-                    <td>243201223</td>
-                    <td>J2EE</td>
+                    <td>{{item.studentName}}</td>
+                    <td>{{item.account}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -56,12 +55,13 @@
           </div>
         </div>
       </div>
+      </div>
       <!--未组队学生-->
       <div class="title" >
         未组队学生
       </div>
       <div class="subContent" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
-        <span class="subItem"  data-toggle="collapse"  data-target="#demo31"   onclick="" @click="loading">
+        <span class="subItem"  data-toggle="collapse"  data-target="#demo31"   onclick="" >
           未组队学生列表(点击展开)</span>
         <div id="demo31" class="collapse out">
           <table class="table table-bordered">
@@ -69,14 +69,12 @@
             <tr>
               <th>姓名</th>
               <th>学号</th>
-              <th>备注</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="option,index in noTeamMembers" :key="index">
               <td>{{option.studentName}}</td>
               <td>{{option.account}}</td>
-              <td>J2EE</td>
             </tr>
             </tbody>
           </table>
@@ -101,6 +99,18 @@
     created(){
       this.$data.courseId=parseInt(this.$route.query.courseId);
 
+      this.loading1 = true;
+      this.loading2 = true;
+
+      let ss=this;     //所有队伍信息
+      this.$axios({
+        method:'get',
+        url:'/course/'+this.$data.courseId+'/teams',
+      }).then(function (response) {
+        ss.$data.allTeams=response.data;
+        ss.loading1 = false;
+      });
+
       let _is=this;
       this.$axios({
         method:'get',
@@ -115,7 +125,6 @@
         //   _is.$data.follow=1;
         // else  if(response.data.seminarMainCourseId===null)
         //   _is.$data.follow=0;
-
         // let nowDate=_is.getNowDate();       //组队是否截止
         // if(nowDate<=_is.$data.teamEndTime)
         //   _is.$data.ddl=0;
@@ -153,7 +162,7 @@
           url:'course/'+_this.$data.courseId+'/noTeam',
         }).then(function(response){
           _this.$data.noTeamMembers=response.data;
-          _this.loading();
+          _this.$data.loading2=false;
         },function(error){
           alert(error);
         });
@@ -172,9 +181,11 @@
         members:[],
         teamStartTime:'',
         teamEndTime:'',
+        allTeams:[],
         follow:0,
         ddl:0,    //组队截止   1-截止
         loading2:false,
+        loading1:false,
       }
     },
     methods:{
@@ -183,12 +194,6 @@
       },
       createTeam(){
         this.$router.push({path:'/CreateTeam',query:{courseId:this.$data.courseId}});
-      },
-      loading(){
-        this.$data.loading2 = true;
-        setTimeout(() => {
-          this.$data.loading2 = false;
-        }, 500);
       },
       getNowDate() {
         let date = new Date();

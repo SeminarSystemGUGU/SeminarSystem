@@ -19,16 +19,18 @@
     <div class="lastCard">
       已报名小组
     </div>
-    <el-table  :data="registerOrder" stripe id="teamTable" v-if="state===0">
+    <el-table  :data="registerOrder" stripe id="teamTable" v-if="state===0" style="margin-bottom: 100px;">
       <el-table-column prop="order" label="次序" width="100"></el-table-column>
       <el-table-column prop="teamSerial" label="组号" width="80"></el-table-column>
       <el-table-column prop="leader" label="组长" width="150"></el-table-column>
       <el-table-column prop="pptName" label="展示材料" width="150">
         <template slot-scope="scope">
           <!--<img  v-if="registerOrder[scope.$index].pptName!==''" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" src="../../../assets/download.svg"/>-->
-          <a v-if="registerOrder[scope.$index].pptName!==''" :href="baseURL+registerOrder[scope.$index].pptUrl">
+          <a v-if="registerOrder[scope.$index].pptName!==''&&registerOrder[scope.$index].pptName!==null" :href="baseURL+registerOrder[scope.$index].pptUrl">
             {{registerOrder[scope.$index].pptName}}下载
           </a>
+          <span v-if="(registerOrder[scope.$index].pptName===''||registerOrder[scope.$index].pptName===null)
+          &&registerOrder[scope.$index].teamSerial!==''">未上传</span>
           <span v-if="registerOrder[scope.$index].pptName===''&&registerOrder[scope.$index].teamSerial!==''" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" >未上传</span>
         </template>
       </el-table-column>
@@ -42,23 +44,25 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-table  :data="registerOrder" stripe  v-if="state===1">
+    <!--已报名-->
+    <el-table  :data="registerOrder" stripe  v-if="state===1" style="margin-bottom: 100px;">
       <el-table-column prop="order" label="次序" width="100"></el-table-column>
       <el-table-column prop="teamSerial" label="组号" width="80"></el-table-column>
       <el-table-column prop="leader" label="组长" width="150"></el-table-column>
       <el-table-column prop="pptName" label="展示材料" width="150">
         <template slot-scope="scope">
           <!--<img  v-if="registerOrder[scope.$index].pptName!==''" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" src="../../../assets/download.svg"/>-->
-          <a v-if="registerOrder[scope.$index].pptName!==''" :href="baseURL+registerOrder[scope.$index].pptUrl">
+          <a v-if="registerOrder[scope.$index].pptName!==''&&registerOrder[scope.$index].pptName!==null " :href="baseURL+registerOrder[scope.$index].pptUrl">
             {{registerOrder[scope.$index].pptName}}下载
           </a>
-          <span v-if="registerOrder[scope.$index].pptName===''&&registerOrder[scope.$index].teamSerial!==''" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" >未上传</span>
+          <span v-if="registerOrder[scope.$index].pptName===''&&registerOrder[scope.$index].teamSerial!==''&&registerOrder[scope.$index].leader!==myTeam.leader.id" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" >未上传</span>
+          <mu-button @click="pptFlag=!pptFlag" flat large color="success" v-if="(registerOrder[scope.$index].pptName===''||registerOrder[scope.$index].pptName===null)&&registerOrder[scope.$index].leader===myTeam.leader.id">上传</mu-button>
         </template>
       </el-table-column>
       <el-table-column label="">
         <template slot-scope="scope">
           <div>
-            <mu-button  flat :disabled="registerOrder[scope.$index].teamSerial!==''" @click.native.prevent="changeEnroll(scope.$index )" color="success"  >
+            <mu-button  flat v-if="registerOrder[scope.$index].teamSerial===''" @click.native.prevent="changeEnroll(scope.$index )" color="success"  >
               可报名
             </mu-button>
             <mu-button  flat v-if="registerOrder[scope.$index].leader===myTeam.leader.id" @click.native.prevent="cancleEnroll(scope.$index )" color="error"  >
@@ -68,6 +72,17 @@
         </template>
       </el-table-column>
     </el-table>
+
+      <mu-dialog title="上传PPT" width="360" :open.sync="pptFlag">
+        <el-upload
+        class="upload-demo"
+        :action="baseURL+'/attendance/'+attendanceId+'/powerpoint'"
+        :limit="1"
+        :file-list="report">
+        <!--<el-button size="small" type="primary">点击上传</el-button>-->
+        </el-upload>
+        <mu-button slot="actions" flat color="success" @click="confirmUP">Sure</mu-button>
+      </mu-dialog>
   </div>
 </template>
 
@@ -75,6 +90,7 @@
     export default {
         name: "SeminarDetails",
       created(){
+        this.$data.baseURL=this.$axios.defaults.baseURL;
         this.$data.seminarId=this.$route.query.seminarId;
         this.$data.klassId=this.$route.query.klassId;
         this.$data.courseId=this.$route.query.courseId;
@@ -149,6 +165,7 @@
       },
       data(){
           return{
+            baseURL:'',
             doundID:1,
             state:-1,  //是否报名   0-未报名   1-已报名
             courseId:-1,
@@ -159,6 +176,11 @@
             klassSeminarId:-1,
             enrollTeams:[],
             registerOrder:[],
+            ppt:[],
+            report:[],
+            pptFlag:false,
+            reportFlag:false,
+
         }
       },
       methods:{
@@ -298,8 +320,11 @@
             _this.$toast.success("取消报名成功");
             _this.getRegisterOrder();
           })
-
-        }
+        },
+        confirmUP(){
+          this.$data.pptFlag=!this.$data.pptFlag;
+          this.getRegisterOrder();
+        },
       }
     }
 </script>

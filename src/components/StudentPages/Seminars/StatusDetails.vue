@@ -4,21 +4,22 @@
 
     <div class="statusDetailsBack animated fadeInRight" >
       <!--报名阶段-->
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===1">
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===1"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
         <mu-list v-for="option,index in registerOrder" :key = "index">
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
               {{option.order}}
             </mu-list-item-action>
             <mu-list-item-title style="margin-left:35%;font-size: 20px;">{{option.team}}
-              <mu-button flat color="success" style="margin-top:-2vh;margin-left: -10%;"large @click="register(index)" v-if="option.team===''">可报名</mu-button>
+              <mu-button flat color="success" style="margin-top:-2vh;margin-left: -10%;"large @click="register(index)" v-if="option.team===''"
+                         data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading1">可报名</mu-button>
             </mu-list-item-title>
           </mu-list-item>
         </mu-list>
         <mu-divider></mu-divider>
       </mu-paper>
       <!--修改报名-->
-      <mu-paper :z-depth="1" class="demo-list-wrap"  v-if="status===2">
+      <mu-paper :z-depth="1" class="demo-list-wrap"  v-if="status===2"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
         <mu-list v-for="option,index in registerOrder" :key = "index">
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
@@ -32,7 +33,7 @@
         <mu-divider></mu-divider>
       </mu-paper>
       <!--正在进行讨论课-->
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===3">
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===3"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
         <mu-list v-for="option,index in registerOrder" :key = "index">
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
@@ -47,7 +48,7 @@
         <mu-divider></mu-divider>
       </mu-paper>
       <!--讨论课已经结束-->
-      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===5">
+      <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===5"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
         <mu-list v-for="option,index in registerOrder" :key = "option.team">
           <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
             <mu-list-item-action>
@@ -104,6 +105,8 @@
         else if(this.$route.query.status===5 || this.$route.query.status===7)   //顺序
           this.$data.status=5;
 
+        this.$data.loading2=true;
+
         let _this=this;
         this.$axios({
           method:'get',
@@ -111,11 +114,6 @@
         }).then(function(response){
           _this.$data.courseId=response.data.seminarEntity.courseId;
           _this.$data.klassSeminarId=response.data.klassSeminarId;
-
-          const loading = _this.$loading();
-          setTimeout(() => {
-            loading.close();
-          }, 1000);
 
           let t=_this;           //报名情况
           _this.$axios({
@@ -126,7 +124,7 @@
             _this.$data.registerOrder=[];
             let x;
             for(x=0;x<t.$data.maxMember;x++) {
-              t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:'',pptName:'',pptPath:'',attenddaceId:''});
+              t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:'',pptName:'',pptPath:'',attendanceId:''});
             }
             let i,j;
             for(i=0;i<t.$data.registerOrder.length;i++)
@@ -159,17 +157,21 @@
             {
               let x;
               for(x=0;x<tt.$data.registerOrder.length;x++) {
-                let ts = tt;
-                tt.$axios({
-                  method: 'get',
-                  url: '/attendance/'+ts.$data.registerOrder[x].attendanceId+'/ppt',
-                }).then(function (response) {
-                  ts.$data.registerOrder[x].pptName=response.data.name;
-                  ts.$data.registerOrder[x].pptPath=response.data.path;
-                })
+                if(tt.$data.registerOrder[x].team!=='') {
+                  let ts = tt;
+                  tt.$axios({
+                    method: 'get',
+                    url: '/attendance/' + ts.$data.registerOrder[x].attendanceId + '/ppt',
+                  }).then(function (response) {
+                    ts.$data.registerOrder[x].pptName = response.data.name;
+                    ts.$data.registerOrder[x].pptPath = response.data.path;
+                  });
+                }
               }
             }
+
           });
+          _this.$data.loading2=false;
         });
       },
       data(){
@@ -192,7 +194,8 @@
             cancleFlag:false,
             changeFlag:false,
             baseURL:'',
-
+            loading2:false,
+            loading1:false,
           }
       },
       methods: {
@@ -213,6 +216,8 @@
               this.$data.registerFlag = !this.$data.registerFlag;
             }
             else {
+              this.$data.registerFlag = !this.$data.registerFlag;
+              this.$data.loading1=true;
               let _this = this;
               this.$axios({
                 method: 'post',
@@ -224,9 +229,9 @@
                 }
               }).then(function (response) {
                 _this.$data.attendanceId = response.data;
-                _this.$data.registerFlag = !_this.$data.registerFlag;
                 _this.$toast.success("报名成功！");
                 _this.$data.status = 2;
+                _this.$data.loading1=false;
 
                 const loading = _this.$loading();
                 setTimeout(() => {

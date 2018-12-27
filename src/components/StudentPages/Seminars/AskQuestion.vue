@@ -4,7 +4,7 @@
       <div class="statusDetailsBack animated fadeInRight" >
       <div class="titleN" align="left"> 当前展示小组 :&emsp; &emsp;{{currentName}}</div>
         <mu-paper :z-depth="1" class="demo-list-wrap">
-          <mu-list v-for="option,index in registerOrder" :key = "index">
+          <mu-list v-for="option,index in registerOrder" :key = "index"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
             <mu-list-item class="listItem" button :ripple="true" style="font-size: 18px;">
               <mu-list-item-action>
                 {{option.order}}
@@ -14,19 +14,17 @@
           </mu-list>
           <mu-divider></mu-divider>
         </mu-paper>
-        <mu-button class="askQ" color="success"  @click="askQuestion">发起提问</mu-button>
+        <mu-button class="askQ" color="success"  @click="askQuestion"
+                   :disabled="currentAttendance.team===myTeamName">发起提问</mu-button>
         <mu-dialog title="发起提问？" width="360" :open.sync="questionFlag" :overlay="false">
           <mu-button slot="actions" flat color="success" @click="confirmQuestion">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="questionFlag=!questionFlag">Close</mu-button>
         </mu-dialog>
-
-
         <mu-dialog title="提问" width="360" :open.sync="questionAlert">
           请{{teamEntity.teamSerial}}  {{studentEntity.studentName}}同学({{studentEntity.account}})<br/>
           提问
           <mu-button slot="actions" flat color="primary" @click="questionAlert=!questionAlert">Close</mu-button>
         </mu-dialog>
-
       </div>
     </div>
 </template>
@@ -42,6 +40,8 @@
       this.$data.seminarId=this.$route.query.seminarId;
       this.$data.klassId=this.$route.query.klassId;
 
+      this.$data.loading2=true;
+
       let _this=this;
       this.$axios({
         method:'get',
@@ -49,9 +49,22 @@
       }).then(function(response){
         _this.$data.courseId=response.data.seminarEntity.courseId;
         _this.$data.klassSeminarId=response.data.klassSeminarId;
-        _this.getWebSocketAddress();
         _this.getRegisterTeams();
+        _this.getWebSocketAddress();
+        _this.$data.loading2=false;
+
+        let ts=_this;      //我的组队信息
+        _this.$axios({
+          method:'get',
+          url:'/course/'+ts.$data.courseId+'/team'
+        }).then(function (response) {
+          if(response.data.teamName!==null)    //未组队
+            ts.myTeamName=response.data.teamName;
+        });
       });
+    },
+    destroyed(){
+      this.$data.socket.onclose=function () {};
     },
       data() {
         return {
@@ -66,6 +79,11 @@
           enrollTeams:[],        //所有报名的小组
           questionFlag:false,
           registerOrder:[],
+          // myTeam:'',
+          // teamState:-1,
+          myTeamName:'',
+
+          loading2:false,
           webSocketAddress:'',
           socket:'',
           maxMember:6,
@@ -120,8 +138,6 @@
               _this.$data.questionFlag = !_this.$data.questionFlag;
             });
           }
-          // else{
-          // }
         },
         getWebSocketAddress(){
           let _this=this;
@@ -131,28 +147,30 @@
           }).then(function (response) {
             _this.$data.webSocketAddress=response.data;
             _this.initWebSocket();
-          })
+          });
         },
         initWebSocket(){
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
           let _this=this;
           this.$data.socket.onmessage=function (msg) {
-            console.log(msg);
-            if(msg.data ==="200") {
-              console.log(_this.$data.currentIndex);
-            }
-            // if(msg.data==='200'){
-            //   this.$message({
-            //     type:'success',
-            //     message:'连接成功！正式开始上课！'
-            //   })
-            // }
+           if(msg.data==='-1')
+           {
+             _this.$data.currentIndex=0;
+           }
+           else if(msg.data!=='-1')
+           {
+             let i;
+             for(i=0;i<_this.$data.registerOrder[i].length;i++)
+             {
+               _this.$data.registerOrder[i].attendanceId=msg.data;
+               _this.$data.currentIndex=parseInt(_this.$data.registerOrder[i].slice(1,2))-1;
+             }
+           }
           };
           this.$data.socket.addEventListener("message", function(event) {
-
             // 1-切换提问   2-切换展示
-            if(event.data==='1')
+            if(event.data==='nextQuestion')
             {   //获取提问
               let ts=_this;
               _this.$axios({
@@ -166,12 +184,11 @@
                 ts.$data.studentEntity=response.data.studentEntity;
                 ts.$data.teamEntity=response.data.teamEntity;
                 ts.$data.questionAlert=true;
-                // console.log(response.data);
               })
             }
-            else if(event.data==='2'){  //切换展示小组
+            else if(event.data==='nextPresentation'){  //切换展示小组
               _this.$data.currentIndex++;
-              // _this.$set(_this.$data.currenName=_this.$data.currentAttendance.team);
+              _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];   //第一个展示的小组
               _this.$data.currentName=_this.$data.currentAttendance.team;
               console.log(_this.$data.currentName)
             }
