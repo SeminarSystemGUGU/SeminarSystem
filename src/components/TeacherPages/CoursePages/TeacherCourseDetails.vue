@@ -23,14 +23,14 @@
         </el-row>
       </div>
       <div class="course-team-requirments">
-        <el-row>
-          <el-col class="row-col">
-            <span>小组人数：</span>
-          </el-col>
-          <el-col class="row-col">
-            <span>{{teamMinNumber}} ~ {{teamMaxNumber}}人</span>
-          </el-col>
-        </el-row>
+        <!--<el-row>-->
+          <!--<el-col class="row-col">-->
+            <!--<span>小组人数：</span>-->
+          <!--</el-col>-->
+          <!--<el-col class="row-col">-->
+            <!--<span>{{teamMinNumber}} ~ {{teamMaxNumber}}人</span>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
       </div>
       <div class="course-team-requirments">
         <el-row>
@@ -105,15 +105,27 @@
             _this.$data.reportProportion=response.data.reportPercentage;
             _this.$data.teamMinNumber=response.data.minMember;
             _this.$data.teamMaxNumber=response.data.maxMember;
-            _this.$data.teamStartTime=response.data.teamStartTime;
-            _this.$data.teamEndTime=response.data.teamEndTime;
+            _this.$data.teamStartTime=_this.transTime(response.data.teamStartTime);
+            _this.$data.teamEndTime=_this.transTime(response.data.teamEndTime);
             _this.$data.introduction=response.data.introduction;
             _this.$data.courseName=response.data.courseName;
             _this.$data.isLoading=false;
           }).catch(function (error) {
             console.log(error.response.data);
           });
-        }
+        },
+
+        //转换时间戳
+        transTime:function(timeStamp){
+          var d=new Date(timeStamp);
+          var time = (d.getFullYear()) + "-" +
+            (d.getMonth() + 1) + "-" +
+            (d.getDate()) + " " +
+            (d.getHours()) + ":" +
+            ((d.getMinutes()>9)?d.getMinutes():("0"+d.getMinutes())) + ":" +
+            ((d.getSeconds()>9)?d.getSeconds():("0"+d.getSeconds()));
+          return time;
+        },
       },
 
       created(){
@@ -166,7 +178,7 @@
     .course-team-requirments{
       margin-top: 4vh;
       text-align: left;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
     }
 
