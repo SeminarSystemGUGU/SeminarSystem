@@ -153,10 +153,14 @@
       },
       doSeminar(){
         let _this=this;
-        this.$router.push({path:'/TeacherSeminarIng',query:{courseId:_this.$data.courseId,
+        this.$router.push({path:'/TeacherSeminarIng',query:{
+            courseId:_this.$data.courseId,
             klassSeminarId:_this.$data.klassSeminarId,
             classId:this.$data.classId,
-            seminarId:this.$data.seminarId}});
+            classSerial:this.$data.klassSerial,
+            seminarId:this.$data.seminarId,
+            roundId:this.$data.roundId,
+            seminarName:this.$data.seminarName}});
       },
       GotoSeminar(){
         let _this=this;
@@ -171,7 +175,10 @@
             _this.$router.push({path:'/TeacherSeminarIng',query:{courseId:_this.$data.courseId,
                 klassSeminarId:_this.$data.klassSeminarId,
                 classId:_this.$data.classId,
-                seminarId:_this.$data.seminarId}});
+                classSerial:_this.$data.klassSerial,
+                seminarId:_this.$data.seminarId,
+                roundId:_this.$data.roundId,
+                seminarName:_this.$data.seminarName}});
           }
         })
 
@@ -207,10 +214,23 @@
         this.$router.push({path:'/TeacherCourseRounds',query:{courseId:this.$data.courseId}})
       },
       linkToReport(){
-        this.$router.push('/TeacherAfterSeminar');
+        this.$router.push({path:'/TeacherAfterSeminar',query:{
+            klassSeminarId:this.$data.klassSeminarId,
+            classId:this.$data.classId,
+            seminarId:this.$data.seminarId,
+            courseId:this.$data.courseId,
+            classSerial:this.$data.klassSerial,
+            roundId:this.$data.roundId
+          }});
       },
       linkToGrades(){
-        this.$router.push({path:'/TeacherSeminarGrades',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId,courseId:this.$data,courseId}});
+        this.$router.push({path:'/TeacherSeminarGrades',query:{
+            klassSeminarId:this.$data.klassSeminarId,
+            classId:this.$data.classId,
+            seminarId:this.$data.seminarId,
+            courseId:this.$data.courseId,
+            classSerial:this.$data.klassSerial,
+            roundId:this.$data.roundId}});
       },
       linkToApply(){
         this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId}});

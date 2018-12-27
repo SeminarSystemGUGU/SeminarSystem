@@ -22,7 +22,7 @@
           <div class="round-seminars-class">
             <el-row class="row-class">
               <el-col class="row-col" v-for="item,index in seminars" :key="index">
-                <seminar-card :seminarName="item.seminarName" :endTime="item.enrollEndTime" :courseId="courseId" :seminarId="item.id" :index="index" @deleteSeminar="deleteSeminar"></seminar-card>
+                <seminar-card :isMainCourse="isMainCourse" :seminarName="item.seminarName" :endTime="item.enrollEndTime" :courseId="courseId" :seminarId="item.id" :index="index" @deleteSeminar="deleteSeminar"></seminar-card>
               </el-col>
             </el-row>
           </div>
@@ -35,19 +35,19 @@
           <div class="round-grade-setting-form">
             <el-form class="round-grade-form">
               <el-form-item label="展示：">
-                <el-select class="the-select" v-model="formRoundInfos.presentationScoreMethod" size="small">
+                <el-select :disabled="!isMainCourse" class="the-select" v-model="formRoundInfos.presentationScoreMethod" size="small">
                   <el-option :value="1" label="最高分"></el-option>
                   <el-option :value="0" label="平均分"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="提问：">
-                <el-select class="the-select" v-model="formRoundInfos.questionScoreMethod" size="small">
+                <el-select :disabled="!isMainCourse" class="the-select" v-model="formRoundInfos.questionScoreMethod" size="small">
                   <el-option :value="1" label="最高分"></el-option>
                   <el-option :value="0" label="平均分"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="报告：">
-                <el-select class="the-select" v-model="formRoundInfos.reportScoreMethod" size="small">
+                <el-select :disabled="!isMainCourse" class="the-select" v-model="formRoundInfos.reportScoreMethod" size="small">
                   <el-option :value="1" label="最高分"></el-option>
                   <el-option :value="0" label="平均分"></el-option>
                 </el-select>
@@ -77,7 +77,7 @@
       </div>
       <div style="height: 300px;"></div>
       <div class="button-panel">
-        <el-button type="primary" @click="confirmMethod">确定修改</el-button>
+        <el-button type="primary" v-show="isMainCourse" @click="confirmMethod">确定修改</el-button>
       </div>
       <!--</v-touch>-->
     </div>
@@ -93,6 +93,7 @@
       },
       data(){
           return{
+            isMainCourse:false,
             seminarId:'',
             roundInfoLoading:true,
             option1:1,
@@ -118,8 +119,22 @@
           this.$data.courseId=this.$route.query.courseId;
           this.$data.roundId=this.$route.query.roundId;
           this.loadCourseRound();
+          this.loadIfMainCourse();
       },
       methods:{
+        loadIfMainCourse(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/course/'+this.$data.courseId+'/isMainSeminar'
+          }).then(function (response) {
+            if(response.data===true){
+              _this.$data.isMainCourse=true;
+            }else{
+              _this.$data.isMainCourse=false;
+            }
+          })
+        },
         confirmMethod(){
           let _this=this;
           // console.log(this.$data.formRoundInfos.reportScoreMethod);

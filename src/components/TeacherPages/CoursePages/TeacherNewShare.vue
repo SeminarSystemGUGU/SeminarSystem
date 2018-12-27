@@ -11,8 +11,9 @@
 					</el-col>
 					<el-col class="row-col">
 						<span class="content-input">
-						<el-select>
-							<el-option label="共享讨论课" value="共享讨论课"></el-option>
+						<el-select v-model="formNewShare.type">
+							<el-option label="共享讨论课" :value="1"></el-option>
+              <el-option label="共享分组" :value="2"></el-option>
 						</el-select>
 						</span>
 					</el-col>
@@ -28,38 +29,20 @@
 					</el-col>
 					<el-col class="row-col">
 						<span class="content-input">
-						<el-select>
-							<el-option label="共享讨论课" value="共享讨论课"></el-option>
+						<el-select multiple v-model="formNewShare.shareCourses">
+							<el-option v-for="item in options" :label="item.courseName" :value="item.id" :key="item.id"></el-option>
 						</el-select>
 						</span>
 					</el-col>
 				</el-row>
 			</div>
 
-			<div class="col-content">
-				<el-row>
-					<el-col class="row-col">
-						<span class="content-title">
-							冲突课程：
-						</span>
-					</el-col>
-					<el-col class="row-col">
-						<span class="content-input">
-						<el-select>
-							<el-option label="共享讨论课" value="共享讨论课"></el-option>
-						</el-select>
-						</span>
-					</el-col>
-				</el-row>
-			</div>
-			<div class="button-panel">
-				<el-button type="primary">新增共享对象</el-button>
-			</div>
-			<div class="divider"></div>
-			<div class="button-panel another">
-				<el-button type="primary" @click="confirm">确定提交</el-button>
-			</div>
+			<!--<div class="divider"></div>-->
+
 		</div>
+    <div class="button-panel">
+      <el-button class="confirm-button" type="primary" @click="confirmShare">确认共享</el-button>
+    </div>
 	</div>
 </template>
 <script>
@@ -69,15 +52,67 @@ import AppBar from '../../ReuseComponents/AppBar'
 		components:{
 			AppBar
 		},
-		methods:{
-			confirm(){
+    data(){
+		  return{
+		    formNewShare:{
+          type:1,
+          shareCourses:[],
+        },
+        options:[
 
+        ],
+		    courseId:''
+      }
+    },
+		methods:{
+			confirmShare(){
+        console.log(this.$data.formNewShare);
+        let _this=this;
+        this.$axios({
+          method:'post',
+          url:'/course/'+this.$data.courseId+'/application',
+          data:{
+            courseId:this.$data.courseId,
+            subCourseId:this.$data.formNewShare.shareCourses[0],
+            type:this.$data.type
+          }
+        }).then(function (response) {
+          if(response.data===true){
+            _this.$message({
+              type:'success',
+              message:'创建失败！'
+            })
+          }
+        })
 			}
-		}
-	}
+		},
+    created() {
+      this.$data.courseId=this.$route.query.courseId;
+      let _this=this;
+      this.$axios({
+        method:'get',
+        url:'/course/allcourse'
+      }).then(function (response) {
+        _this.$data.options=response.data;
+        console.log(_this.$data.options);
+      })
+    }
+  }
 </script>
 <style lang="less">
 	#TeacherNewShare{
+
+    .confirm-button{
+      width: 100vw;
+    }
+
+    .el-select__tags {
+      max-width: 150px!important;
+      overflow: scroll;
+      white-space: nowrap;
+    }
+
+
 		.divider{
 			margin-top:2vh;
 			width:100%;
@@ -109,14 +144,19 @@ import AppBar from '../../ReuseComponents/AppBar'
 				line-height:40px;
 			}
 
-			.button-panel{
-				margin-top:3vh;
-				text-align:right;
-			}
+
 
 			.another{
 				text-align:center;
 			}
 		}
+    .button-panel{
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      margin-left: 0;
+      /*padding: 0;*/
+      text-align:right;
+    }
 	}
 </style>

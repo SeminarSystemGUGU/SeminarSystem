@@ -20,15 +20,16 @@
     <div class="main-content">
       <div class="seminar-title">
         <div class="title-content">
-          <span>正在进行：{{seminarTitle}}<i class="el-icon-loading"/> </span>
+          <span>正在进行：{{seminarName}}<i class="el-icon-loading"/> </span>
         </div>
+        <span>展示小组：{{preTeams[preTeamIndex].teamSerial}}</span>
       </div>
       <div class="seminar-bar">
         <el-row class="bar-row">
           <el-col class="pre-list-col">
             <div class="box-title">展示列表</div>
             <div class="pre-list">
-              <div :class="item.teamClass" v-for="item,index in preTeams" :key="index" @click="choosePreTeam(index)">
+              <div :class="item.teamClass" v-for="item,index in preTeams" :key="index" @click="choosePreTeam(index,0)">
                 {{item.teamSerial}}
               </div>
             </div>
@@ -36,28 +37,38 @@
           <el-col class="operation-list-col">
             <div class="operation-box">
               <div class="operation-box-title">
-                <span>正在展示</span><br/>
-                <span>{{chooseTeam}}</span>
+                <span v-if="teamStatus===4">提问结束</span>
+                <span v-if="teamStatus===3">正在提问</span>
+                <span v-if="teamStatus===2">展示结束</span>
+                <span v-if="teamStatus===1">正在展示</span>
+                <span v-if="teamStatus===0">准备展示</span><br/>
+                <!--<span>{{chooseTeam}}</span>-->
                 <span>{{chooseTeamName}}</span><br/>
-                <i class="el-icon-loading"></i>
+                <span>{{questionName}}</span> <br v-if="teamStatus===3||teamStatus===4" />
+                <i v-if="teamStatus===2" class="el-icon-circle-check-outline"></i>
+                <i v-if="teamStatus===1||teamStatus===3" class="el-icon-loading"></i>
+                <i v-if="teamStatus===0" class="el-icon-time"></i>
               </div>
-              <div class="operation-grade">
-                <span>展示得分</span><br/>
-                <input class="grade-input"/>
+              <div class="operation-grade" v-if="teamStatus!==0">
+                <span>得分</span><br/>
+                <input v-if="teamStatus===4" class="grade-input" v-model="formModifyQuestion.quesScore">
+                <input v-if="teamStatus===3" class="grade-input" v-model="quesTeams[quesTeamIndex].quesScore">
+                <input v-if="teamStatus===2" class="grade-input" v-model="formModify.preScore" />
+                <input v-if="teamStatus===1" class="grade-input" v-model="preTeams[preTeamIndex].preScore" /><br/>
+                <el-button v-if="teamStatus===2" type="text" class="modify-button" @click="modifyTeamPreScore">修改</el-button>
+                <el-button v-if="teamStatus===4" type="text" class="modify-button" @click="modifyQuesScore">修改</el-button>
+                <!--<el-button v-if="teamStatus===2" type="text" class="modify-button">放弃</el-button>-->
               </div>
             </div>
             <div class="button-panel">
-              <mu-button color="error">下组展示</mu-button>
-              <mu-button color="error">抽取提问</mu-button>
+              <mu-button color="error" @click="nextPreTeam">下组展示</mu-button>
+              <mu-button color="error" @click="webSocketSend">抽取提问</mu-button>
             </div>
           </el-col>
           <el-col class="ques-list-col">
             <div class="ques-title">提问列表</div>
-            <div class="pre-list-item">
-              1-6
-            </div>
-            <div class="pre-list-item-un">
-              1-7
+            <div :class="item.teamClass" v-for="item,index in quesTeams"  @click="choosePreTeam(index,3)">
+              {{classSerial+'-'+item.teamEntity.teamSerial}}
             </div>
           </el-col>
         </el-row>
@@ -76,62 +87,175 @@
       components:{
           AppBar
       },
+      computed:{
+        teamStatus(){
+          if(this.$data.chooseType==0) {
+            return this.$data.preTeams[this.$data.chooseTeamIndex].status + this.$data.chooseType;
+          }else{
+            return this.$data.quesTeams[this.$data.chooseTeamIndex].status+this.$data.chooseType;
+          }
+        },
+        questionName(){
+          if(this.$data.chooseType==3){
+            return this.$data.quesTeams[this.$data.chooseTeamIndex].studentEntity.studentName;
+          }
+        }
+      },
       data(){
           return{
+            seminarName:'',
+            chooseType:0,  //0:pre  3:ques
             chooseTeamIndex:0,
+            preTeamIndex:0,
+            preTeamName:'',
+            quesTeamIndex:0,
             chooseTeam:'1-6',
-            chooseTeamName:'咕咕鸟',
+            chooseTeamName:'',
             seminarId:'',
-            classId:'',
+            classId:0,
+            classSerial:'0',
             reportTime:'',
             openSimple:false,
-            iconClass:'back-icon',
-            seminarTitle:'业务流程分析',
+            iconClass:'back-icon-use',
             isQuestion:false,
             socket:null,
             klassSeminarId:'',
             courseId:'',
+            formModifyQuestion:{
+              quesScore:0,
+            },
+            formModify:{
+              preScore:'',
+            },
             webSocketAddress:'',
             preTeams:[
-              {
-                teamSerial:'1-6',
-                teamName:'咕咕鸟',
-                teamClass:'pre-list-item-un'
-              },
-              {
-                teamSerial:'1-7',
-                teamName:'晚晚鸟',
-                teamClass:'pre-list-item-un'
-              }
             ],
-            chosenStyle:{
-              color: 'white',
-              fontWeight: 'bold'
-            },
-            chosenItemStyle:{
-              backgroundColor:'lightgrey'
-            }
+            quesTeams:[
+              // {
+              //   id:0,
+              //   teamSerial: '1-6',
+              //   quesScore:0,
+              //   status:0,
+              //   teamClass:'pre-list-item-un'
+              // },
+              // {
+              //   id:1,
+              //   teamSerial: '1-8',
+              //   quesScore:0,
+              //   status:0,
+              //   teamClass:'pre-list-item-un'
+              // },
+              // {
+              //   id:2,
+              //   teamSerial: '1-10',
+              //   quesScore:0,
+              //   status:0,
+              //   teamClass:'pre-list-item-un'
+              // }
+            ],
+
           }
       },
       mounted() {
+
         this.$data.classId=this.$route.query.classId;
+        this.$data.roundId=this.$route.query.roundId;
         this.$data.courseId=this.$route.query.courseId;
         this.$data.seminarId=this.$route.query.seminarId;
+        this.$data.classSerial=this.$route.query.classSerial;
+        this.$data.seminarName=this.$route.query.seminarName;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
-        // this.setSeminarStatus();
-        // this.loadPreTeams();
-        // this.getWebSocketAddress();
-        this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item';
+        this.loadPreTeams();
+        this.getWebSocketAddress();
 
       },
       methods:{
-        choosePreTeam(index){
-          this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item-un';
-          this.$data.chooseTeamIndex=index;
-          this.$data.chooseTeamName=this.$data.preTeams[this.$data.chooseTeamIndex].teamName;
-          this.$data.preTeams[this.$data.chooseTeamIndex].teamClass='pre-list-item';
+        /**
+         * 修改展示小组的成绩
+         **/
+        modifyTeamPreScore(){
+
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.preTeams[this.$data.preTeamIndex].teamId
+              +'/klassSeminar/'+this.$data.klassSeminarId+'/presentation',
+            params:{
+              score:this.$data.formModify.preScore
+            }
+          }).then(function (response) {
+            _this.$message({
+              type:'success',
+              message:'修改成功！'
+            })
+            _this.$data.preTeams[_this.$data.chooseTeamIndex].preScore=_this.$data.formModify.preScore;
+          })
+        },
+        /**
+         * 下一个展示小组
+         **/
+        nextPreTeam(){
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.preTeams[this.$data.preTeamIndex].teamId
+            +'/klassSeminar/'+this.$data.klassSeminarId+'/presentation',
+            params:{
+              score:this.$data.preTeams[this.$data.preTeamIndex].preScore
+            }
+          }).then(function (response) {
+              _this.$message({
+                type:'success',
+                message:'打分成功！'
+              })
+              _this.$data.preTeams[_this.$data.preTeamIndex].status=2;
+              // _this.$data.preTeams[_this.$data.preTeamIndex].preScore=_this.formModify.preScore;
+              if(_this.$data.preTeamIndex===_this.$data.preTeams.length-1){
+                _this.$message({
+                  type:'success',
+                  message:'展示组已全部展示完！'
+                })
+              }else {
+                _this.$data.preTeamIndex++;
+                _this.$data.preTeams[_this.$data.preTeamIndex].status=1;
+                _this.$data.socket.send('1;' + _this.$data.preTeams[_this.$data.preTeamIndex].id);    //发送下一组的id
+              }
+              // _this.$data.preTeams[_this.$data.preTeamIndex]
+            _this.choosePreTeam(_this.$data.preTeamIndex,0);
+          })
 
         },
+        /**
+         * 选择列表中某一个队伍
+         **/
+        choosePreTeam(index,type){
+          console.log(this.$data.quesTeams);
+
+          if(this.$data.chooseType==0) {
+            console.log(111);
+            this.$data.preTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
+          }else{
+            console.log(777);
+            this.$data.quesTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
+          }
+          this.$data.chooseTeamIndex = index;
+
+          if(type===0) {
+            this.$data.formModify.preScore = this.$data.preTeams[this.$data.chooseTeamIndex].preScore
+            this.$data.chooseTeamName = this.$data.preTeams[this.$data.chooseTeamIndex].teamSerial;
+            this.$data.preTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
+            this.$data.chooseType=0;
+
+          }else{
+            this.$data.formModifyQuestion.quesScore=this.$data.quesTeams[this.$data.chooseTeamIndex].quesScore;
+            this.$data.chooseTeamName=this.$data.classId+'-'+this.$data.quesTeams[this.$data.chooseTeamIndex].teamEntity.teamSerial;
+            this.$data.quesTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
+            this.$data.chooseType=3;
+          }
+        },
+        /**
+         * 设置报告的时间
+         **/
         setReportTime(){
           let reportTime=this.$data.reportTime;
           if(this.$data.reportTime) {
@@ -159,23 +283,42 @@
             })
           }
         },
+        /**
+         * 获取展示的小组
+         **/
         loadPreTeams(){
           let _this=this;
           this.$axios({
             method:'get',
             url:'/attendance/'+this.$data.klassSeminarId
           }).then(function (response) {
-            _this.$data.preTeams=response.data;
-            for(let index=0;index<response.data.preTeams;index++){
-              _this.$data.preTeams[index].push({
-                teamSerial:_this.$data.classId+'-'+response.data.preTeams[index].teamEntity.teamSerial,
+            // _this.$data.preTeams=response.data;
+            for(let index=0;index<response.data.length;index++){
+              if(response.data[index].score!==null){
+                response.data[index].status=1;
+                _this.$data.chooseTeamIndex=index;
+                _this.$data.preTeamIndex=index;
+              }
+              _this.$data.preTeams.push({
+                teamSerial:_this.$data.classSerial+'-'+response.data[index].teamEntity.teamSerial,
                 teamClass:'pre-list-item-un',
-                id:response.data.id,
+                id:response.data[index].id,
+                klassSeminarId: response.data[index].klassSeminarId,
+                teamOrder:response.data[index].teamOrder,
+                status:1,
+                teamId:response.data[index].teamEntity.id,
+                preScore:0,
               });
             }
+            _this.choosePreTeam(index,0);
+            _this.$data.preTeams[_this.$data.preTeamIndex].status=1;
+            // _this.$data.preTeams[_this.$data.chooseTeamIndex].teamClass='pre-list-item';
             console.log(_this.$data.preTeams);
           })
         },
+        /**
+         * 设置讨论课状态
+         */
         setSeminarStatus(){
           let _this=this;
           this.$axios({
@@ -190,6 +333,9 @@
             }
           })
         },
+        /**
+         * 获取websocket地址
+         */
         getWebSocketAddress(){
           let _this=this;
           this.$axios({
@@ -200,44 +346,140 @@
             _this.initWebSocket();
           })
         },
+        /**
+         * 初始化websocket
+         */
         initWebSocket(){
+          let _this=this;
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
+          console.log('1111');
           this.$data.socket.onopen=this.webSocketOnOpen();
+          this.$data.socket.onclose=this.webSocketClose;
           this.$data.socket.onmessage=function (msg) {
             console.log(msg);
             if(msg.data==='200'){
-              this.$message({
+              _this.$message({
                 type:'success',
                 message:'连接成功！正式开始上课！'
               })
+            }else if(msg.data=='1'){
+              // console.log('发提问啊！！！');
+              _this.loadQuestion();
             }
           };
-
-
         },
+        /**
+         * websocket关闭
+         **/
+        webSocketClose(e){
+          console.log(e);
+        },
+        /**
+         * websocket打开时
+         */
         webSocketOnOpen(){
           // alert('成功！')
         },
+        /**
+         * websocket发送消息
+         */
         webSocketSend(){
-          this.$data.socket.send("1");
+          this.$data.socket.send("2");
+
         },
+        /**
+         * 修改提问小组的分数
+         */
+        modifyQuesScore(){
+
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.quesTeams[this.$data.chooseTeamIndex].teamEntity.id+'/klassSeminar/'
+              +this.$data.klassSeminarId+'/question/'+this.$data.quesTeams[this.$data.chooseTeamIndex].questionEntity.id,
+            params:{
+              score:this.$data.formModifyQuestion.quesScore
+            }
+          }).then(function (response) {
+            _this.$message({
+              type:'success',
+              message:'修改成功！'
+            })
+            _this.$data.quesTeams[_this.$data.chooseTeamIndex].quesScore=_this.$data.formModifyQuestion.quesScore;
+          })
+        },
+        /**
+         * 获取下一个提问,id为attendanceid
+         */
         loadQuestion(){
+
+          if(this.$data.chooseType==0) {
+            console.log(111);
+            this.$data.preTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
+          }else{
+            if(this.$data.quesTeams.length===0){
+
+            }else {
+              console.log(777);
+              this.$data.quesTeams[this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
+            }
+          }
+          if(this.$data.quesTeams.length!==0) {
+            console.log('提问打分');
+            this.$data.quesTeams[this.$data.quesTeamIndex].status = 1;
+            //提问打分
+            let _this=this;
+
+            this.$axios({
+              method:'put',
+              url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.quesTeams[this.$data.quesTeamIndex].teamEntity.id+'/klassSeminar/'
+                +this.$data.klassSeminarId+'/question/'+this.$data.quesTeams[this.$data.quesTeamIndex].questionEntity.id,
+              params:{
+                score:this.$data.quesTeams[this.$data.quesTeamIndex].quesScore
+              }
+            }).then(function (response) {
+              _this.$data.quesTeamIndex++;
+              _this.loadNextQuestion();
+            })
+          }else {
+            this.loadNextQuestion();
+          }
+
+          //下一个提问
+          console.log('加载问题');
+          console.log(this.$data.preTeams[this.$data.preTeamIndex].id);
+
+        },
+        loadNextQuestion(){
           let _this=this;
           this.$axios({
             method:'get',
             url:'/question/nextQuestion',
             params:{
-              attendanceId:this.$data.chooseTeam
+              attendanceId:this.$data.preTeams[this.$data.preTeamIndex].id
             }
           }).then(function (response) {
-
-          }).catch(function (error) {
-
+            _this.$data.quesTeams.push({
+              questionEntity:response.data.questionEntity,
+              studentEntity:response.data.studentEntity,
+              teamEntity:response.data.teamEntity,
+              status:0,
+ //===============================             // teamSerial
+            });
+            _this.$data.chooseTeamIndex=_this.$data.quesTeamIndex;
+            _this.$data.formModifyQuestion.quesScore=_this.$data.quesTeams[_this.$data.chooseTeamIndex].quesScore;
+            _this.$data.chooseTeamName=_this.$data.classSerial+'-'+_this.$data.quesTeams[_this.$data.chooseTeamIndex].teamEntity.teamSerial;
+            _this.$data.quesTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
+            _this.$data.chooseType=3;
           })
+
         },
         linkBack(){
           history.back();
         }
+      },
+      destroyed() {
+          this.webSocketClose();
       }
 
     }
@@ -250,6 +492,10 @@
       margin-top: 20px;
     }
 
+    .modify-button{
+      color: white;
+    }
+
     .app-bar-blank{
       height: 10vh;
       max-height: 60px;
@@ -259,6 +505,15 @@
       transition: all 0.8s;
     }
 
+    .el-icon-time{
+      margin-top: 30px;
+      font-size: 40px;
+    }
+
+    .el-icon-circle-check-outline{
+      font-size: 30px;
+    }
+
 
     .app-bar {
       padding: 0.1px;
@@ -266,6 +521,31 @@
       max-height: 60px;
       position: fixed;
       z-index: 1000;
+      .back-icon-use{
+        border-bottom-right-radius: 20px;
+        -moz-box-shadow:0px 0px 2px whitesmoke;
+        -webkit-box-shadow:0px 0px 2px whitesmoke;
+        box-shadow:0px 0px 2px whitesmoke;
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
+
 
 
       .back-icon {
@@ -374,7 +654,7 @@
               }
 
               .operation-grade{
-                margin-top: 20px;
+                margin-top: 10px;
                 color: white;
                 font-size: 20px;
                 font-weight: bold;
