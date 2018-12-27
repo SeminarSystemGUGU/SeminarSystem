@@ -1,22 +1,24 @@
 <template>
   <div id="TeacherAddStu">
-    <div class="title">
-      <span>导入学生名单</span>
-      <div class="divider"></div>
+    <div class="titleBar">
+      导入学生名单
     </div>
     <div class="main-content">
-      <div class="select-course">
-        <span>选择课程：</span>
-        <el-select v-model="currentCourseId">
-          <el-option v-for="item in options" :key="item.id" :value="item.id" :label="item.courseName"></el-option>
-        </el-select>
+      <div class="main-title">
+        <span>课程：</span>
+        <mu-select v-model="courseId" @change="changeCourse">
+          <mu-option v-for="item,index in options" :label="item.courseName" :value="item.id" :key="item.id"></mu-option>
+        </mu-select>
       </div>
       <div class="main-title">
         <span>班级列表</span>
       </div>
       <div class="class-table">
-        <el-table stripe border :data="table" class="data-table">
-          <el-table-column prop="className" label="班级名称">
+        <el-table stripe border :data="classList" class="data-table">
+          <el-table-column label="班级名称">
+            <template slot-scope="scope">
+              {{classList[scope.$index].grade}}级{{classList[scope.$index].klassSerial}}班
+            </template>
           </el-table-column>
           <el-table-column prop="classForm" label="班级名单文件">
             <template slot-scope="scope">
@@ -24,8 +26,8 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini">提交</el-button>
-              <el-button type="primary" size="mini">重置</el-button>
+              <el-button type="text" size="mini">提交</el-button>
+              <!--<el-button type="text" size="mini">重置</el-button>-->
             </template>
           </el-table-column>
 
@@ -40,15 +42,9 @@
         name: "TeacherMain",
       data(){
           return{
-            table:[
-              {
-                className:'一班',
-                classForm:'',
-              },
-              {
-                className:'二班',
-                classForm:'',
-              }
+            courseId:'',
+            classList:[
+
             ],
             options:[
 
@@ -60,6 +56,15 @@
         this.loadAllCourses();
       },
       methods:{
+        changeCourse(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/course/'+this.$data.courseId+'/class'
+          }).then(function (response) {
+            _this.$data.classList=response.data;
+          })
+        },
         loadAllCourses(){
           let _this=this;
           this.$axios({

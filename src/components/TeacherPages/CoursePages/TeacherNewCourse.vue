@@ -1,7 +1,7 @@
 <template>
 	<div id="TeacherNewCourse">
 		<app-bar titleName="新建课程" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
-		<div class="main-content animated bounceInUp">
+		<div class="main-content animated bounceInUp" v-loading="isLoading">
 			<el-form :model="formNewCourse" ref="formNewCourse" class="new-course-form" :rules="rulesNewCourse">
 				<el-form-item prop="courseName">
 					<el-input class="new-course-input" ref="courseInputName" placeholder="请输入课程名" v-model="formNewCourse.courseName" ></el-input>
@@ -228,6 +228,7 @@ import AppBar from '../../ReuseComponents/AppBar'
           repRate:'',
         },
         courseList:[],
+        isLoading:false,
 			}
 		},
     watch:{
@@ -276,6 +277,7 @@ import AppBar from '../../ReuseComponents/AppBar'
       newCourse() {
         console.log(this.$data.formTeamRules.teamStartDate);
         let _this = this;
+        _this.$data.isLoading=true;
         let preScore = parseInt(this.$data.scoreRate.preRate);
         let quesScore = parseInt(this.$data.scoreRate.quesRate);
         let repScore = parseInt(this.$data.scoreRate.repRate);
@@ -353,7 +355,8 @@ import AppBar from '../../ReuseComponents/AppBar'
             _this.$message({
               type:'error',
               message:'创建失败！'
-            })
+            });
+            _this.$data.isLoading=false;
           })
         //}
       }

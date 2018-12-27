@@ -130,8 +130,8 @@
         })
 
       },
-      showDetails(roundID){
-        this.$router.push('/PCTeacher/TeacherSeminarDetails');
+      showDetails(option){
+        this.$router.push({path:'/PCTeacher/TeacherSeminarDetails',query:{roundId:this.$data.roundId,courseId:this.$data.courseId,seminarId:option.id}});
 
       }
     }

@@ -72,17 +72,19 @@ import AppBar from '../../ReuseComponents/AppBar'
           method:'post',
           url:'/course/'+this.$data.courseId+'/application',
           data:{
-            courseId:this.$data.courseId,
-            subCourseId:this.$data.formNewShare.shareCourses[0],
-            type:this.$data.type
+            subCourseId:this.$data.formNewShare.shareCourses,
+            type:this.$data.formNewShare.type
           }
         }).then(function (response) {
-          if(response.data===true){
-            _this.$message({
-              type:'success',
-              message:'创建失败！'
-            })
-          }
+          _this.$message({
+            type:'success',
+            message:'成功发送申请！'
+          });
+        }).catch(function (error) {
+          _this.$message({
+            type:'error',
+            message:'系统错误，未发出申请！'
+          })
         })
 			}
 		},

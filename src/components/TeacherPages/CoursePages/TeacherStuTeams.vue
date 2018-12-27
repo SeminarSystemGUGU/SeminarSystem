@@ -38,11 +38,11 @@
       return{
         noItem:false,
         courseId:'',
-        isLoading:false,
+        isLoading:true,
         teams:[
           {
             status:0,
-            teamName:'1-1 咕咕鸟队',
+            teamName:'',
             teamId:'',
             courseId:'',
             klassId:'',
@@ -82,6 +82,7 @@
           console.log(response.data);
           _this.$data.noItem = response.data.length === 0;
           _this.$data.teams=response.data;
+          _this.$data.isLoading=false;
         })
       },
     },
