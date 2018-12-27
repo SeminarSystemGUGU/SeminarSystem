@@ -1,7 +1,7 @@
 <template>
 	<div id="TeacherCourseShareSetting">
 		<app-bar titleName="OOAD-共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
-		<div class="main-content">
+		<div class="main-content" v-loading="isLoading">
 			<el-card class="course-share-card" v-for="(course,index) in shareCourse" :key="index">
 				<template slot="header">
 					<span class="share-course-title">{{course.courseName}}</span>
@@ -55,6 +55,7 @@ import AppBar from '../../ReuseComponents/AppBar'
           }
         ],
         courseId:'',
+        isLoading:true
       }
     },
     created(){
@@ -84,6 +85,7 @@ import AppBar from '../../ReuseComponents/AppBar'
               shareStatus:resData[i].isMain,
             });
           }
+          _this.$data.isLoading=false;
         })
       },
 

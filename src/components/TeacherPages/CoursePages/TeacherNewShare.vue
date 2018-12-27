@@ -83,7 +83,7 @@ import AppBar from '../../ReuseComponents/AppBar'
         }).catch(function (error) {
           _this.$message({
             type:'error',
-            message:'系统错误，未发出申请！'
+            message:'该共享已经实现！'
           })
         })
 			}
