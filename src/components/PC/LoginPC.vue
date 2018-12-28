@@ -31,7 +31,7 @@
     </div>
     <div class="blank-space"></div>
     <div class="main-content">
-      <div class="introduction">
+      <div class="introduction animated slideInDown">
         <span>Welcome!</span><br/>
         <span>欢迎使用讨论课管理系统</span><br/>
         <span>体验更智能的翻转课堂</span><br/>

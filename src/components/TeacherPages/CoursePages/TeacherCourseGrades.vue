@@ -320,11 +320,12 @@
       }
 
       .group-grades{
-        width: 80%;
+        width: 90%;
         margin-left: 0;
         font-size: 18px;
 
         .left-grades{
+          display: inline-block;
           text-align: left;
           width: 60%;
           overflow-x: hidden;
@@ -335,7 +336,18 @@
         }
 
         .right-grades{
+          /*z-index: 3000;*/
+          /*position: absolute;*/
+          /*left:0;*/
           float: right;
+        }
+        @media screen and (max-width: 320px) {
+          .left-grades{
+            font-size: 12px;
+          }
+          .right-grades {
+            font-size: 12px;
+          }
         }
       }
 

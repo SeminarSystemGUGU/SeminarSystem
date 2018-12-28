@@ -42,16 +42,22 @@
       <el-table-column prop="teamOrder" label="次序" width="100"></el-table-column>
       <el-table-column prop="teamName" label="组名" width="160"></el-table-column>
       <el-table-column prop="leaderId" label="组长学号" width="150"></el-table-column>
-      <el-table-column prop="ppt" label="展示材料" width="150">
+      <el-table-column prop="ppt" label="展示材料" width="150" v-if="klassSeminarDetails.status===0||klassSeminarDetails.status===1">
         <template slot-scope="scope">
-
+          <a :href="attendanceDetails[scope.$index].pptUrl">{{attendanceDetails[scope.$index].pptName}}</a>
+          <!--<img  v-if="seminar.registeredTeams[scope.$index].ppt=='已上传'" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" src="../../../assets/download.svg"/>-->
+          <!--<span v-if="seminar.registeredTeams[scope.$index].ppt=='未上传'">{{seminar.registeredTeams[scope.$index].ppt}}</span>-->
+        </template>
+      </el-table-column>
+      <el-table-column prop="ppt" label="课后报告" width="150" v-if="klassSeminarDetails.status===0||klassSeminarDetails.status===1">
+        <template slot-scope="scope">
+          <a :href="attendanceDetails[scope.$index].reportUrl">{{attendanceDetails[scope.$index].reportName}}</a>
           <!--<img  v-if="seminar.registeredTeams[scope.$index].ppt=='已上传'" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" src="../../../assets/download.svg"/>-->
           <!--<span v-if="seminar.registeredTeams[scope.$index].ppt=='未上传'">{{seminar.registeredTeams[scope.$index].ppt}}</span>-->
         </template>
       </el-table-column>
       <el-table-column label="打分" v-if="klassSeminarDetails.status===1">
         <template slot-scope="scope">
-
             <span v-if="!attendanceDetails[scope.$index].score">未打分</span>
             <span v-else>{{attendanceDetails[scope.$index].score}}</span>
             <el-button type="text" @click="giveScore(scope.$index)">打分</el-button>

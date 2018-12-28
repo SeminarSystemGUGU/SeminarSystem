@@ -20,13 +20,17 @@
               {{classList[scope.$index].grade}}级{{classList[scope.$index].klassSerial}}班
             </template>
           </el-table-column>
-          <el-table-column prop="classForm" label="班级名单文件">
-            <template slot-scope="scope">
-            </template>
-          </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button type="text" size="mini">提交</el-button>
+              <el-upload
+                class="upload-demo"
+                :with-credentials="true"
+                :action="baseUrl+'/class/'+classList[scope.$index].id"
+                name="fileUpload"
+                :limit="1">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+              </el-upload>
               <!--<el-button type="text" size="mini">重置</el-button>-->
             </template>
           </el-table-column>
@@ -42,6 +46,7 @@
         name: "TeacherMain",
       data(){
           return{
+            baseUrl:'',
             courseId:'',
             classList:[
 
@@ -54,6 +59,8 @@
       },
       created(){
         this.loadAllCourses();
+        this.$data.baseUrl=this.$axios.defaults.baseURL;
+        console.log(this.$data.baseUrl);
       },
       methods:{
         changeCourse(){
@@ -80,6 +87,14 @@
 
 <style lang="less">
 #TeacherAddStu{
+
+  .upload-demo{
+    .el-upload__input{
+      display: none;
+    }
+
+  }
+
 
   .select-course{
     text-align: left;

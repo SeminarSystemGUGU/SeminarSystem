@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column label="PPT材料">
             <template slot-scope="scope">
-              {{scope.row.name}}
+              <a :href="baseURL+'/'+reports[scope.$index].pptUrl">{{reports[scope.$index].pptName}}</a>
             </template>
           </el-table-column>
         </el-table>
@@ -50,6 +50,7 @@
     },
     data(){
       return{
+        baseURL:'',
         seminarId:'',
         klassSeminarId:'',
         iconClass:'back-icon-use',
@@ -76,6 +77,7 @@
       }
     },
     created(){
+      this.$data.baseURL=this.$axios.defaults.baseURL;
       this.$data.klassSeminarId=this.$route.query.klassSeminarId;
       this.loadApplyInfos();
     },
@@ -90,18 +92,25 @@
           url:'/attendance/'+this.$data.klassSeminarId
         }).then(function (response) {
           _this.$data.reports=response.data;
+          // alert('123');
+          console.log(response.data);
           _this.loadTeamMaterial();
         })
       },
       loadTeamMaterial(){
+        console.log('dwjid');
         for(let index=0;index<this.$data.reports.length;index++) {
+          console.log('11121');
+          let key = index;
           let _this = this;
           this.$axios({
             method: 'get',
             url: '/attendance/' + this.$data.reports[index].id+'/ppt'
           }).then(function (response) {
-            _this.$data.reports[index].name=response.data.name;
-            _this.$data.reports[index].file=response.data.file;
+            console.log(response.data);
+            _this.$data.reports[key].name=response.data.name;
+            _this.$data.reports[key].path=response.data.path;
+            console.log(_this.$data.reports);
           })
         }
       }
