@@ -1,5 +1,17 @@
 <template>
   <div id="AppBar">
+    <el-dialog title="选择课程" width="70%" :visible.sync="dialogFormVisible">
+      <div class="dialog-title">
+        <span>选择课程：</span>
+      </div>
+      <el-select v-model="courseSelected">
+        <el-option v-for="item,index in options" :key="index" :value="item.id" :label="item.courseName"></el-option>
+      </el-select>
+      <div class="button-panel">
+        <el-button type="text" @click="goToSeminars">确定</el-button>
+        <el-button type="text" @click="dialogFormVisible=false">放弃</el-button>
+      </div>
+    </el-dialog>
     <div class="app-bar">
       <el-row class="app-row">
         <el-col class="content-col">
@@ -15,7 +27,7 @@
                 <i class="el-icon-menu"/>
               </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>讨论课</el-dropdown-item>
+              <el-dropdown-item command="1">讨论课</el-dropdown-item>
               <el-dropdown-item command="2">新消息</el-dropdown-item>
               <el-dropdown-item>设置</el-dropdown-item>
             </el-dropdown-menu>
@@ -45,20 +57,43 @@
           handleCommand(command){
             if (command==='2'){
               this.linkToMessage();
+            }else if(command==='1'){
+              this.$data.dialogFormVisible=true;
             }
-          }
+          },
+        loadAllCourses(){
+          let _this=this;
+          this.$axios({
+            method:'get',
+            url:'/course'
+          }).then(function (response) {
+            _this.$data.options=response.data;
+          })
+        },
+        goToSeminars(){
+            if(this.$route.path==='/TeacherCourseRounds'){
+              this.$router.push({path:'/TransitionPage',query:{courseId:this.$data.courseSelected}});
+            }else {
+              this.$router.push({path: '/TeacherCourseRounds', query: {courseId: this.$data.courseSelected}});
+            }
+            this.$data.dialogFormVisible=false;
+        }
       },
       data(){
         return{
           isBack:true,
+          options:[],
+          courseSelected:'',
+          dialogFormVisible:false,
         }
       },
       created(){
+        this.loadAllCourses();
         console.log(this.$props.backPath);
        if(this.$props.showBack===false){
         this.$data.isBack=this.$props.showBack;
        }
-      }
+      },
     }
 </script>
 
@@ -66,6 +101,14 @@
   .app-menu{
     fload:right;
     margin-right:0;
+  }
+
+
+  .dialog-title{
+    text-align: left;
+  }
+  .button-panel{
+    margin-top: 15px;
   }
 
   .white-spaces{

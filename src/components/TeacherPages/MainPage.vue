@@ -2,18 +2,18 @@
   <div id="MainPage">
     <app-bar :showMessages="true" titleName="我" :showBack="false"></app-bar>
     <div class="main-content">
-      <el-card class="func-card animated " :body-style="{padding:'0px'}">
-            <div class="func-card-title" style="">
-              <div class="func-card-title-content">
-                <span>正在进行的事务</span>
-              </div>
-              <div class="func-card-contents">
-                <i class="el-icon-loading"></i>
-                <span style="overflow: hidden;width: 80%">讨论课OOAD-对象模型</span>
-                <span style="color: dodgerblue;float: right;margin-right: 3vw">点击进入</span>
-              </div>
-            </div>
-      </el-card>
+      <!--<el-card class="func-card animated " :body-style="{padding:'0px'}">-->
+            <!--<div class="func-card-title" style="">-->
+              <!--<div class="func-card-title-content">-->
+                <!--<span>正在进行的事务</span>-->
+              <!--</div>-->
+              <!--<div class="func-card-contents">-->
+                <!--<i class="el-icon-loading"></i>-->
+                <!--<span style="overflow: hidden;width: 80%">讨论课OOAD-对象模型</span>-->
+                <!--<span style="color: dodgerblue;float: right;margin-right: 3vw">点击进入</span>-->
+              <!--</div>-->
+            <!--</div>-->
+      <!--</el-card>-->
       <div class="my-course-card" style="margin-top: 10px;">
         <el-row :gutter="10" style="height: 100%">
           <el-col style="width: 3%">

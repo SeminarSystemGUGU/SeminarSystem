@@ -26,6 +26,7 @@ import TeacherSeminarGrades from '../components/TeacherPages/SeminarPages/Teache
 import TeacherNewSminar from '../components/TeacherPages/SeminarPages/TeacherNewSeminar'
 import TeacherSeminarIng from '../components/TeacherPages/SeminarPages/TeacherSeminarIng'
 import TeacherModifySeminar from '../components/TeacherPages/SeminarPages/TeacherModifySeminar'
+import TransitionBox from '../components/ReuseComponents/TransitionPage'
 
 import PCMainPage from '../components/PC/PCMainPage'
 import PCTeacherMainPage from '../components/PC/PCTeacherMainPage'
@@ -74,6 +75,10 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: NewLogIn
+    },
+    {
+      path:'/TransitionPage',
+      component:TransitionBox
     },
     {
       path:'/ConfirmAccount',

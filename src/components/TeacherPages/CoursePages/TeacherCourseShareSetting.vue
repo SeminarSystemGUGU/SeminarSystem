@@ -1,7 +1,7 @@
 <template>
 	<div id="TeacherCourseShareSetting">
-		<app-bar titleName="OOAD-共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
-		<div class="main-content">
+		<app-bar titleName="共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
+		<div class="main-content" v-loading="isLoading">
 			<el-card class="course-share-card" v-for="(course,index) in shareCourse" :key="index">
 				<template slot="header">
 					<span class="share-course-title">{{course.courseName}}</span>
@@ -26,10 +26,11 @@
 					</el-row>
 				</div>
 				<div class="card-button-panel">
-					<el-button type="primary">取消共享</el-button>
+					<el-button type="primary" @click="cancelShare(course)">取消共享</el-button>
 				</div>
 			</el-card>
 		</div>
+    <div class="blank-space"></div>
 		<div class="new-share-button-panel">
 			<mu-button class="the-button" color="primary" @click="linkNewShare">新建共享</mu-button>
 		</div>
@@ -47,6 +48,7 @@ import AppBar from '../../ReuseComponents/AppBar'
 		  return{
         shareCourse:[
           {
+            shareId:'',
             courseName:'',
             teacherName:'',
             shareType:'',
@@ -54,6 +56,7 @@ import AppBar from '../../ReuseComponents/AppBar'
           }
         ],
         courseId:'',
+        isLoading:true
       }
     },
     created(){
@@ -70,9 +73,41 @@ import AppBar from '../../ReuseComponents/AppBar'
         let _this=this;
         _this.$axios({
           method:'get',
-          url:'/course/'+this.$data.courseId+'/share'
+          url:'/course/'+this.$data.courseId+'/share',
         }).then(function (response) {
-          
+          let resData=response.data;
+          _this.$data.shareCourse=[];
+          for(var i=0;i<resData.length;i++){
+            _this.$data.shareCourse.push({
+              shareId:resData[i].shareId,
+              courseName:resData[i].courseName,
+              teacherName:'',
+              shareType:resData[i].shareType,
+              shareStatus:resData[i].isMain,
+            });
+          }
+          _this.$data.isLoading=false;
+        })
+      },
+
+      //取消共享
+      cancelShare(course){
+        let _this=this;
+        var type;
+        if(course.shareType.toString()==="共享讨论课"){
+          type=1;
+        }
+        else{
+          type=0;
+        }
+        _this.$axios({
+          method:'delete',
+          url:'/course/'+this.$data.courseId+'/share/'+parseInt(course.shareId),
+          params:{
+            type:type
+          }
+        }).then(function (response) {
+          console.log(response.data);
         })
       }
 		}
@@ -101,6 +136,10 @@ import AppBar from '../../ReuseComponents/AppBar'
 
 
 	}
+
+  .blank-space{
+    height: 100px;
+  }
 
 	.main-content{
 		margin-top:2vh;
