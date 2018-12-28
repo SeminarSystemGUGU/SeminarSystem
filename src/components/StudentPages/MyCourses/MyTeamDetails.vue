@@ -1,10 +1,10 @@
 <template>
-    <div style="max-width: 600px;">
+    <div style="max-width: 600px;width:100%;" align="center">
       <back-bar titleName="我的小组" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMyTeam',query:{courseId:courseId}}"></back-bar>
 
       <div class="animated fadeInRight">
         <!--组队后 队长界面 -->
-        <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState===1 " >
+        <div class="animated fadeInRight" style="margin-top: 10vh;width:90%;" align="left" v-if="teamState===1 " >
           <span style="font-size: 22px;margin-left: 1vh; ">{{myTeam.teamName}}</span>
           <mu-divider inset ></mu-divider>
           <mu-list textline="two-line" style="margin-bottom: 5vh;">
@@ -57,7 +57,7 @@
           <mu-button class="dissolve" color="error"  @click="dissolve" v-if="ddl===0&&follow===0">解散小组</mu-button>
         </div>
         <!--组队后 队员界面  -->
-        <div class="animated fadeInRight" style="margin-top: 10vh;width:100%;" align="left" v-if="teamState===2 " >
+        <div class="animated fadeInRight" style="margin-top: 10vh;width:90%;" align="left" v-if="teamState===2 " >
           <span style="font-size: 22px;margin-left: 1vh; ">{{myTeam.teamName}}</span>
           <mu-divider inset ></mu-divider>
           <mu-list textline="two-line" style="margin-bottom: 5vh;">
@@ -68,12 +68,12 @@
                   <!--头像图标-->
                   组长
                 </mu-avatar>
-                <mu-tooltip content="选了J2EE">
+                <!--<mu-tooltip content="选了J2EE">-->
                   <mu-avatar color="blue" style="font-size: 18px;margin-top: 1vh;" v-if="option.id!==myTeam.leader.id">
                     <!--头像图标-->
                     组员
                   </mu-avatar>
-                </mu-tooltip>
+                <!--</mu-tooltip>-->
               </mu-list-item-action>
               <mu-list-item-content>
                 <mu-list-item-title style=" display: inline"> &emsp;{{option.studentName}}</mu-list-item-title>

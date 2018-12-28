@@ -36,9 +36,9 @@
           <span class="subTit">组队结束时间：</span>
           <div class="subc">{{courseInfo.teamEndTime}}</div>
         </div>
-        <mu-button  class="require" color="success"  @click="showRequirement">
-          组队要求
-        </mu-button>
+        <!--<mu-button  class="require" color="success"  @click="showRequirement">-->
+          <!--组队要求-->
+        <!--</mu-button>-->
       </div>
     </div>
   </div>

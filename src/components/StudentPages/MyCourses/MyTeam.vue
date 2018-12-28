@@ -95,26 +95,50 @@
       <div class="titlee" >
         未组队学生
       </div>
-      <div class="subContent" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
-        <span class="subItem"  data-toggle="collapse"  data-target="#demo31"   onclick="" >
-          未组队学生列表(点击展开)</span>
-        <div id="demo31" class="collapse out">
-          <table class="table table-bordered">
-            <thead>
-            <tr>
-              <th>姓名</th>
-              <th>学号</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="option,index in noTeamMembers" :key="index">
-              <td>{{option.studentName}}</td>
-              <td>{{option.account}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+
+      <div class="coll" align="left" style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
+        <el-collapse v-model="activeName" accordion >
+          <el-collapse-item title="未组队学生" :name="index" >
+            <!--<span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>-->
+            <!--<span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>-->
+            <table class="table table-bordered" style="width:90%;">
+              <thead>
+              <tr>
+                <th>姓名</th>
+                <th>学号</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="item,index in noTeamMembers"  :key="index">
+                <td>{{item.studentName}}</td>
+                <td>{{item.account}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </el-collapse-item>
+        </el-collapse>
       </div>
+
+      <!--<div class="subContent" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">-->
+        <!--<span class="subItem"  data-toggle="collapse"  data-target="#demo31"   onclick="" >-->
+          <!--未组队学生列表(点击展开)</span>-->
+        <!--<div id="demo31" class="collapse out">-->
+          <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr>-->
+              <!--<th>姓名</th>-->
+              <!--<th>学号</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr v-for="option,index in noTeamMembers" :key="index">-->
+              <!--<td>{{option.studentName}}</td>-->
+              <!--<td>{{option.account}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</div>-->
+      <!--</div>-->
       <mu-button class="butnCT" color="success" @click="createTeam" v-if="teamState===0&&ddl===0&&follow===0">
         创建小组<i class="el-icon-circle-plus-outline" style="margin-left: 3vw;"/>
       </mu-button>

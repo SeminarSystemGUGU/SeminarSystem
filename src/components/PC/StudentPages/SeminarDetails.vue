@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
       <el-table-column label="">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="processing===0">
           <div>
             <mu-button  flat :disabled="registerOrder[scope.$index].teamSerial!==''" @click.native.prevent="enroll(scope.$index )" color="success"  >
               可报名
@@ -60,8 +60,18 @@
           <mu-button @click="pptFlag=!pptFlag" flat large color="success" v-if="(registerOrder[scope.$index].pptName===''||registerOrder[scope.$index].pptName===null)&&registerOrder[scope.$index].leader===myTeam.leader.id">上传</mu-button>
         </template>
       </el-table-column>
-      <el-table-column label="">
+      <el-table-column prop="pptName" label="展示材料" width="150" v-if="processing===2">
         <template slot-scope="scope">
+          <!--<img  v-if="registerOrder[scope.$index].pptName!==''" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" src="../../../assets/download.svg"/>-->
+          <a v-if="registerOrder[scope.$index].reportName!==''&&registerOrder[scope.$index].reportName!==null " :href="baseURL+registerOrder[scope.$index].reportUrl">
+            {{registerOrder[scope.$index].reportName}}下载
+          </a>
+          <span v-if="registerOrder[scope.$index].reportName===''&&registerOrder[scope.$index].teamSerial!==''&&registerOrder[scope.$index].leader!==myTeam.leader.id" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" >未上传</span>
+          <mu-button @click="reportFlag=!reportFlag" flat large color="success" v-if="(registerOrder[scope.$index].reportName===''||registerOrder[scope.$index].reportName===null)&&registerOrder[scope.$index].leader===myTeam.leader.id">上传</mu-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="">
+        <template slot-scope="scope" v-if="processing===0">
           <div>
             <mu-button  flat v-if="registerOrder[scope.$index].teamSerial===''" @click.native.prevent="changeEnroll(scope.$index )" color="success"  >
               可报名
@@ -77,13 +87,24 @@
       <mu-dialog title="上传PPT" width="360" :open.sync="pptFlag">
         <el-upload
         class="upload-demo"
+        :with-credentials="true"
         :action="baseURL+'/attendance/'+attendanceId+'/powerpoint'"
         :limit="1"
-        :file-list="report">
-        <!--<el-button size="small" type="primary">点击上传</el-button>-->
+        :file-list="ppt">
         </el-upload>
         <mu-button slot="actions" flat color="success" @click="confirmUP">Sure</mu-button>
       </mu-dialog>
+    <mu-dialog title="上传报告" width="360" :open.sync="reportFlag">
+      <el-upload
+        class="upload-demo"
+        :with-credentials="true"
+        :action="baseURL+'/attendance/'+attendanceId+'/report'"
+        :limit="1"
+        :file-list="report">
+        <!--<el-button size="small" type="primary">点击上传</el-button>-->
+      </el-upload>
+      <mu-button slot="actions" flat color="success" @click="confirmUPReport">Sure</mu-button>
+    </mu-dialog>
   </div>
 </template>
 
@@ -134,7 +155,7 @@
               tt.$data.enrollTeams=response.data;
               tt.$data.registerOrder=[];
               let m;
-              for(m=0;m<6;m++)
+              for(m=0;m<tt.$data.maxMember;m++)
               {
                 let mm=m;
                 tt.$data.registerOrder.push({order:mm+1,teamSerial:'',teamName:'',leader:'',pptName:'',pptPath:'',reportName:'',reportPath:''});
@@ -213,7 +234,7 @@
                 tt.$data.enrollTeams=response.data;
                 tt.$data.registerOrder=[];
                 let x;
-                for(x=0;x<6;x++)
+                for(x=0;x<tt.$data.maxMember;x++)
                 {
                   tt.$data.registerOrder.push({order:x+1,teamSerial:'',teamName:'',leader:'',pptName:'',pptPath:'',reportName:'',reportPath:''});
                 }
@@ -336,6 +357,10 @@
         },
         confirmUP(){
           this.$data.pptFlag=!this.$data.pptFlag;
+          this.getRegisterOrder();
+        },
+        confirmUPReport(){
+          this.$data.reportFlag=!this.$data.reportFlag;
           this.getRegisterOrder();
         },
       }

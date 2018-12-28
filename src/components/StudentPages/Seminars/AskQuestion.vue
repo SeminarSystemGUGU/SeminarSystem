@@ -47,6 +47,14 @@
 
       this.$data.loading2=true;
 
+      let h=this;
+      this.$axios({
+        method:'get',
+        url:'/seminar/'+h.$data.seminarId,
+      }).then(function (response) {
+        h.$data.maxMember=response.data.maxTeam;
+      });
+
       let _this=this;
       this.$axios({
         method:'get',
@@ -77,7 +85,7 @@
           seminarId:-1,
           klassId:-1,
           klassSeminarId:-1,
-          title:'OOAD-讨论课',
+          title:'讨论课提问',
           currentAttendance:'',    //当前展示小组
           currentIndex:0,
           currentName:'',
@@ -91,7 +99,7 @@
           loading2:false,
           webSocketAddress:'',
           socket:'',
-          maxMember:6,
+          maxMember:-1,
 
           questionEntity:'',
           studentEntity:'',
