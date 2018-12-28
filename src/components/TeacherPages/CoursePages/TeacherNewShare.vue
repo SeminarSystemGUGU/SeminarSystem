@@ -11,6 +11,7 @@
       </div>
     </div>
     <div class="app-bar-blank"></div>
+      <!--<div class="no-item-message" v-show="noItem">当前没有共享哦~</div>-->
   		<div class="main-content">
 			<div class="col-content">
 				<el-row>
@@ -39,7 +40,7 @@
 					</el-col>
 					<el-col class="row-col">
 						<span class="content-input">
-						<el-select multiple v-model="formNewShare.shareCourses">
+						<el-select v-model="formNewShare.shareCourses">
 							<el-option v-for="item in options" :label="item.courseName" :value="item.id" :key="item.id"></el-option>
 						</el-select>
 						</span>
@@ -67,12 +68,13 @@ import AppBar from '../../ReuseComponents/AppBar'
 		    iconClass:'back-icon-use',
 		    formNewShare:{
           type:1,
-          shareCourses:[],
+          shareCourses:'',
         },
         options:[
 
         ],
-		    courseId:''
+		    courseId:'',
+        noItem:false,
       }
     },
 		methods:{
@@ -111,12 +113,17 @@ import AppBar from '../../ReuseComponents/AppBar'
         method:'get',
         url:'/course/allcourse'
       }).then(function (response) {
+        console.log(response.data);
         _this.$data.options=response.data;
         console.log(_this.$data.courseId);
         console.log(_this.$data.options);
         for(let index=0;index<_this.$data.options.length;index++){
-          if(_this.$data.options[index].id==_this.$data.courseId){
-            _this.$data.options.splice(index,1);
+          if(response.data) {
+            if (_this.$data.options[index].id == _this.$data.courseId) {
+              _this.$data.options.splice(index, 1);
+            }
+          }else{
+            // _this.$data.noItem=true;
           }
         }
       })
@@ -125,6 +132,10 @@ import AppBar from '../../ReuseComponents/AppBar'
 </script>
 <style lang="less">
 	#TeacherNewShare{
+
+    .no-item-message{
+      font-size: 18px;
+    }
 
     .app-bar-blank{
       height: 10vh;
