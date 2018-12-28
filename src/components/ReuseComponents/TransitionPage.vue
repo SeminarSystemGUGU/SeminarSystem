@@ -6,7 +6,11 @@
     export default {
         name: "TransitionPage",
       created() {
-          this.$router.push({path:'/TeacherCourseRounds',query:{courseId:this.$route.query.courseId}})
+          console.log(this.$route);
+          this.$router.push({path:this.$route.query.paths,query:{courseId:this.$route.query.courseId}})
+      },
+      watch:{
+
       }
     }
 </script>
