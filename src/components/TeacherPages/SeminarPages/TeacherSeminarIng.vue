@@ -17,7 +17,8 @@
       </div>
     </div>
     <div class="app-bar-blank"></div>
-    <div class="main-content">
+    <span v-show="noItem">当前讨论课无人报名哦~</span>
+    <div class="main-content" v-show="!noItem">
       <div class="seminar-title">
         <div class="title-content">
           <span>正在进行：{{seminarName}}<i class="el-icon-loading"/> </span>
@@ -65,8 +66,8 @@
             </div>
             <div class="button-panel">
               <mu-button color="error" @click="nextPreTeam" v-if="preTeamIndex===preTeams.length-1">结束讨论课</mu-button>
-              <mu-button color="error" @click="nextPreTeam" v-else>下组展示</mu-button>
-              <mu-button color="error" @click="webSocketSend">抽取提问</mu-button>
+              <mu-button color="error" @click="nextPreTeam" v-else >下组展示</mu-button>
+              <mu-button color="error" @click="webSocketSend" >抽取提问</mu-button>
             </div>
           </el-col>
           <el-col class="ques-list-col">
@@ -128,6 +129,7 @@
             socket:null,
             klassSeminarId:'',
             courseId:'',
+            noItem:false,
             formModifyQuestion:{
               quesScore:0,
             },
@@ -226,13 +228,19 @@
                 _this.$data.socket.send('3');
                 _this.$data.openSimple=true;
               }else {
-                _this.$data.quesTeams.splice(0,_this.$data.quesTeams.length);
                 // _this.loadQuestionList();
+                _this.$data.chooseTeamIndex=_this.$data.preTeamIndex;
                 _this.$data.preTeamIndex++;
-                _this.$data.preTeams[_this.$data.preTeamIndex].status=1;
+
+                _this.$data.quesTeams.splice(0,_this.$data.quesTeams.length);
+                _this.$data.quesTeamIndex=0;
+                _this.$data.chooseType=0;
+                if(_this.$data.preTeams[_this.$data.preTeamIndex].status!==2) {
+                  _this.$data.preTeams[_this.$data.preTeamIndex].status = 1;
+                }
                 _this.$data.socket.send('1;' + _this.$data.preTeams[_this.$data.preTeamIndex].id);    //发送下一组的id
                 _this.choosePreTeam(_this.$data.preTeamIndex,0);
-
+                _this.$data.questionNumber='0';
               }
           })
 
@@ -340,41 +348,45 @@
             method:'get',
             url:'/attendance/'+this.$data.klassSeminarId
           }).then(function (response) {
-            // _this.$data.preTeams=response.data;
-            for(let index=response.data.length-1;index>=0;index--){
-              if(response.data[index].score!==null){
-                console.log('1-6');
-                response.data[index].status=2;
-                console.log(response.data[index].status);
-                _this.$data.chooseType=0;
-                console.log(response.data[index].status);
-              }else{
-                if(!response.data[index-1]||response.data[index-1].score!==null) {
-                  response.data[index].status = 1;
-                }else{
-                  response.data[index].status = 0;
+            if(response.data.length===0){
+              _this.$data.noItem=true;
+            }else {
+              _this.$data.noItem=false;
+              // _this.$data.preTeams=response.data;
+              for (let index = response.data.length - 1; index >= 0; index--) {
+                if (response.data[index].score !== null) {
+                  console.log('1-6');
+                  response.data[index].status = 2;
+                  console.log(response.data[index].status);
+                  _this.$data.chooseType = 0;
+                  console.log(response.data[index].status);
+                } else {
+                  if (!response.data[index - 1] || response.data[index - 1].score !== null) {
+                    response.data[index].status = 1;
+                  } else {
+                    response.data[index].status = 0;
+                  }
+                  _this.$data.chooseType = 0;
+                  _this.$data.chooseTeamIndex = index;
+                  _this.$data.preTeamIndex = index;
+                  response.data[index].score = 0;
                 }
-                _this.$data.chooseType=0;
-                _this.$data.chooseTeamIndex=index;
-                _this.$data.preTeamIndex=index;
-                response.data[index].score=0;
+                console.log(response.data[index].status);
+                _this.$data.preTeams.push({
+                  teamSerial: response.data[index].teamEntity.klassSerial + '-' + response.data[index].teamEntity.teamSerial,
+                  teamClass: 'pre-list-item-un',
+                  id: response.data[index].id,
+                  klassSeminarId: response.data[index].klassSeminarId,
+                  teamOrder: response.data[index].teamOrder,
+                  status: response.data[index].status,
+                  teamId: response.data[index].teamEntity.id,
+                  score: response.data[index].score,
+                });
+
               }
-              console.log(response.data[index].status);
-              _this.$data.preTeams.push({
-                teamSerial:response.data[index].teamEntity.klassSerial+'-'+response.data[index].teamEntity.teamSerial,
-                teamClass:'pre-list-item-un',
-                id:response.data[index].id,
-                klassSeminarId: response.data[index].klassSeminarId,
-                teamOrder:response.data[index].teamOrder,
-                status:response.data[index].status,
-                teamId:response.data[index].teamEntity.id,
-                score:response.data[index].score,
-              });
-
+              _this.$data.preTeams.reverse();
+              _this.choosePreTeam(_this.$data.chooseTeamIndex, 0);
             }
-            _this.$data.preTeams.reverse();
-            _this.choosePreTeam(_this.$data.chooseTeamIndex,0);
-
           })
         },
         /**
@@ -417,6 +429,7 @@
           this.$data.socket.onopen=this.webSocketOnOpen();
           this.$data.socket.onclose=this.webSocketClose;
           this.$data.socket.onmessage=function (msg) {
+            console.log(msg.data.slice(0,14));
             console.log(msg);
             if(msg.data==='200'){
               _this.$message({
@@ -426,6 +439,9 @@
             }else if(msg.data=='nextQuestion'){
               // console.log('发提问啊！！！');
               _this.loadNextQuestion();
+            }else if(msg.data.slice(0,14)==='questionNumber'){
+              console.log(msg.data.slice(15,msg.data.length));
+              _this.$data.questionNumber=msg.data.slice(15,msg.data.length);
             }
           };
         },
@@ -471,6 +487,7 @@
         /**
          * 获取下一个提问,id为attendanceid
          */
+        /*
         loadQuestion(){
           if(this.$data.quesTeams.length!==0&&this.$data.chooseType===3) {
             console.log('提问打分');
@@ -496,6 +513,7 @@
             this.loadNextQuestion();
           }
         },
+        */
         loadNextQuestion(){
           let _this=this;
           this.$axios({
@@ -548,7 +566,9 @@
         }
       },
       destroyed() {
+          this.$data.socket.close();
           this.webSocketClose();
+
       }
 
     }
