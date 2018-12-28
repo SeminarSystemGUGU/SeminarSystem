@@ -63,10 +63,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="该课程人数上限：" prop="teamSelectMaxNum">
-          <el-input-number size="small" v-model="item.teamSelectMaxNum"></el-input-number>
+          <el-input-number :min="0" size="small" v-model="item.teamSelectMaxNum"></el-input-number>
         </el-form-item>
         <el-form-item label="该课程人数下限：" prop="teamSelectMinNum">
-          <el-input-number size="small" v-model="item.teamSelectMinNum"></el-input-number>
+          <el-input-number :min="0" size="small" v-model="item.teamSelectMinNum"></el-input-number>
         </el-form-item>
         <el-form-item>
           <el-button size="small" type="danger" @click="deleteCourseSelect(index)">删除该要求</el-button>

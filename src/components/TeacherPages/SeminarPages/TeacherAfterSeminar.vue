@@ -30,6 +30,9 @@
             <el-table-column prop="teamSerial" label="小组序号">
             </el-table-column>
             <el-table-column prop="file" label="课后报告">
+              <template slot-scope="scope">
+                <a :href="baseUrl+reports[scope.$index].reportUrl">{{reports[scope.$index].reportName}}</a>
+              </template>
             </el-table-column>
             <el-table-column label="分数">
               <template slot-scope="scope">
@@ -72,6 +75,7 @@
 
         };
           return{
+            baseUrl:'',
             iconClass:'back-icon-use',
             courseId:'',
             classId:'',
@@ -106,6 +110,7 @@
           }
       },
       created() {
+          this.$data.baseUrl=this.$axios.defaults.baseURL;
           this.$data.seminarName=this.$route.query.seminarName;
           this.$data.roundId=this.$route.query.roundId;
           this.$data.courseId=this.$route.query.courseId;

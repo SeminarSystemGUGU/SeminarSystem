@@ -66,13 +66,14 @@
             </div>
             <div class="button-panel">
               <mu-button color="error" @click="nextPreTeam" v-if="preTeamIndex===preTeams.length-1">结束讨论课</mu-button>
-              <mu-button color="error" @click="nextPreTeam" v-else >下组展示</mu-button>
+              <mu-button color="error" @click="nextPreTeam" v-else >打分并下组</mu-button>
               <mu-button color="error" @click="webSocketSend" >抽取提问</mu-button>
             </div>
           </el-col>
           <el-col class="ques-list-col">
-            <span>当前{{questionNumber}}个提问</span>
-            <div class="ques-title">提问列表</div>
+            <div class="ques-title">
+              当前{{questionNumber}}个提问<br/>
+              提问列表</div>
             <div :class="item.teamClass" v-for="item,index in quesTeams"  @click="choosePreTeam(index,3)">
               {{item.teamEntity.klassSerial+'-'+item.teamEntity.teamSerial}}
             </div>
@@ -242,6 +243,8 @@
                 _this.choosePreTeam(_this.$data.preTeamIndex,0);
                 _this.$data.questionNumber='0';
               }
+          }).catch(function (error) {
+            console.log(error.response);
           })
 
         },
@@ -523,6 +526,7 @@
               attendanceId:this.$data.preTeams[this.$data.preTeamIndex].id
             }
           }).then(function (response) {
+            response.data.questionEntity.score=0;   //抽取提问的时候设为0分
             _this.$data.quesTeams.push({
               questionEntity:response.data.questionEntity,
               studentEntity:response.data.studentEntity,
@@ -530,6 +534,7 @@
               teamClass:'pre-list-item-un',
               status:0,
             });
+
             // _this.$data.chooseTeamIndex=_this.$data.quesTeamIndex;
             // _this.$data.formModifyQuestion.quesScore=_this.$data.quesTeams[_this.$data.chooseTeamIndex].quesScore;
             // _this.$data.chooseTeamName=_this.$data.classSerial+'-'+_this.$data.quesTeams[_this.$data.chooseTeamIndex].teamEntity.teamSerial;

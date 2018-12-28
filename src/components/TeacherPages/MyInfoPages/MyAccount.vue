@@ -112,7 +112,16 @@
           this.$router.push('/ResetEmail');
         },
         logBack(){
-          this.$router.push('/');
+          let _this=this;
+          this.$axios({
+            method:'post',
+            url:'/user/out'
+          }).then(function (response) {
+            if(response.data===true){
+              _this.$router.push('/');
+            }
+          })
+
         }
       }
     }
