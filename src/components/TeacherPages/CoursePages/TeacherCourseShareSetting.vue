@@ -27,7 +27,7 @@
 					</el-row>
 				</div>
 				<div class="card-button-panel">
-					<el-button type="primary" @click="cancelShare(course)">取消共享</el-button>
+					<el-button type="primary" @click="cancelShare(course,index)">取消共享</el-button>
 				</div>
 			</el-card>
 		</div>
@@ -100,7 +100,7 @@ import AppBar from '../../ReuseComponents/AppBar'
       },
 
       //取消共享
-      cancelShare(course){
+      cancelShare(course,index){
         let _this=this;
         var type;
         if(course.shareType.toString()==="共享讨论课"){
@@ -116,7 +116,9 @@ import AppBar from '../../ReuseComponents/AppBar'
             type:type
           }
         }).then(function (response) {
-          console.log(response.data);
+          if(response.data===true){
+            _this.$data.shareCourse.splice(index,1);
+          }
         })
       }
 		}

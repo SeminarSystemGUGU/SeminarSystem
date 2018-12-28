@@ -441,7 +441,7 @@
               })
             }else if(msg.data=='nextQuestion'){
               // console.log('发提问啊！！！');
-              _this.loadNextQuestion();
+              _this.loadQuestion();
             }else if(msg.data.slice(0,14)==='questionNumber'){
               console.log(msg.data.slice(15,msg.data.length));
               _this.$data.questionNumber=msg.data.slice(15,msg.data.length);
@@ -490,7 +490,7 @@
         /**
          * 获取下一个提问,id为attendanceid
          */
-        /*
+
         loadQuestion(){
           if(this.$data.quesTeams.length!==0&&this.$data.chooseType===3) {
             console.log('提问打分');
@@ -503,20 +503,24 @@
               url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.quesTeams[this.$data.quesTeamIndex].teamEntity.id+'/klassSeminar/'
                 +this.$data.klassSeminarId+'/question/'+this.$data.quesTeams[this.$data.quesTeamIndex].questionEntity.id,
               params:{
-                score:this.$data.quesTeams[this.$data.quesTeamIndex].quesScore
+                score:this.$data.quesTeams[this.$data.quesTeamIndex].questionEntity.score
               }
             }).then(function (response) {
-              _this.$data.quesTeamIndex++;
+              // _this.$data.quesTeamIndex++;
               _this.loadNextQuestion();
             }).catch((function (error) {
+              _this.$message({
+                type:'error',
+                message:'出错了哦！'
+              })
               // console.log('出错额！');
-              console.log(error);
+              // console.log(error);
             }))
           }else {
             this.loadNextQuestion();
           }
         },
-        */
+
         loadNextQuestion(){
           let _this=this;
           this.$axios({

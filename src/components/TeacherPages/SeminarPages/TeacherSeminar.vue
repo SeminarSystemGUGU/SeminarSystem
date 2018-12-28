@@ -235,7 +235,8 @@
             seminarName:this.$data.seminarName}});
       },
       linkToApply(){
-        this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId}});
+        this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId,
+          seminarName:this.$data.seminarName}});
       }
     },
 

@@ -13,7 +13,7 @@
     </div>
     <div class="app-bar-blank"></div>
     <div class="table-title">
-      <span>对象模型报名情况</span>
+      <span>{{seminarName}}报名情况</span>
     </div>
 
 
@@ -73,10 +73,12 @@
             teamId: 22,
             teamOrder: 1,
           },
-        ]
+        ],
+        seminarName:''
       }
     },
     created(){
+      this.$data.seminarName=this.$route.query.seminarName;
       this.$data.baseURL=this.$axios.defaults.baseURL;
       this.$data.klassSeminarId=this.$route.query.klassSeminarId;
       this.loadApplyInfos();

@@ -52,9 +52,7 @@
     created(){
       this.$data.baseURL=this.$axios.defaults.baseURL;
       console.log(this.$data.baseURL);
-      if(navigator.platform.indexOf('Win')){
-        this.$router.push('/LoginPc')
-      }
+
     },
     watch:{
       password(curValue,oldValue){

@@ -1,6 +1,6 @@
 <template>
     <div id="TeacherClassInfos">
-      <app-bar :show-messages="true" title-name="OOAD-班级信息" backPath="/TeacherMyCourses"></app-bar>
+      <app-bar :show-messages="true" title-name="班级信息" backPath="/TeacherMyCourses"></app-bar>
       <div class="main-content" v-loading="isLoading">
         <span class="no-item-message" v-show="noItem">当前暂无班级信息哦~</span>
         <el-collapse v-model="activeName">
