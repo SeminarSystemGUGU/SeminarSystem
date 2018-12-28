@@ -261,6 +261,8 @@
                       }
                     }
                 });
+              }).catch(function (e) {
+                _this.$data.loading1=false;
               });
             }
         },

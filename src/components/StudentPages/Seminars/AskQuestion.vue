@@ -69,10 +69,7 @@
       });
     },
     destroyed(){
-      // this.$data.socket.close();
-      this.$data.socket.onclose=function (error) {
-
-      }
+      this.$data.socket.close();
     },
       data() {
         return {
@@ -152,7 +149,7 @@
                 attendanceId: _this.$data.enrollTeams[_this.$data.currentIndex].id,
               }
             }).then(function (response) {
-              _this.webSocketSend();
+              _this.$data.socket.send('4');
               _this.$toast.success("提问成功！");
               _this.$data.questionFlag = !_this.$data.questionFlag;
             });
@@ -171,7 +168,9 @@
         initWebSocket(){
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
-          this.$data.socket.onclose=function (error) {};
+          this.$data.socket.onclose=function (error) {
+            console.log("我出来了！");
+          };
           let _this=this;
           this.$data.socket.onmessage=function (msg) {
 
@@ -194,7 +193,40 @@
               }
              }
            }
+            // // 1-切换提问   2-切换展示
+            // else if(msg.data==='nextQuestion')
+            // {   //获取提问
+            //   let ts=_this;
+            //   _this.$axios({
+            //     method:'get',
+            //     url:'/question/nextQuestion',
+            //     params:{
+            //       attendanceId:ts.currentAttendance.id,
+            //     }
+            //   }).then(function (response) {
+            //     ts.$data.questionEntity=response.data.questionEntity;
+            //     ts.$data.studentEntity=response.data.studentEntity;
+            //     ts.$data.teamEntity=response.data.teamEntity;
+            //     ts.$data.questionAlert=true;
+            //   });
+            // }
+            // else if(msg.data==='nextPresentation'){  //切换展示小组
+            //   _this.$data.currentIndex++;
+            //   _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+            //   // while(_this.$data.currentAttendance.team==='')
+            //   // {
+            //   //   _this.$data.currentIndex++;
+            //   //   _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];
+            //   // }
+            //   // _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];   //第一个展示的小组
+            //   _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
+            //   console.log(_this.$data.currentName);
+            // }
+            // else if(event.data==='end'){
+            //   _this.$data.endFlag=true;
+            // }
           };
+
           this.$data.socket.addEventListener("message", function(event) {
             // 1-切换提问   2-切换展示
             if(event.data==='nextQuestion')
