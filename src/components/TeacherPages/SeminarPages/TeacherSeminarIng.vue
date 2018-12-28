@@ -1,7 +1,7 @@
 <template>
   <div id="TeacherSeminarIng">
     <el-dialog title="结束讨论课" width="70%" :visible.sync="openSimple" :show-close="false">
-      讨论课已结束，请设置书面报告截止时间：（若放弃设置则设为今天）<br/><br/>
+      讨论课已结束，请设置书面报告截止时间：<br/><br/>
       <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" v-model="reportTime"></el-date-picker>
       <div class="dialog-button">
         <el-button type="text" @click="setReportTime">确定</el-button>
@@ -70,6 +70,7 @@
             </div>
           </el-col>
           <el-col class="ques-list-col">
+            <span>当前{{questionNumber}}个提问</span>
             <div class="ques-title">提问列表</div>
             <div :class="item.teamClass" v-for="item,index in quesTeams"  @click="choosePreTeam(index,3)">
               {{item.teamEntity.klassSerial+'-'+item.teamEntity.teamSerial}}
@@ -107,6 +108,7 @@
       },
       data(){
           return{
+            questionNumber:0,
             overStatus:false,
             seminarName:'',
             chooseType:0,  //0:pre  3:ques
