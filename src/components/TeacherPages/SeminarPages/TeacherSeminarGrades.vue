@@ -30,7 +30,7 @@
       <el-button type="text" @click="dialogVisible=false">取消</el-button>
     </el-dialog>
     <div class="table-title">
-      <span>对象模型成绩</span>
+      <span>{{seminarName}}成绩</span>
     </div>
     <div class="main-content">
       <mu-paper :z-depth="1">
@@ -91,6 +91,7 @@
       };
       return{
         courseId:'',
+        seminarName:'',
         iconClass:'back-icon-use',
         klassSeminarId:'',
         classSerial:'',
@@ -166,7 +167,7 @@
                 _this.$data.tableData[_this.$data.modifyIndex].reportScore=_this.$data.formModifyScore.reportScore;
                 _this.$data.tableData[_this.$data.modifyIndex].presentationScore=_this.$data.formModifyScore.presentationScore;
                 _this.$data.dialogVisible = false;
-                _this.message({
+                _this.$message({
                   type:'success',
                   message:'修改成功！'
                 })
@@ -193,7 +194,7 @@
         }).then(function (response) {
           _this.$data.tableData=response.data;
           for(let index=0;index<_this.$data.tableData.length;index++){
-            _this.$data.tableData[index].teamSerial=_this.$data.classSerial+'-'+_this.$data.tableData[index].teamEntity.teamSerial;
+            _this.$data.tableData[index].teamSerial=_this.$data.tableData[index].teamEntity.klassSerial+'-'+_this.$data.tableData[index].teamEntity.teamSerial;
           }
         })
       }
@@ -205,6 +206,7 @@
       this.$data.roundId=this.$route.query.roundId;
       this.$data.courseId=this.$route.query.courseId;
       this.$data.classId=this.$route.query.classId;
+      this.$data.seminarName=this.$route.query.seminarName;
 
 
       this.loadStuScore();

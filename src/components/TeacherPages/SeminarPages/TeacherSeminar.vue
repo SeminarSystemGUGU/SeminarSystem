@@ -220,7 +220,8 @@
             seminarId:this.$data.seminarId,
             courseId:this.$data.courseId,
             classSerial:this.$data.klassSerial,
-            roundId:this.$data.roundId
+            roundId:this.$data.roundId,
+            seminarName:this.$data.seminarName
           }});
       },
       linkToGrades(){
@@ -230,7 +231,8 @@
             seminarId:this.$data.seminarId,
             courseId:this.$data.courseId,
             classSerial:this.$data.klassSerial,
-            roundId:this.$data.roundId}});
+            roundId:this.$data.roundId,
+            seminarName:this.$data.seminarName}});
       },
       linkToApply(){
         this.$router.push({path:'/TeacherApplyInfo',query:{klassSeminarId:this.$data.klassSeminarId,classId:this.$data.classId,seminarId:this.$data.seminarId}});

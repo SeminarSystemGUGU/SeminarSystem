@@ -1,6 +1,6 @@
 <template>
 	<div id="TeacherCourseShareSetting">
-		<app-bar titleName="OOAD-共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
+		<app-bar titleName="共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
 		<div class="main-content" v-loading="isLoading">
 			<el-card class="course-share-card" v-for="(course,index) in shareCourse" :key="index">
 				<template slot="header">
@@ -30,6 +30,7 @@
 				</div>
 			</el-card>
 		</div>
+    <div class="blank-space"></div>
 		<div class="new-share-button-panel">
 			<mu-button class="the-button" color="primary" @click="linkNewShare">新建共享</mu-button>
 		</div>
@@ -135,6 +136,10 @@ import AppBar from '../../ReuseComponents/AppBar'
 
 
 	}
+
+  .blank-space{
+    height: 100px;
+  }
 
 	.main-content{
 		margin-top:2vh;

@@ -11,23 +11,35 @@
         </div>
       </div>
       <div class="app-bar-blank"></div>
-      <div class="table-title">
-        <span>对象模型课后报告</span>
-      </div>
+      <el-dialog :visible.sync="dialogVisible" width="60%" :modal="false">
+        <span>为{{modifyName}}小组打分</span>
+        <el-form :model="formModifyScore" :rules="rulesFormModify">
+          <el-form-item prop="reportScore" label="展示分数">
+            <el-input v-model="formModifyScore.reportScore"></el-input>
+          </el-form-item>
+          <el-button type="text" @click="useModify">确定</el-button>
+          <el-button type="text" @click="dialogVisible=false;">放弃</el-button>
+        </el-form>
+      </el-dialog>
       <div class="main-content">
-        <mu-paper :z-depth="1">
-          <mu-data-table :columns="columns" :data="reports" stripe>
-            <template slot-scope="scope">
-              <td>{{classSerial+'-'+scope.row.teamEntity.teamSerial}}</td>
-              <td style="text-align: left">{{scope.row.path}}</td>
-              <td style="text-align: left">{{scope.row.reportGrade}}&nbsp;&nbsp;<el-button size="mini" type="text">修改</el-button> </td>
-            </template>
-          </mu-data-table>
-        </mu-paper>
-      </div>
-      <div class="button-panel">
-        <el-button type="primary">批量下载</el-button><br/>
-        <el-button type="primary">确认修改</el-button>
+        <div class="seminar-title">
+          <span>{{seminarName}}课后报告</span>
+        </div>
+        <div class="table-data">
+          <el-table :data="reports">
+            <el-table-column prop="teamSerial" label="小组序号">
+            </el-table-column>
+            <el-table-column prop="file" label="课后报告">
+            </el-table-column>
+            <el-table-column label="分数">
+              <template slot-scope="scope">
+                <span v-if="reports[scope.$index].score">{{reports[scope.$index].score}}</span>
+                <span v-else>未打分</span>
+                <el-button type="text"  @click="modifyScore(scope.$index)">打分</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
 </template>
@@ -40,34 +52,61 @@
           AppBar
       },
       data(){
+        let checkAge = (rule, value, callback) => {
+          if(value===0){
+            callback();
+          }else {
+            if (!value) {
+              return callback(new Error('分数不能为空'));
+            } else {
+              // const pattern=/^[0-9]+[0-9]*]*$/;
+              const pattern=/^[0-9]+(\.\d+)?$/;
+
+              if (!pattern.test(value*10)) {
+                callback(new Error('请输入数字！'))
+              } else {
+                callback();
+              }
+            }
+          }
+
+        };
           return{
             iconClass:'back-icon-use',
             courseId:'',
             classId:'',
             seminarId:'',
             roundId:'',
+            seminarName:'',
             classSerial:'',
             klassSeminarId:'',
-            columns:[
-              {title:'小组名称',name:'groupName'},
-              {title:'书面报告',name:'afterReport'},
-              {title:'报告得分',name:'reportGrade'}
-            ],
+            dialogVisible:false,
+            formModifyScore:{
+              reportScore:''
+            },
+            rulesFormModify:{
+              reportScore:[
+                {required:true,validator:checkAge,trigger:'change'}
+              ]
+            },
+            modifyName:'',
+            modifyIndex:'',
             reports:[
-              {
-                groupName:'咕咕鸟',
-                afterReport:'dwdwdw',
-                reportGrade:'5'
-              },
-              {
-                groupName:'咕咕鸟',
-                afterReport:'dwdwdw',
-                reportGrade:'5'
-              }
+              // {
+              //   groupName:'咕咕鸟',
+              //   afterReport:'dwdwdw',
+              //   reportGrade:'5'
+              // },
+              // {
+              //   groupName:'咕咕鸟',
+              //   afterReport:'dwdwdw',
+              //   reportGrade:'5'
+              // }
             ]
           }
       },
       created() {
+          this.$data.seminarName=this.$route.query.seminarName;
           this.$data.roundId=this.$route.query.roundId;
           this.$data.courseId=this.$route.query.courseId;
           this.$data.klassSeminarId=this.$route.query.klassSeminarId;
@@ -79,6 +118,33 @@
           // this.loadSeminarRepot();
       },
       methods:{
+        useModify(){
+          let _this=this;
+          this.$axios({
+            method:'put',
+            url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.reports[this.$data.modifyIndex].teamEntity.id+'/klassSeminar/'+
+              this.$data.klassSeminarId+'/report',
+            params:{
+              score:this.$data.formModifyScore.reportScore
+            }
+          }).then(function (response) {
+            _this.$message({
+              type:'success',
+              message:'修改成功！'
+            })
+            _this.$data.reports[_this.$data.modifyIndex].score= _this.$data.formModifyScore.reportScore;
+            _this.$data.dialogVisible=false;
+          })
+
+        },
+
+        modifyScore(index){
+          this.$data.modifyIndex=index;
+          this.$data.formModifyScore.reportScore=this.$data.reports[this.$data.modifyIndex].score;
+          this.$data.modifyName=this.$data.reports[this.$data.modifyIndex].teamSerial;
+          this.$data.dialogVisible=true;
+        },
+
         linkBack(){
           this.$router.push({path:'/TeacherSeminar',query:{klassSeminarId:this.$data.klassSeminarId,roundId:this.$data.roundId,
             courseId:this.$data.courseId,
@@ -101,12 +167,16 @@
             method:'get',
             url:'/attendance/'+this.$data.klassSeminarId
           }).then(function (response) {
-            _this.$data.reports.splice(0,_this.$data.reports.length);
+            // _this.$data.reports.splice(0,_this.$data.reports.length);
             _this.$data.reports=response.data;
-            _this.loadSeminarRepot();
+            for(let index=0;index<_this.$data.reports.length;index++){
+              _this.$data.reports[index].teamSerial=_this.$data.reports[index].teamEntity.klassSerial+'-'+_this.$data.reports[index].teamEntity.teamSerial;
+              // _this.$data.reports[index].reportScore=_this.$data.reports[index].score;
+            }
+            _this.loadSeminarReport();
           })
         },
-        loadSeminarRepot(){
+        loadSeminarReport(){
           for(let index=0;index<this.$data.reports.length;index++) {
             let _this = this;
             this.$axios({
@@ -115,9 +185,11 @@
             }).then(function (response) {
               _this.$data.reports[index].file=response.data.file;
               _this.$data.reports[index].path=response.data.path;
-              _this.$data.reports[index].reportScore='';
+              // _this.$data.reports[index].reportScore=2;
+              // _this.$data.reports[index].reportScore='';
             })
           }
+          console.log(this.$data.reports);
         }
       }
     }
@@ -192,7 +264,7 @@
 
 
 
-  .table-title{
+  .seminar-title{
     margin-top: 10px;
     text-align: left;
     font-size: 25px;
@@ -214,8 +286,5 @@
   }
 
 
-  .main-content{
-    margin-top: 10px;
-  }
 }
 </style>
