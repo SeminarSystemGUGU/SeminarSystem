@@ -34,18 +34,18 @@
       <div class="second-form-title">
         <span>组队基本要求：</span>
       </div>
-      <el-form :model="formTeamRules" ref="formTeamRules" class="team-rule-form" label-width="120px" :rules="rulesFormTeam">
+      <el-form :model="formTeamRule" ref="formTeamRule" class="team-rule-form" label-width="120px" :rules="rulesFormTeam">
         <el-form-item label="组队开始时间：" class="form-item" prop="teamStartDate">
-          <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamStartDate" ></el-date-picker>
+          <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRule.teamStartDate" ></el-date-picker>
         </el-form-item>
         <el-form-item label="组队截止时间：" class="form-item" prop="teamEndDate">
-          <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRules.teamEndDate"></el-date-picker>
+          <el-date-picker size="middle" class="date-picker" type="datetime"  value-format="yyyy-MM-dd HH:mm:ss" v-model="formTeamRule.teamEndDate"></el-date-picker>
         </el-form-item>
         <el-form-item label="小组人数上限：" class="form-item" prop="teamMaxNum">
-          <el-input-number size="small" v-model="formTeamRules.teamMaxNum"></el-input-number>
+          <el-input-number size="small" v-model="formTeamRule.teamMaxNum"></el-input-number>
         </el-form-item>
         <el-form-item label="小组人数下限：" class="form-item" prop="teamMinNum">
-          <el-input-number size="small" v-model="formTeamRules.teamMinNum" ></el-input-number>
+          <el-input-number size="small" v-model="formTeamRule.teamMinNum" ></el-input-number>
         </el-form-item>
       </el-form>
       <div class="blank-spaces"></div>
@@ -91,7 +91,7 @@
       </div>
       <el-form :model="item" v-for="item,index in formTeamRules.teamConflict" :key="index" ref="formTeamRules" label-width="100px" class="team-rule-form" :rules="rulesFormTeam">
         <el-form-item prop="courseId" label="冲突课程：" >
-          <el-select size="small" class="form-item1" v-model="item.courseId">
+          <el-select multiple size="small" class="form-item1" v-model="item.courseId">
             <el-option v-for="course in courseList" :key="course.id" :value="course.id" :label="course.courseName"></el-option>
           </el-select>&nbsp;<el-button size="small" type="danger" @click.prevent="deleteConflictCourse(index)">删除</el-button>
         </el-form-item>
@@ -135,8 +135,8 @@ import AppBar from '../../ReuseComponents/AppBar'
       };
       let validateDate=(rule, value, callback)=>{
         console.log(value);
-        if(this.$data.formTeamRules.teamStartDate!==''&&this.$data.formTeamRules.teamEndDate!==''){
-          if(this.$data.formTeamRules.teamStartDate<this.$data.formTeamRules.teamEndDate){
+        if(this.$data.formTeamRule.teamStartDate!==''&&this.$data.formTeamRule.teamEndDate!==''){
+          if(this.$data.formTeamRule.teamStartDate<this.$data.formTeamRule.teamEndDate){
             callback();
           }else{
             callback(new Error('结束日期要晚于开始日期'));
@@ -202,11 +202,17 @@ import AppBar from '../../ReuseComponents/AppBar'
           courseName:'',
           courseDetails:'',
 				},
-        formTeamRules:{
+        formTeamRule:{
           teamMinNum:0,
           teamMaxNum:0,
           teamStartDate:'',
           teamEndDate:'',
+        },
+        formTeamRules:{
+          // teamMinNum:0,
+          // teamMaxNum:0,
+          // teamStartDate:'',
+          // teamEndDate:'',
           orAnd:false,
           teamSelectNumber:[
             // {
@@ -216,10 +222,10 @@ import AppBar from '../../ReuseComponents/AppBar'
             // }
           ],
           teamConflict:[
-            {
-              courseId:'',
-              name:''
-            },
+            // {
+            //   courseId:[],
+            //
+            // },
           ]
         },
         scoreRate:{
@@ -243,7 +249,7 @@ import AppBar from '../../ReuseComponents/AppBar'
       },
 		  newConflictCourse(){
         this.$data.formTeamRules.teamConflict.push({
-          courseId:''
+          courseId:[],
         })
       },
 		  deleteCourseSelect(index){
@@ -274,10 +280,34 @@ import AppBar from '../../ReuseComponents/AppBar'
       /**
        * 提交课程
        */
+/*
+      newCourse(){
+        // console.log(this.$data.formTeamRules.teamConflict);
+        let teamConflict=this.$data.formTeamRules.teamConflict;
+
+        // let
+        // console.log(teamConflict);
+        let conflictList=[];
+        // console.log(conflictList);
+        for(let i=0;i<teamConflict.length;i++){
+          let temp=[];
+          for(let j=0;j<teamConflict[i].courseId.length;j++){
+            temp.push({
+              id:teamConflict[i].courseId[j]
+            });
+
+          }
+          conflictList.push(temp);
+        }
+        console.log(conflictList);
+      }
+*/
+
+
       newCourse() {
         console.log(this.$data.formTeamRules.teamStartDate);
         let _this = this;
-        _this.$data.isLoading=true;
+
         let preScore = parseInt(this.$data.scoreRate.preRate);
         let quesScore = parseInt(this.$data.scoreRate.quesRate);
         let repScore = parseInt(this.$data.scoreRate.repRate);
@@ -291,28 +321,35 @@ import AppBar from '../../ReuseComponents/AppBar'
             form1=true
           }
         });
-        // this.$refs['formTeamRules'].validate((valid2)=>{
-        //   if(valid2){
-        //     form2=true
-        //   }
-        // })
+        this.$refs['formTeamRule'].validate((valid2)=>{
+          if(valid2){
+            form2=true
+          }
+        })
 
         this.$refs['formNewCourse'].validate((valid3)=>{
           if(valid3){
-            form3=true
+            form3=true;
           }
         })
 
 
-        //if (form1 === true && form2 === true && form3 === true) {
+        if (form1 === true && form3 === true) {
+          _this.$data.isLoading=true;
           //转换冲突课程数组
           let teamConflict=this.$data.formTeamRules.teamConflict;
           let conflictList=[];
-          for(var i=0;i<teamConflict.length;i++){
-            conflictList.push({
-              id:teamConflict[i].courseId
+        for(let i=0;i<teamConflict.length;i++){
+          let temp=[];
+          for(let j=0;j<teamConflict[i].courseId.length;j++){
+            temp.push({
+              id:teamConflict[i].courseId[j]
             });
+
           }
+          conflictList.push(temp);
+        }
+          console.log(conflictList);
           //转换其他课程组队限制
           let teamStrategy=this.$data.formTeamRules.teamSelectNumber;
           let newTeamStrategy=[];
@@ -358,8 +395,12 @@ import AppBar from '../../ReuseComponents/AppBar'
             });
             _this.$data.isLoading=false;
           })
-        //}
+        }
+
       }
+
+
+
     }
 	}
 </script>

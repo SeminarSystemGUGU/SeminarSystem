@@ -1,7 +1,17 @@
 <template>
 	<div id="TeacherNewShare">
-		<app-bar titleName="新建共享" :showMessages="false" backPath="/TeacherCourseShareSetting"></app-bar>
-		<div class="main-content">
+		<!--<app-bar titleName="新建共享" :showMessages="false" backPath="/TeacherCourseShareSetting"></app-bar>-->
+    <div class="app-bar">
+      <div :class="iconClass" ref="iconUse">
+        <i class="el-icon-back" @click="linkBack"></i>
+        <transition name="slide-fade" class="transition-box">
+          <span class="title">讨论课</span>
+        </transition>
+        <span>&nbsp;&nbsp;</span>
+      </div>
+    </div>
+    <div class="app-bar-blank"></div>
+  		<div class="main-content">
 			<div class="col-content">
 				<el-row>
 					<el-col class="row-col">
@@ -54,6 +64,7 @@ import AppBar from '../../ReuseComponents/AppBar'
 		},
     data(){
 		  return{
+		    iconClass:'back-icon-use',
 		    formNewShare:{
           type:1,
           shareCourses:[],
@@ -65,6 +76,10 @@ import AppBar from '../../ReuseComponents/AppBar'
       }
     },
 		methods:{
+		  linkBack(){
+		    let _this=this;
+        _this.$router.push({path:'/TeacherCourseShareSetting',query:{courseId:_this.$data.courseId}});
+      },
 			confirmShare(){
         console.log(this.$data.formNewShare);
         let _this=this;
@@ -80,6 +95,7 @@ import AppBar from '../../ReuseComponents/AppBar'
             type:'success',
             message:'成功发送申请！'
           });
+          _this.$router.push({path:'/TeacherCourseShareSetting',query:{courseId:_this.$data.courseId}});
         }).catch(function (error) {
           _this.$message({
             type:'error',
@@ -96,13 +112,81 @@ import AppBar from '../../ReuseComponents/AppBar'
         url:'/course/allcourse'
       }).then(function (response) {
         _this.$data.options=response.data;
+        console.log(_this.$data.courseId);
         console.log(_this.$data.options);
+        for(let index=0;index<_this.$data.options.length;index++){
+          if(_this.$data.options[index].id==_this.$data.courseId){
+            _this.$data.options.splice(index,1);
+          }
+        }
       })
     }
   }
 </script>
 <style lang="less">
 	#TeacherNewShare{
+
+    .app-bar-blank{
+      height: 10vh;
+      max-height: 60px;
+    }
+
+
+    .app-bar {
+      padding: 0.1px;
+      height: 10vh;
+      max-height: 60px;
+      position: fixed;
+      z-index: 1000;
+      .back-icon-use{
+        border-bottom-right-radius: 20px;
+        -moz-box-shadow:0px 0px 2px whitesmoke;
+        -webkit-box-shadow:0px 0px 2px whitesmoke;
+        box-shadow:0px 0px 2px whitesmoke;
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
+
+
+
+      .back-icon {
+        z-index: 1000;
+        /*width: 40vw;*/
+        /*height: 10vh;*/
+        /*max-height: 60px;*/
+        background-color: white;
+        color: dodgerblue;
+        padding-left: 4vw;
+        font-size: 25px;
+        padding-top: 1vh;
+        line-height: 25px;
+        padding-bottom:5px;
+
+
+        .title{
+          color: black;
+          font-size: 20px;
+          font-weight: bold;
+          /*line-height: 25px;*/
+        }
+      }
+    }
 
     .confirm-button{
       width: 100vw;
