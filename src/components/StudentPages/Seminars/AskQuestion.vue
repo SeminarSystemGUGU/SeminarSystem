@@ -28,7 +28,7 @@
         <mu-dialog title="讨论课结束" width="360" :open.sync="endFlag" :overlay="false">
           离开当前页面？
           <mu-button slot="actions" flat color="success" @click="sureLeave">Sure</mu-button>
-          <mu-button slot="actions" flat color="success" @click="cancleLeave">cancel</mu-button>
+          <!--<mu-button slot="actions" flat color="success" @click="cancleLeave">cancel</mu-button>-->
         </mu-dialog>
       </div>
     </div>
@@ -69,7 +69,10 @@
       });
     },
     destroyed(){
-      this.$data.socket.close();
+      // this.$data.socket.close();
+      this.$data.socket.onclose=function (error) {
+
+      }
     },
       data() {
         return {
@@ -167,20 +170,26 @@
         initWebSocket(){
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
+          this.$data.socket.onclose=function (error) {};
           let _this=this;
           this.$data.socket.onmessage=function (msg) {
-            console.log("ws建立连接！")
-           if(msg.data==='-1')
+            console.log("ws建立连接！");
+           if(msg.data==='-1')       //重新连接
            {
              _this.$data.currentIndex=0;
            }
            else if(msg.data!=='-1')
            {
              let i;
-             for(i=0;i<_this.$data.registerOrder[i].length;i++)
+             for(i=0;i<_this.$data.enrollTeams[i].length;i++)
              {
-               _this.$data.registerOrder[i].attendanceId=msg.data;
-               _this.$data.currentIndex=parseInt(_this.$data.registerOrder[i].slice(1,2))-1;
+               let x=i;
+              if( _this.$data.enrollTeams[x].id===msg.data) {
+                // _this.$data.currentIndex = parseInt(_this.$data.registerOrder[i].order.slice(1, 2)) - 1;
+                _this.$data.currentIndex=x;
+                _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+                _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
+              }
              }
            }
           };
@@ -200,7 +209,7 @@
                 ts.$data.studentEntity=response.data.studentEntity;
                 ts.$data.teamEntity=response.data.teamEntity;
                 ts.$data.questionAlert=true;
-              })
+              });
             }
             else if(event.data==='nextPresentation'){  //切换展示小组
               _this.$data.currentIndex++;

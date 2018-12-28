@@ -1,7 +1,8 @@
 <template>
 	<div id="TeacherCourseShareSetting">
 		<app-bar titleName="共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
-		<div class="main-content" v-loading="isLoading">
+    <span v-show="noItem" class="no-item-message">当前暂没有共享~</span>
+		<div class="main-content" v-loading="isLoading" v-show="!noItem">
 			<el-card class="course-share-card" v-for="(course,index) in shareCourse" :key="index">
 				<template slot="header">
 					<span class="share-course-title">{{course.courseName}}</span>
@@ -56,7 +57,8 @@ import AppBar from '../../ReuseComponents/AppBar'
           }
         ],
         courseId:'',
-        isLoading:true
+        isLoading:true,
+        noItem:false
       }
     },
     created(){
@@ -76,17 +78,24 @@ import AppBar from '../../ReuseComponents/AppBar'
           url:'/course/'+this.$data.courseId+'/share',
         }).then(function (response) {
           let resData=response.data;
-          _this.$data.shareCourse=[];
-          for(var i=0;i<resData.length;i++){
-            _this.$data.shareCourse.push({
-              shareId:resData[i].shareId,
-              courseName:resData[i].courseName,
-              teacherName:'',
-              shareType:resData[i].shareType,
-              shareStatus:resData[i].isMain,
-            });
+          // if(response.data) {
+            _this.$data.shareCourse = [];
+            for (var i = 0; i < resData.length; i++) {
+              _this.$data.shareCourse.push({
+                shareId: resData[i].shareId,
+                courseName: resData[i].courseName,
+                teacherName: '',
+                shareType: resData[i].shareType,
+                shareStatus: resData[i].isMain,
+              });
+            }
+            // console.log(response.data.length)
+          if(_this.$data.shareCourse.length) {
+            _this.$data.noItem = false;
+          }else{
+            _this.$data.noItem = true;
           }
-          _this.$data.isLoading=false;
+          _this.$data.isLoading = false;
         })
       },
 
@@ -116,6 +125,11 @@ import AppBar from '../../ReuseComponents/AppBar'
 <style lang="less">
 #TeacherCourseShareSetting{
 	width:100vw;
+
+  .no-item-message{
+    font-size: 20px;
+    font-weight: bold;
+  }
 
 	.new-share-button-panel{
 		position:fixed;

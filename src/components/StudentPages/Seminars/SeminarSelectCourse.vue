@@ -62,8 +62,9 @@
     margin-top: 10vh;
   }
   .itemTitle{
-    padding-top: 10px;
+    /*padding-top: 10px;*/
     padding-left: 4vw;
+    line-height: 7vh;
     width: 100%;
     height:7vh;
     font-size: 20px;
@@ -76,8 +77,9 @@
       margin-top: 13vh;
     }
     .itemTitle{
-      padding-top: 13px;
+      /*padding-top: 13px;*/
       padding-left: 4vw;
+      line-height: 6vh;
       height:6vh;
       font-size: 30px;
     }
@@ -88,8 +90,9 @@
       margin-top: 13vh;
     }
     .itemTitle{
-      padding-top: 10px;
+      /*padding-top: 10px;*/
       padding-left: 2vw;
+      line-height: 7vh;
       width: 100%;
       height:7vh;
       font-size: 30px;

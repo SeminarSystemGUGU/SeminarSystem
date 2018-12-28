@@ -93,11 +93,12 @@
 
   .seminar-card-doing{
     display: inline-block;
-    background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00b2ee, #63b8ff); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00b2ee, #63b8ff); /* Firefox 3.6 - 15 */
-    background: linear-gradient(right, #00B2EE , 	#63B8FF); /* 标准的语法（必须放在最后） */
+    /*background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); !* Safari 5.1 - 6.0 *!*/
+    /*background: -o-linear-gradient(right, #00b2ee, #63b8ff); !* Opera 11.1 - 12.0 *!*/
+    /*backgr/ound: -moz-linear-gradient(right, #00b2ee, #63b8ff); !* Firefox 3.6 - 15 *!*/
+    /*background: linear-gradient(right, #00B2EE , 	#63B8FF); !* 标准的语法（必须放在最后） *!*/
     /*background: linear-gradient(right, #9ACD32, #76EE00); !* 标准的语法（必须放在最后） *!*/
+    background-color: #63b8ff;
     margin-top: 1vh;
     width: 90%;
     /*height: 20vh;*/
@@ -106,10 +107,11 @@
   }
   .seminar-card-finished {
     display: inline-block;
-    background: -webkit-linear-gradient(right, #9acd32, #76ee00); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #9acd32, #76ee00); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #9acd32, #76ee00); /* Firefox 3.6 - 15 */
-    background: linear-gradient(right, #9ACD32, #76EE00); /* 标准的语法（必须放在最后） */
+    /*background: -webkit-linear-gradient(right, #9acd32, #76ee00); !* Safari 5.1 - 6.0 *!*/
+    /*background: -o-linear-gradient(right, #9acd32, #76ee00); !* Opera 11.1 - 12.0 *!*/
+    /*background: -moz-linear-gradient(right, #9acd32, #76ee00); !* Firefox 3.6 - 15 *!*/
+    /*background: linear-gradient(right, #9ACD32, #76EE00); !* 标准的语法（必须放在最后） *!*/
+    background-color: #76ee00;
     margin-top: 1vh;
     width: 90%;
     /*height: 20vh;*/

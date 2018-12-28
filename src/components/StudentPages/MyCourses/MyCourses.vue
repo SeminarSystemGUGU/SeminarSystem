@@ -106,10 +106,10 @@
   }
 
   .itemTitle{
-    padding-top: 10px;
     padding-left: 4vw;
     width: 100%;
     height:7vh;
+    line-height: 7vh;
     font-size: 18px;
 
     box-shadow: 0 1px 0.2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
@@ -117,11 +117,11 @@
   }
 
   .subList {
-    padding-top: 1vh;
     padding-left: 3vw;
     margin-top: 10px;
     width: 100%;
     height: 5vh;
+    line-height: 5vh;
     border-radius: 5px;
   }
   .subItem{
@@ -147,14 +147,14 @@
       height: 27vh;
     }
     .itemTitle{
-      padding-top: 20px;
+     line-height: 7vh;
       padding-left: 4vw;
       width: 100%;
       height:7vh;
       font-size: 27px;
     }
     .subList {
-      padding-top: 1vh;
+      line-height:5vh; ;
       padding-left: 3vw;
       margin-top: 10px;
       width: 100%;
@@ -185,14 +185,14 @@
       height: 27vh;
     }
     .itemTitle{
-      padding-top: 10px;
       padding-left: 2vw;
       width: 100%;
       height:7vh;
+      line-height: 7vh;
       font-size: 30px;
     }
     .subList {
-      padding-top: 1vh;
+      line-height: 5vh;
       padding-left: 3vw;
       margin-top: 10px;
       width: 100%;

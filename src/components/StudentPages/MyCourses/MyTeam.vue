@@ -221,8 +221,9 @@
     width:90%;
   }
   .titlee{
-    width:31vw;
     font-size: 22px;
+    height:6vh;
+    /*line-height: 6vh;*/
     margin-bottom: 2vh;
     margin-top: 1vh;
   }
@@ -230,7 +231,9 @@
     border-radius: 5px;
     width: 100%;
     height:6vh;
-    font-size: 20px;
+    min-height: 40px;
+    /*line-height: 6vh;*/
+    font-size: 18px;
     background-color:#96c4e6;
   }
   .panel-body{
@@ -247,7 +250,8 @@
     width: 100%;
     background-color: #c7e1f0;
     border-radius: 5px;
-    min-height: 6vh;
+    height:6vh;
+    min-height: 40px;
   }
   .subItem{
     color:gray;
@@ -261,6 +265,7 @@
     margin-top: 8vh;
     width: 100%;
     height:6vh;
+    line-height: 6vh;
     opacity: 0.9;
   }
   #demo31{

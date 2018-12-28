@@ -11,12 +11,12 @@
             <mu-sub-header inset>已有成员</mu-sub-header>
             <mu-list-item avatar button :ripple="false" :key="index"  v-for="option,index in myTeam.members" style="margin-left: -2vh;">
               <mu-list-item-action>
-                <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.id===myTeam.leader.id">
+                <mu-avatar color="red" style="font-size: 18px;margin-top: 1vh;" v-if="option.id===myTeam.leader.id">
                   <!--头像图标-->
                   组长
                 </mu-avatar>
                 <mu-tooltip content="选了J2EE">
-                  <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" v-if="option.id!==myTeam.leader.id">
+                  <mu-avatar color="blue" style="font-size: 18px;margin-top: 1vh;" v-if="option.id!==myTeam.leader.id">
                     <!--头像图标-->
                     组员
                   </mu-avatar>
@@ -64,12 +64,12 @@
             <mu-sub-header inset>已有成员</mu-sub-header>
             <mu-list-item avatar button :ripple="false" :key="index"  v-for="option,index in myTeam.members" style="margin-left: -2vh;">
               <mu-list-item-action>
-                <mu-avatar color="red" style="margin-left:-2vh;font-size: 18px;margin-top: 1vh;" v-if="option.id===myTeam.leader.id">
+                <mu-avatar color="red" style="font-size: 18px;margin-top: 1vh;" v-if="option.id===myTeam.leader.id">
                   <!--头像图标-->
                   组长
                 </mu-avatar>
                 <mu-tooltip content="选了J2EE">
-                  <mu-avatar color="blue" style="font-size: 18px;margin-left:-2vh;margin-top: 1vh;" v-if="option.id!==myTeam.leader.id">
+                  <mu-avatar color="blue" style="font-size: 18px;margin-top: 1vh;" v-if="option.id!==myTeam.leader.id">
                     <!--头像图标-->
                     组员
                   </mu-avatar>
@@ -437,4 +437,5 @@
     margin-top: 5vh;
     margin-bottom: 10vh;
   }
+
 </style>

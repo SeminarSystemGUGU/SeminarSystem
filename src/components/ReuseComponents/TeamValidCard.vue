@@ -65,6 +65,7 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })
       },
@@ -82,6 +83,7 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })
       }

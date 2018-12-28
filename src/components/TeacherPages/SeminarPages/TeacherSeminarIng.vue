@@ -719,10 +719,11 @@
               margin-left: auto;
               margin-right: auto;
               height: 200px;
-              background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); /* Safari 5.1 - 6.0 */
-              background: -o-linear-gradient(right, #00b2ee, #63b8ff); /* Opera 11.1 - 12.0 */
-              background: -moz-linear-gradient(right, #00b2ee, #63b8ff); /* Firefox 3.6 - 15 */
-              background: linear-gradient(right, dodgerblue , 	#87cefa); /* 标准的语法（必须放在最后） */
+              /*background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); !* Safari 5.1 - 6.0 *!*/
+              /*background: -o-linear-gradient(right, #00b2ee, #63b8ff); !* Opera 11.1 - 12.0 *!*/
+              /*background: -moz-linear-gradient(right, #00b2ee, #63b8ff); !* Firefox 3.6 - 15 *!*/
+              /*background: linear-gradient(right, dodgerblue , 	#87cefa); !* 标准的语法（必须放在最后） *!*/
+              background-color: #87cefa;
               border-radius: 6px;
               box-shadow: 0 0 6px lightgrey;
 

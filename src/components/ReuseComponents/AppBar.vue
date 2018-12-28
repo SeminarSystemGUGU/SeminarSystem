@@ -72,7 +72,7 @@
         },
         goToSeminars(){
             if(this.$route.path==='/TeacherCourseRounds'){
-              this.$router.push({path:'/TransitionPage',query:{courseId:this.$data.courseSelected}});
+              this.$router.push({path:'/TransitionPage',query:{courseId:this.$data.courseSelected,paths:'/TeacherCourseRounds'}});
             }else {
               this.$router.push({path: '/TeacherCourseRounds', query: {courseId: this.$data.courseSelected}});
             }
@@ -88,6 +88,7 @@
         }
       },
       created(){
+          // console.log(this.$route);
         this.loadAllCourses();
         console.log(this.$props.backPath);
        if(this.$props.showBack===false){
@@ -156,6 +157,10 @@
       }
     }
 
+    .el-icon-back{
+      font-size: 20px;
+    }
+
 
     .el-icon-menu{
       display:inline-block;
@@ -176,7 +181,7 @@
 
   .title{
     display: inline-block;
-    overflow: scroll;
+    /*overflow: scroll;*/
     /*margin-top: 0vw;*/
     font-size: 20px;
     text-align: left;

@@ -1,6 +1,6 @@
 <template>
   <div id="MyMessage">
-    <app-bar title-name="OOAD-待办消息" :back-path="backPath"></app-bar>
+    <app-bar title-name="待办消息" :back-path="backPath"></app-bar>
     <div class="main-content">
       <div class="todo-title">
         <span>待办通知</span>
