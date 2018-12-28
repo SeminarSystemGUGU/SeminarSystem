@@ -1,7 +1,7 @@
 <template>
   <div id="TeacherSeminarIng">
     <el-dialog title="结束讨论课" width="70%" :visible.sync="openSimple" :show-close="false">
-      讨论课已结束，请设置书面报告截止时间：（若放弃设置则设为今天）<br/><br/>
+      讨论课已结束，请设置书面报告截止时间：<br/><br/>
       <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" v-model="reportTime"></el-date-picker>
       <div class="dialog-button">
         <el-button type="text" @click="setReportTime">确定</el-button>
@@ -70,6 +70,7 @@
             </div>
           </el-col>
           <el-col class="ques-list-col">
+            <span>当前{{questionNumber}}个提问</span>
             <div class="ques-title">提问列表</div>
             <div :class="item.teamClass" v-for="item,index in quesTeams"  @click="choosePreTeam(index,3)">
               {{item.teamEntity.klassSerial+'-'+item.teamEntity.teamSerial}}
@@ -107,6 +108,7 @@
       },
       data(){
           return{
+            questionNumber:0,
             overStatus:false,
             seminarName:'',
             chooseType:0,  //0:pre  3:ques
@@ -719,10 +721,11 @@
               margin-left: auto;
               margin-right: auto;
               height: 200px;
-              background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); /* Safari 5.1 - 6.0 */
-              background: -o-linear-gradient(right, #00b2ee, #63b8ff); /* Opera 11.1 - 12.0 */
-              background: -moz-linear-gradient(right, #00b2ee, #63b8ff); /* Firefox 3.6 - 15 */
-              background: linear-gradient(right, dodgerblue , 	#87cefa); /* 标准的语法（必须放在最后） */
+              /*background: -webkit-linear-gradient(right, #00b2ee, #63b8ff); !* Safari 5.1 - 6.0 *!*/
+              /*background: -o-linear-gradient(right, #00b2ee, #63b8ff); !* Opera 11.1 - 12.0 *!*/
+              /*background: -moz-linear-gradient(right, #00b2ee, #63b8ff); !* Firefox 3.6 - 15 *!*/
+              /*background: linear-gradient(right, dodgerblue , 	#87cefa); !* 标准的语法（必须放在最后） *!*/
+              background-color: #87cefa;
               border-radius: 6px;
               box-shadow: 0 0 6px lightgrey;
 

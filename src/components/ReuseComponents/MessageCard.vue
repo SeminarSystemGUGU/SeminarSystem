@@ -2,7 +2,7 @@
   <div id="MessageCard">
     <el-card class="message-card" >
       <div class="card-title">
-        <el-badge value="未读" class="item" v-show="!beenRead">
+        <el-badge value="未处理" class="item" v-show="!beenRead">
           <span>{{messagetitle}}</span>
         </el-badge>
         <span v-show="beenRead">{{messagetitle}}</span>

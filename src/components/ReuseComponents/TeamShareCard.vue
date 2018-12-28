@@ -65,11 +65,13 @@
             handleType:'accept'
           }
         }).then(function (response) {
+
           if(response.data===true){
             _this.$message({
               type:'success',
               message:'处理成功！'
             })
+            _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })
       },
@@ -87,6 +89,7 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })
       }
