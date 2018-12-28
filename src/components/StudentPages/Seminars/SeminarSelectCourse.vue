@@ -6,7 +6,7 @@
       <div class="container" v-for="option in courses">
             <div class="itemTitle" @click="linkToSeminars(option.id,option.klassId)">
               <i class="el-icon-document"/>
-              {{option.courseName}}&emsp;{{option.id}}
+              {{option.courseName}}&emsp;
               <i class="el-icon-arrow-right" style="float: right;margin-right: 5vw;margin-top: 0.6vh "/>
             </div>
       </div>

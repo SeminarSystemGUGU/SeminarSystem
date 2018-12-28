@@ -5,7 +5,7 @@
     <div class="animated fadeInRight" style="max-width: 600px;margin-left: 5%;">
     <div>
     <div class="panel-group" id="accordion" align="left" >
-      <div class="title">
+      <div class="titlee">
         我的队伍
       </div>
       <div class="cF" style="" v-if="teamState===0">当前未组队</div>
@@ -15,15 +15,15 @@
           <i style="float: right;margin-right: 5vw;margin-top: 0.6vh " class="el-icon-arrow-right"></i>
         </div>
       </div>
-      <div class="title">
+      <div class="titlee">
         其他队伍
       </div>
       <div style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
-      <div class="panel panel-default" style="border: 0;" v-for="option,index in allTeams" >
+      <div class="panel panel-default" style="border: 0;" v-for="option,index in allTeams" v-if="option.teamId!==myTeam.teamId">
         <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  :href="'#collapseTwo'+index"    onclick="">
           {{option.teamName}}
-          <!--<span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>-->
-          <!--<span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>-->
+          <span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>
+          <span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>
         </div>
         <div :id="'collapseTwo'+index" class="panel-collapse collapse" >
           <div class="panel-body" style="padding:1vh 0;">
@@ -43,7 +43,7 @@
                     <td>{{option.leader.studentName}}</td>
                     <td>{{option.leader.account}}</td>
                   </tr>
-                  <tr v-for="item,index in option.members" v-if="item.id!==option.leader.id">
+                  <tr v-for="item,index in option.members" v-if="item.id!==option.leader.id" :key="index">
                     <td>组员</td>
                     <td>{{item.studentName}}</td>
                     <td>{{item.account}}</td>
@@ -57,7 +57,7 @@
       </div>
       </div>
       <!--未组队学生-->
-      <div class="title" >
+      <div class="titlee" >
         未组队学生
       </div>
       <div class="subContent" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
@@ -97,30 +97,20 @@
       BackBar,
     },
     created(){
-      this.$data.courseId=parseInt(this.$route.query.courseId);
+      this.$data.courseId=this.$route.query.courseId;
 
-      this.loading1 = true;
-      this.loading2 = true;
-
-      let ss=this;     //所有队伍信息
-      this.$axios({
-        method:'get',
-        url:'/course/'+this.$data.courseId+'/teams',
-      }).then(function (response) {
-        ss.$data.allTeams=response.data;
-        ss.loading1 = false;
-      });
+      this.$data.loading1 = true;
+      this.$data.loading2 = true;
 
       let _is=this;
       this.$axios({
         method:'get',
-        url:'course/'+this.$data.courseId,
+        url:'course/'+_is.$data.courseId,
       }).then(function (response) {
         response.data.teamStartTime=response.data.teamStartTime.slice(0,10);
         response.data.teamEndTime=response.data.teamEndTime.slice(0,10);
         _is.$data.teamStartTime=response.data.teamStartTime;
         _is.$data.teamEndTime=response.data.teamEndTime;
-
         // if(response.data.seminarMainCourseId!==null)    //是否是从课程
         //   _is.$data.follow=1;
         // else  if(response.data.seminarMainCourseId===null)
@@ -150,6 +140,7 @@
             ts.$data.teamState=1;
           else if(response.data.leader.account!==ts.$data.myAccount+'')   //我是组员
             ts.$data.teamState=2;
+
           ts.$data.myTeam=response.data;
         });
       },function (error) {
@@ -166,6 +157,16 @@
         },function(error){
           alert(error);
         });
+
+      let ss=this;     //所有队伍信息
+      this.$axios({
+        method:'get',
+        url:'/course/'+ss.$data.courseId+'/teams',
+      }).then(function (response) {
+        ss.$data.allTeams=response.data;
+        ss.$data.loading1 = false;
+      });
+
 
     },
     data(){
@@ -219,7 +220,7 @@
     margin-top: 13vh;
     width:90%;
   }
-  .title{
+  .titlee{
     width:31vw;
     font-size: 22px;
     margin-bottom: 2vh;
@@ -252,6 +253,9 @@
     color:gray;
     font-size: 14px;
   }
+  /*.cF{*/
+    /*margin-left: 5%;*/
+  /*}*/
   .butnCT{
     font-size: 18px;
     margin-top: 8vh;

@@ -8,7 +8,7 @@
           <div >
             <div class="itemTitle">
               <i class="el-icon-document"/>
-              {{option.courseName}}&emsp;{{startDate}}
+              {{option.courseName}}&emsp;
             </div>
             <div class="parent3">
               <!-- Content  -->
@@ -43,10 +43,6 @@
     data(){
       return{
         title:"我的课程",
-        courseName:"OOAD",
-        startDate:'2016(1)',
-        courseId:1,
-
         courses:[],
       }
     },

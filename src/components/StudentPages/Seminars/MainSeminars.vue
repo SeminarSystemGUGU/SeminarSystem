@@ -3,21 +3,22 @@
     <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/SeminarSelectCourse',query:{courseID:courseId,klassId:klassId}}"></back-bar>
 
     <div  class="animated fadeInRight" align="left">
-      <div class="con">
-      <div class="container" v-for="option,index in  rounds" :key="index">
-        <div :class="sp1[option.seminars.length]">
-          <div>
-            <div class="itemTitle"> 第{{index+1}}轮</div>
-            <div :class="sp3[option.seminars.length]">
-              <!-- Content  -->
-              <div class="subList" @click="linkToDetails(item.id)" v-for="item,index in option.seminars" :key="index">
-                <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarName}}</span>
-                <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
+      <div v-if="allRounds.length===0" class="con">&emsp;当前没有讨论课</div>
+      <div class="con" >
+        <div class="container" v-for="option,index in  allRounds" :key="index">
+          <div :class="sp1[option.seminars.length]">
+            <div>
+              <div class="itemTitle"> 第{{index+1}}轮</div>
+              <div :class="sp3[option.seminars.length]">
+                <!-- Content  -->
+                <div class="subList" @click="linkToDetails(item.id)" v-for="item,index in option.seminars" :key="index">
+                  <span class="subItem"  > <i class="el-icon-document"/>{{item.seminarName}}</span>
+                  <i style="float: right;margin-right: 5vw;margin-top: 1vh " class="el-icon-arrow-right"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
 
@@ -40,22 +41,24 @@
         method:'get',
         url:'/course/'+_this.$data.courseId+'/round',
       }).then(function(response){
-        _this.$data.allRounds=response.data;
-
+        let x;
+        for(x=0;x<response.data.length;x++)
+        {
+          _this.$data.allRounds.push({
+            round:response.data[x],
+            seminars:'',
+          });
+        }
         let i;
         for(i=0;i<_this.$data.allRounds.length;i++)
         {
+          let ax=i;
           let _ts=_this;    //根据roundId获取该课程seminar列表
           _this.$axios({
             method:'get',
-            url:'/round/'+_ts.$data.allRounds[i].id+'/seminar',
+            url:'/round/'+_ts.$data.allRounds[i].round.id+'/seminar',
           }).then(function(response){
-            var tempRound= {
-              // roundId: _ts.$data.allRounds[i].id,
-              // roundName:'第'+_ts.$data.allRounds[i].id+'轮',
-              seminars : response.data,
-              };
-            _ts.$data.rounds.push(tempRound);
+            _ts.$data.allRounds[ax].seminars=response.data;
           },function(error){
             alert("Seminar error！");
           });
@@ -63,6 +66,7 @@
       },function(error){
         alert(error);
       });
+
     },
     data(){
       return{
@@ -71,8 +75,8 @@
         allRounds:[],    //当前课程下所有轮次
         klassId:-1,    //当前班级ID
         rounds:[],  //发布的讨论课所在round
-        sp1:['','parent11','parent12','parent13','parent14'],
-        sp3:['','parent31','parent32','parent33','parent34'],
+        sp1:['','parent11','parent12','parent13','parent14','parent15'],
+        sp3:['','parent31','parent32','parent33','parent34','parent35'],
       }
     },
     methods:{
@@ -94,7 +98,7 @@
     position: relative;
     border-radius: 5px;
   }
-  .parent11,.parent12,.parent13,.parent14    {
+  .parent11,.parent12,.parent13,.parent14,.parent15    {
     height: 8vh;
     overflow: hidden;
     transition-property: height;
@@ -102,7 +106,7 @@
     perspective: 1000px;
     transform-style: preserve-3d;
   }
-  .parent31,.parent32,.parent33,.parent34    {
+  .parent31,.parent32,.parent33,.parent34,.parent35    {
     height: 8vh;
     transition-property: all;
     transition-duration: 1s;
@@ -136,6 +140,13 @@
   .container:hover .parent34   {
     transform: rotateX(0deg);
     height:34vh;
+  }
+  .container:hover .parent15   {
+    height:41vh;
+  }
+  .container:hover .parent35   {
+    transform: rotateX(0deg);
+    height:41vh;
   }
 
   .itemTitle{

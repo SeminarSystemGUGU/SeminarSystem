@@ -1,6 +1,6 @@
 <template>
   <div >
-    <back-bar titleName="OOAD-讨论课" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,seminarId:seminarId,klassId:klassId}}"></back-bar>
+    <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,seminarId:seminarId,klassId:klassId}}"></back-bar>
 
     <div class="statusDetailsBack animated fadeInRight" >
       <!--报名阶段-->
@@ -11,7 +11,7 @@
               {{option.order}}
             </mu-list-item-action>
             <mu-list-item-title style="margin-left:35%;font-size: 20px;">{{option.team}}
-              <mu-button flat color="success" style="margin-top:-2vh;margin-left: -10%;"large @click="register(index)" v-if="option.team===''"
+              <mu-button flat color="success" style="margin-top:-2vh;margin-left: -10%;"large @click="register(index)" v-if="option.attendanceId===''"
                          data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading1">可报名</mu-button>
             </mu-list-item-title>
           </mu-list-item>
@@ -34,7 +34,7 @@
       </mu-paper>
       <!--正在进行讨论课-->
       <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===3"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
-        <mu-list v-for="option,index in registerOrder" :key = "index">
+        <mu-list v-for="option,index in registerOrder" :key = "index" >
           <mu-list-item class="listItem" button :ripple="false" style="font-size: 18px;">
             <mu-list-item-action>
               {{option.order}}
@@ -114,6 +114,7 @@
         }).then(function(response){
           _this.$data.courseId=response.data.seminarEntity.courseId;
           _this.$data.klassSeminarId=response.data.klassSeminarId;
+          _this.$data.title=response.data.seminarEntity.seminarName;
 
           let t=_this;           //报名情况
           _this.$axios({
@@ -121,7 +122,7 @@
             url:'/attendance/'+t.$data.klassSeminarId,
           }).then(function (response) {
             t.$data.enrollTeams=response.data;
-            _this.$data.registerOrder=[];
+            t.$data.registerOrder=[];
             let x;
             for(x=0;x<t.$data.maxMember;x++) {
               t.$data.registerOrder.push({order: '第' + (x +1)+ '组', team:'',pptName:'',pptPath:'',attendanceId:''});
@@ -137,8 +138,8 @@
                 }
               }
 
-            let tt=_this;           //我的队伍信息
-            _this.$axios({
+            let tt=t;           //我的队伍信息
+            t.$axios({
               method:'get',
               url:'/course/'+tt.$data.courseId+'/team',
             }).then(function (response) {
@@ -153,18 +154,19 @@
               }
             });
 
-            if(tt.$data.status===3)  //获取ppt
+            if(t.$data.status===3)  //获取ppt
             {
               let x;
-              for(x=0;x<tt.$data.registerOrder.length;x++) {
-                if(tt.$data.registerOrder[x].team!=='') {
-                  let ts = tt;
+              for(x=0;x<t.$data.registerOrder.length;x++) {
+                if(t.$data.registerOrder[x].team!=='') {
+                  let ts = t;
+                  let ax=x;
                   tt.$axios({
                     method: 'get',
                     url: '/attendance/' + ts.$data.registerOrder[x].attendanceId + '/ppt',
                   }).then(function (response) {
-                    ts.$data.registerOrder[x].pptName = response.data.name;
-                    ts.$data.registerOrder[x].pptPath = response.data.path;
+                    ts.$data.registerOrder[ax].pptName = response.data.name;
+                    ts.$data.registerOrder[ax].pptPath = response.data.path;
                   });
                 }
               }
@@ -177,6 +179,7 @@
       data(){
           return {
             status:-1,   //该页面状态  1-报名   2-修改报名  3-正在进行(显示ppt)  4-已经结束（显示成绩）  5-已经结束、未报名(显示序列)
+            title:'',
             courseId:-1,
             klassId:-1,
             seminarId:-1,
@@ -211,11 +214,12 @@
           this.$data.changeFlag=true;
         },
         enroll(){        //确定报名
+            console.log(this.$data.myTeam.teamId);
             if(this.$data.myTeam.teamId===null) {
               this.$toast.error("您还未组队,无法报名讨论课！");
               this.$data.registerFlag = !this.$data.registerFlag;
             }
-            else {
+            else if(this.$data.myTeam.teamId!==null) {
               this.$data.registerFlag = !this.$data.registerFlag;
               this.$data.loading1=true;
               let _this = this;

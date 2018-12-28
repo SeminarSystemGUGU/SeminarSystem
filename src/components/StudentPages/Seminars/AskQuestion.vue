@@ -15,7 +15,7 @@
           <mu-divider></mu-divider>
         </mu-paper>
         <mu-button class="askQ" color="success"  @click="askQuestion"
-                   :disabled="currentAttendance.team===myTeamName">发起提问</mu-button>
+                   :disabled="currentName===myTeamName&&end!==true">发起提问</mu-button>
         <mu-dialog title="发起提问？" width="360" :open.sync="questionFlag" :overlay="false">
           <mu-button slot="actions" flat color="success" @click="confirmQuestion">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="questionFlag=!questionFlag">Close</mu-button>
@@ -24,6 +24,11 @@
           请{{teamEntity.teamSerial}}  {{studentEntity.studentName}}同学({{studentEntity.account}})<br/>
           提问
           <mu-button slot="actions" flat color="primary" @click="questionAlert=!questionAlert">Close</mu-button>
+        </mu-dialog>
+        <mu-dialog title="讨论课结束" width="360" :open.sync="endFlag" :overlay="false">
+          离开当前页面？
+          <mu-button slot="actions" flat color="success" @click="sureLeave">Sure</mu-button>
+          <mu-button slot="actions" flat color="success" @click="cancleLeave">cancel</mu-button>
         </mu-dialog>
       </div>
     </div>
@@ -64,7 +69,7 @@
       });
     },
     destroyed(){
-      this.$data.socket.onclose=function () {};
+      this.$data.socket.close();
     },
       data() {
         return {
@@ -92,9 +97,19 @@
           studentEntity:'',
           teamEntity:'',
           questionAlert:false,
+          endFlag:false,
+          end:false,
         }
       },
       methods:{
+          sureLeave(){
+            this.$data.endFlag=!this.$data.endFlag;
+            this.$router.push({path:'/StuMainSeminars',query:{courseId:this.$data.courseId,klassId:this.$data.klassId}});
+          },
+        cancleLeave(){
+          this.$data.endFlag=!this.$data.endFlag;
+          this.$data.end=true;
+        },
         getRegisterTeams(){
           let t=this;                   //报名情况
           this.$axios({
@@ -117,27 +132,27 @@
                     t.$data.registerOrder[i].attendanceId=t.$data.enrollTeams[j].id;
                   }
                 }
-                t.$data.currentAttendance=t.$data.registerOrder[t.$data.currentIndex];   //第一个展示的小组
-                t.$data.currentName=t.$data.currentAttendance.team;
+                t.$data.currentAttendance=t.$data.enrollTeams[t.$data.currentIndex];   //第一个展示的小组
+                t.$data.currentName=t.$data.currentAttendance.teamEntity.teamName;
             });
         },
         askQuestion(){
           this.$data.questionFlag=true;
         },
         confirmQuestion(){        //确认提问
-          if(this.$data.registerOrder[this.$data.currentIndex].attendanceId!=='') {
+          // if(this.$data.registerOrder[this.$data.currentIndex].attendanceId!=='') {
             let _this = this;
             this.$axios({
               method: 'post',
               url: '/question/newQuestion',
               params: {
-                attendanceId: _this.$data.registerOrder[_this.$data.currentIndex].attendanceId,
+                attendanceId: _this.$data.enrollTeams[_this.$data.currentIndex].id,
               }
             }).then(function (response) {
               _this.$toast.success("提问成功！");
               _this.$data.questionFlag = !_this.$data.questionFlag;
             });
-          }
+          // }
         },
         getWebSocketAddress(){
           let _this=this;
@@ -154,6 +169,7 @@
           this.$data.socket.onopen=this.webSocketOnOpen();
           let _this=this;
           this.$data.socket.onmessage=function (msg) {
+            console.log("ws建立连接！")
            if(msg.data==='-1')
            {
              _this.$data.currentIndex=0;
@@ -177,7 +193,7 @@
                 method:'get',
                 url:'/question/nextQuestion',
                 params:{
-                  attendanceId:ts.currentAttendance.attendanceId,
+                  attendanceId:ts.currentAttendance.id,
                 }
               }).then(function (response) {
                 ts.$data.questionEntity=response.data.questionEntity;
@@ -188,9 +204,18 @@
             }
             else if(event.data==='nextPresentation'){  //切换展示小组
               _this.$data.currentIndex++;
-              _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];   //第一个展示的小组
-              _this.$data.currentName=_this.$data.currentAttendance.team;
-              console.log(_this.$data.currentName)
+              _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+              // while(_this.$data.currentAttendance.team==='')
+              // {
+              //   _this.$data.currentIndex++;
+              //   _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];
+              // }
+              // _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];   //第一个展示的小组
+              _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
+              console.log(_this.$data.currentName);
+            }
+            else if(event.data==='end'){
+              _this.$data.endFlag=true;
             }
           });
         },

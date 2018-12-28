@@ -10,7 +10,7 @@
               <mu-list-item-title>轮次</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                {{seminarEntity.roundId}}
+                {{seminarEntity.roundSerial}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
           </mu-list-item>
@@ -47,15 +47,16 @@
             <mu-button flat color="success" @click="showStatusDetails(status)">查看详情</mu-button>
           </mu-list-item>
           <!--已报名，未开始-->
+          <mu-divider  v-if="status===4"></mu-divider>
           <mu-list-item avatar :ripple="false" button v-if="status===4">
             <mu-list-item-content>
-              <mu-list-item-title>报名情况</mu-list-item-title>
+              <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
                 未开始
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="success" @click="showStatusDetails(status)">修改</mu-button>
+            <mu-button flat color="success" @click="showStatusDetails(status)">修改报名</mu-button>
           </mu-list-item>
           <mu-divider  v-if="status===4"></mu-divider>
           <mu-list-item avatar :ripple="false" button v-if="status===4">
@@ -63,12 +64,12 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getPPT.name===''">未上传</span>
+                <span v-if="getPPT.name===''||getPPT.name===null">未上传</span>
                 {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''">下载</a>
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''&&getPPT.name!==null">下载</a>
             </mu-button>
           </mu-list-item>
 
@@ -110,12 +111,12 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getPPT.name===''">未上传</span>
+                <span v-if="getPPT.name===''||getPPT.name===null">未上传</span>
                 {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''" >下载</a>
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''&&getPPT.name!==null" >下载</a>
             </mu-button>
           </mu-list-item>
 
@@ -136,12 +137,12 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getPPT.name===''">未上传</span>
+                <span v-if="getPPT.name===''||getPPT.name===null">未上传</span>
                 {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''" >下载</a>
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''&&getPPT.name!==null" >下载</a>
             </mu-button>
           </mu-list-item>
           <mu-divider v-if="status===5"></mu-divider>
@@ -150,12 +151,12 @@
               <mu-list-item-title>报告</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getReport.name===''">未上传</span>
+                <span v-if="getReport.name===''||getReport.name===null">未上传</span>
                 {{getReport.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getReport.path"  v-if="getReport.name===''">下载</a>
+              <a :href="baseURL+getReport.path"  v-if="getReport.name!==''&&getReport.name!==null">下载</a>
             </mu-button>
           </mu-list-item>
           <!--已报名，已结束、已截止-->
@@ -175,12 +176,12 @@
               <mu-list-item-title>PPT</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getPPT.name===''">未上传</span>
+                <span v-if="getPPT.name===''||getPPT.name===null">未上传</span>
                 {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''">下载</a>
+              <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''&&getPPT.name!==null">下载</a>
             </mu-button>
           </mu-list-item>
           <mu-divider v-if="status===6"></mu-divider>
@@ -189,12 +190,12 @@
               <mu-list-item-title>报告</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
               <mu-list-item-sub-title>
-                <span v-if="getReport.name===''">未上传</span>
+                <span v-if="getReport.name===''||getReport.name===null">未上传</span>
                 {{getReport.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getReport.path" v-if="getReport.name!==''">下载</a>
+              <a :href="baseURL+getReport.path" v-if="getReport.name!==''&&getReport.name!==null">下载</a>
             </mu-button>
           </mu-list-item>
           <!--未报名，已结束-->
@@ -365,7 +366,7 @@
           return{
             open:'send',
             baseURL:'',
-            title:'seminar',
+            title:'讨论课',
             myTeam:'',
             klassId:'',
             courseId:'',

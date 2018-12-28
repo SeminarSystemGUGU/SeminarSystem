@@ -203,8 +203,9 @@
         this.$axios({
           method:'delete',
           url:'/team/'+_this.$data.myTeam.teamId,
+        }).then(function (response) {
+          _this.$router.push({path:'/StuMyTeam',query:{courseId:_this.$data.courseId}});
         });
-        this.$router.push({path:'/StuMyTeam',query:{courseId:this.$data.courseId}});
       },
       dropout(){
         //组员退出小组
@@ -247,7 +248,7 @@
           let th = _this;     //重新获取未组队成员
           _this.$axios({
             method: 'get',
-            url: 'course/' + th.$data.courseId + '/noTeam',
+            url: '/course/' + th.$data.courseId + '/noTeam',
           }).then(function (response) {
             th.$data.noTeamMembers = response.data;
           });
@@ -321,7 +322,7 @@
           let th = _this;     //重新获取未组队成员
           _this.$axios({
             method: 'get',
-            url: 'course/' + th.$data.courseId + '/noTeam',
+            url: '/course/' + th.$data.courseId + '/noTeam',
           }).then(function (response) {
             th.$data.noTeamMembers = response.data;
           }, function (error) {

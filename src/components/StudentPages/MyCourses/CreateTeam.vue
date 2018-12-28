@@ -152,9 +152,9 @@
               // serial:'',
             }
           }).then(function (resopnse) {
-            _this.$data.teamId=resopnse.data.teamId;
-            _this.$router.push({path:'StuMyTeam',query:{courseId:_this.$data.courseId}});
-          })
+            // _this.$data.teamId=resopnse.data.teamId;
+            _this.$router.push({path:'/StuMyTeam',query:{courseId:_this.$data.courseId}});
+          });
         },
         addMember(index, row) {
           const loading = this.$loading();
@@ -165,7 +165,7 @@
           this.$set(this.$data.noTeamMember.splice(index,1));
         },
         backToMyTeam(){
-          this.$router.push({path:'StuMyTeam',query:{courseId:this.$data.courseId}});
+          this.$router.push({path:'/StuMyTeam',query:{courseId:this.$data.courseId}});
         }
        }
     }

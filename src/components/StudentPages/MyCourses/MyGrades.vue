@@ -43,8 +43,8 @@
       </div>
       <el-collapse v-model="activeName" accordion align="left"  v-if="state===1">
         <el-collapse-item :title="option.roundName" :name="index"  v-for="option,index in rounds" :key="index">
-          <span v-if="option.scoreEntities===null">当前成绩为空</span>
           <el-collapse v-model="active" accordion align="left" style="width: 90%;margin-left: 3vw;">
+            <span v-if="option.scoreEntities===''">当前成绩为空</span>
             <el-collapse-item :title="item.seminarName" :name="index+10"   v-for="item,index in option.scoreEntities" :key="index">
               <div  style="margin-top: 1vh;">
                 <table class="table " style="width:90%;margin-left:3vw;">
@@ -107,7 +107,7 @@
               _this.$data.rounds.push({
                 roundName: '第' + response.data[i].roundSerial + '轮',
                 roundId: response.data[i].id,
-                scoreEntities: [],
+                scoreEntities:'',
               });
             let t = _this;
             _this.$axios({
