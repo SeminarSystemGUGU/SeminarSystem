@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="max-width: 600px;">
       <back-bar titleName="我的小组" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMyTeam',query:{courseId:courseId}}"></back-bar>
 
       <div class="animated fadeInRight">

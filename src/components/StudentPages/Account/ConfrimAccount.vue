@@ -60,7 +60,9 @@
                 }).then(function (response) {
                   if (response.data === true)
                     _this.$router.push('/StuMainPage');
-                })
+                },function (error) {
+                  _this.$toast.error("该邮箱已被占用！");
+                });
               }
               else {
                 this.$toast.error('邮箱格式错误！');

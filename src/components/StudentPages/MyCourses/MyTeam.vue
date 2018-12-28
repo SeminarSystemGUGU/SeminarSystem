@@ -18,44 +18,79 @@
       <div class="titlee">
         其他队伍
       </div>
-      <div style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
-      <div class="panel panel-default" style="border: 0;" v-for="option,index in allTeams" v-if="option.teamId!==myTeam.teamId">
-        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  :href="'#collapseTwo'+index"    onclick="">
-          {{option.teamName}}
-          <span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>
-          <span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>
-        </div>
-        <div :id="'collapseTwo'+index" class="panel-collapse collapse" >
-          <div class="panel-body" style="padding:1vh 0;">
-            <div class="subContent" >
-              <div  class="collapse in">
-                <table class="table table-bordered">
-                  <thead>
-                  <tr>
-                    <th>身份</th>
-                    <th>姓名</th>
-                    <th>学号</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td style="color:darkred">组长</td>
-                    <td>{{option.leader.studentName}}</td>
-                    <td>{{option.leader.account}}</td>
-                  </tr>
-                  <tr v-for="item,index in option.members" v-if="item.id!==option.leader.id" :key="index">
-                    <td>组员</td>
-                    <td>{{item.studentName}}</td>
-                    <td>{{item.account}}</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+
+
+      <div class="coll" align="left" style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
+        <el-collapse v-model="activeName" accordion >
+          <el-collapse-item :title="option.teamName" :name="index" v-for="option,index in allTeams" :key="index">
+            <span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>
+            <span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>
+            <table class="table table-bordered" style="width:90%;">
+              <thead>
+              <tr>
+                <th>身份</th>
+                <th>姓名</th>
+                <th>学号</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td style="color:darkred">组长</td>
+                <td>{{option.leader.studentName}}</td>
+                <td>{{option.leader.account}}</td>
+              </tr>
+              <tr v-for="item,index in option.members" v-if="item.id!==option.leader.id" :key="index">
+                <td>组员</td>
+                <td>{{item.studentName}}</td>
+                <td>{{item.account}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </el-collapse-item>
+        </el-collapse>
+
       </div>
-      </div>
+
+
+
+      <!--<div style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">-->
+      <!--<div class="panel panel-default" style="border: 0;" v-for="option,index in allTeams" v-if="option.teamId!==myTeam.teamId">-->
+        <!--<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"  :href="'#collapseTwo'+index"    onclick="">-->
+          <!--{{option.teamName}}-->
+          <!--<span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>-->
+          <!--<span v-if="option.status===2" style="margin-right:20%;float:right;color: darkred;">待审核</span>-->
+        <!--</div>-->
+        <!--<div :id="'collapseTwo'+index" class="panel-collapse collapse" >-->
+          <!--<div class="panel-body" style="padding:1vh 0;">-->
+            <!--<div class="subContent" >-->
+              <!--<div  class="collapse in">-->
+                <!--<table class="table table-bordered">-->
+                  <!--<thead>-->
+                  <!--<tr>-->
+                    <!--<th>身份</th>-->
+                    <!--<th>姓名</th>-->
+                    <!--<th>学号</th>-->
+                  <!--</tr>-->
+                  <!--</thead>-->
+                  <!--<tbody>-->
+                  <!--<tr>-->
+                    <!--<td style="color:darkred">组长</td>-->
+                    <!--<td>{{option.leader.studentName}}</td>-->
+                    <!--<td>{{option.leader.account}}</td>-->
+                  <!--</tr>-->
+                  <!--<tr v-for="item,index in option.members" v-if="item.id!==option.leader.id" :key="index">-->
+                    <!--<td>组员</td>-->
+                    <!--<td>{{item.studentName}}</td>-->
+                    <!--<td>{{item.account}}</td>-->
+                  <!--</tr>-->
+                  <!--</tbody>-->
+                <!--</table>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
       <!--未组队学生-->
       <div class="titlee" >
         未组队学生
@@ -90,6 +125,7 @@
 </template>
 
 <script>
+  import $ from 'jquery';
   import BackBar from '../../ReuseComponents/BackBar'
   export default {
     name: "MyTeam",
@@ -187,6 +223,7 @@
         ddl:0,    //组队截止   1-截止
         loading2:false,
         loading1:false,
+        activeName:'',
       }
     },
     methods:{
@@ -215,7 +252,10 @@
   }
 </script>
 
-<style scoped>
+<style lang="less">
+  .el-collapse-item__header{
+    border:0;
+  }
   #accordion{
     margin-top: 13vh;
     width:90%;

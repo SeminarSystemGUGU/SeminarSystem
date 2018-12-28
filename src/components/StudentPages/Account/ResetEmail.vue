@@ -49,10 +49,11 @@
           }).then(function (response) {
             if(response.data===true)
               _this.$router.push('/StuMyAccount');
-            else
-              alert("修改失败！");
+            // else
+              // _this.$toast.error("该邮箱已被占用！");
             }, function (error) {
-            alert(error);
+            // alert(error);
+            _this.$toast.error("该邮箱已被占用！");
           });
         }
         else{

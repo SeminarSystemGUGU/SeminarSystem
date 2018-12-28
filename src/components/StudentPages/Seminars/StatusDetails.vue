@@ -2,7 +2,7 @@
   <div >
     <back-bar :titleName="title" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuSeminarDetails',query:{courseId:courseId,seminarId:seminarId,klassId:klassId}}"></back-bar>
 
-    <div class="statusDetailsBack animated fadeInRight" >
+    <div class="statusDetailsBack animated fadeInRight " >
       <!--报名阶段-->
       <mu-paper :z-depth="1" class="demo-list-wrap" v-if="status===1"  data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)" v-loading="loading2">
         <mu-list v-for="option,index in registerOrder" :key = "index">
@@ -96,16 +96,25 @@
         this.$data.baseURL=this.$axios.defaults.baseURL;
         this.$data.klassId=this.$route.query.klassId;
         this.$data.seminarId=this.$route.query.seminarId;
-        if(this.$route.query.status===1 )
+        this.$data.preStatus=this.$route.query.status;
+        if(this.$data.preStatus===1 )
           this.$data.status=1;
-        else if(this.$route.query.status===4)
+        else if(this.$data.preStatus===4)
           this.$data.status=2;
-        else if(this.$route.query.status===2 || this.$route.query.status===3)   //ppt
+        else if(this.$data.preStatus===2 || this.$data.preStatus===3)   //ppt
           this.$data.status=3;
-        else if(this.$route.query.status===5 || this.$route.query.status===7)   //顺序
+        else if(this.$data.preStatus===5 || this.$data.preStatus===7||this.$data.preStatus===6)   //顺序
           this.$data.status=5;
 
         this.$data.loading2=true;
+
+        let h=this;
+        this.$axios({
+          method:'get',
+          url:'/seminar/'+h.$data.seminarId,
+        }).then(function (response) {
+          h.$data.maxMember=response.data.maxTeam;
+        });
 
         let _this=this;
         this.$axios({
@@ -185,10 +194,11 @@
             seminarId:-1,
             klassSeminarId:-1,
             attandenceId:-1,
+            preStatus:-1,
 
             enrollTeams:[],   //报名情况
             myTeam:'',      //我的队伍
-            maxMember:6,      //限制最大组数
+            maxMember:-1,      //限制最大组数
             enrollOrder:-1,     //报名顺序
             registerOrder:[],     //展示顺序
 
@@ -340,9 +350,10 @@
     }
 </script>
 
-<style lang="less">
+<style scoped>
   .statusDetailsBack{
     margin-top: 12vh;
+    max-width: 600px;
   }
   .cancleR{
     font-size: 18px;

@@ -164,7 +164,7 @@
   .subList {
     /*padding-top: 1vh;*/
     padding-left: 3vw;
-    margin-top: 1vh;
+    margin-top: 10px;
     width: 100%;
     height: 5vh;
     line-height: 5vh;

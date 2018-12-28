@@ -17,7 +17,7 @@
         <mu-button class="askQ" color="success"  @click="askQuestion"
                    :disabled="currentName===myTeamName&&end!==true">发起提问</mu-button>
         <mu-dialog title="发起提问？" width="360" :open.sync="questionFlag" :overlay="false">
-          <mu-button slot="actions" flat color="success" @click="confirmQuestion">Sure</mu-button>
+          <mu-button slot="actions" flat color="success" @click="confirmQuestion" v-loading="askLoading">Sure</mu-button>
           <mu-button slot="actions" flat color="primary" @click="questionFlag=!questionFlag">Close</mu-button>
         </mu-dialog>
         <mu-dialog title="提问" width="360" :open.sync="questionAlert">
@@ -99,6 +99,7 @@
           questionAlert:false,
           endFlag:false,
           end:false,
+          askLoading:false,
         }
       },
       methods:{
@@ -140,7 +141,7 @@
           this.$data.questionFlag=true;
         },
         confirmQuestion(){        //确认提问
-          // if(this.$data.registerOrder[this.$data.currentIndex].attendanceId!=='') {
+            this.$data.askLoading=true;
             let _this = this;
             this.$axios({
               method: 'post',
@@ -150,10 +151,14 @@
               }
             }).then(function (response) {
               _this.$data.socket.send('4');
+              _this.$data.askLoading=false;
               _this.$toast.success("提问成功！");
               _this.$data.questionFlag = !_this.$data.questionFlag;
+            },function (error) {
+              _this.$data.askLoading=false;
+              _this.$toast.error("提问失败！");
+              _this.$data.questionFlag = !_this.$data.questionFlag;
             });
-          // }
         },
         getWebSocketAddress(){
           let _this=this;
@@ -193,38 +198,6 @@
               }
              }
            }
-            // // 1-切换提问   2-切换展示
-            // else if(msg.data==='nextQuestion')
-            // {   //获取提问
-            //   let ts=_this;
-            //   _this.$axios({
-            //     method:'get',
-            //     url:'/question/nextQuestion',
-            //     params:{
-            //       attendanceId:ts.currentAttendance.id,
-            //     }
-            //   }).then(function (response) {
-            //     ts.$data.questionEntity=response.data.questionEntity;
-            //     ts.$data.studentEntity=response.data.studentEntity;
-            //     ts.$data.teamEntity=response.data.teamEntity;
-            //     ts.$data.questionAlert=true;
-            //   });
-            // }
-            // else if(msg.data==='nextPresentation'){  //切换展示小组
-            //   _this.$data.currentIndex++;
-            //   _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
-            //   // while(_this.$data.currentAttendance.team==='')
-            //   // {
-            //   //   _this.$data.currentIndex++;
-            //   //   _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];
-            //   // }
-            //   // _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];   //第一个展示的小组
-            //   _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
-            //   console.log(_this.$data.currentName);
-            // }
-            // else if(event.data==='end'){
-            //   _this.$data.endFlag=true;
-            // }
           };
 
           this.$data.socket.addEventListener("message", function(event) {

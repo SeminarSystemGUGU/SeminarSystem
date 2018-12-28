@@ -68,9 +68,9 @@
                 {{getPPT.name}}
               </mu-list-item-sub-title>
             </mu-list-item-content>
-            <mu-button flat color="normal">
+            <!--<mu-button flat color="normal">-->
               <a :href="baseURL+getPPT.path" v-if="getPPT.name!==''&&getPPT.name!==null">下载</a>
-            </mu-button>
+            <!--</mu-button>-->
           </mu-list-item>
 
           <!--未报名、正在进行-->
@@ -160,7 +160,7 @@
             </mu-button>
           </mu-list-item>
           <!--已报名，已结束、已截止-->
-          <mu-list-item avatar :ripple="false" button v-if="status===6">
+          <mu-list-item avatar :ripple="false" button v-if="status===7||status===6">
             <mu-list-item-content>
               <mu-list-item-title>课程情况</mu-list-item-title>
               <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)"></mu-list-item-sub-title>
@@ -195,7 +195,7 @@
               </mu-list-item-sub-title>
             </mu-list-item-content>
             <mu-button flat color="normal">
-              <a :href="baseURL+getReport.path" v-if="getReport.name!==''&&getReport.name!==null">下载</a>
+              <a :href="baseURL+getReport.path" v-if="getReport.name!==''&&getReport.name!==null&&getReport!==''">下载</a>
             </mu-button>
           </mu-list-item>
           <!--未报名，已结束-->
@@ -335,6 +335,16 @@
               }).then(function (response) {
                 ttt.$data.getPPT=response.data;
                });
+
+               let tttt=t;      //获取长传ppt
+               t.$axios({
+                 method:'get',
+                 url:'/attendance/'+tttt.$data.attendanceId+'/report',
+               }).then(function (response) {
+                 tttt.$data.getReport=response.data;
+               });
+
+
              }
              //   判断讨论课状态       processing: 0未开始   1正在进行  2已经结束
              //                      enrollState:  0未报名   1已经报名
@@ -379,7 +389,7 @@
             getReport:'',
             processing:-1,   //状态判定
             enrollState:0,
-            reportEnd:0,
+            reportEnd:1,
             status:-1,     //1-未开始，未报名    2-未报名，正在进行  3-已报名，正在进行  4-已报名，未开始  5-已报名，已结束
             enrollTeams:[],  //报名小组列表
             ppt: [],

@@ -1,5 +1,6 @@
 <template>
-  <div class="MyAccount" v-loading="loading" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
+  <!--<div class="MyAccount" v-loading="loading" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">-->
+  <div class="MyAccount">
     <div class="back-button">
       <div class="back-button-panel">
         <i class="el-icon-back" @click="backTo"></i>
@@ -60,15 +61,15 @@
     data(){
       return{
         studentInfo:{},
-        loading:false,
+        // loading:false,
       }
     },
     created(){
-        // const loading = this.$loading();
-        // setTimeout(() => {
-        //   loading.close();
-        // }, 500);
-      this.$data.loading=true;
+        const loading = this.$loading();
+        setTimeout(() => {
+          loading.close();
+        }, 500);
+      // this.$data.loading=true;
 
       let _this=this;
       this.$axios({
@@ -76,7 +77,7 @@
         url: '/user/information',
       }).then(function (response) {
         _this.$data.studentInfo=response.data;
-        _this.$data.loading=false;
+        // _this.$data.loading=false;
       }, function (error) {
         alert("请求失败",error);
       });

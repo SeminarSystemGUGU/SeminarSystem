@@ -26,7 +26,8 @@
       <el-table-column prop="pptName" label="展示材料" width="150">
         <template slot-scope="scope">
           <!--<img  v-if="registerOrder[scope.$index].pptName!==''" style="width: 30px;height: 30px;color:#67C23A;cursor: pointer" src="../../../assets/download.svg"/>-->
-          <a v-if="registerOrder[scope.$index].pptName!==''&&registerOrder[scope.$index].pptName!==null" :href="baseURL+registerOrder[scope.$index].pptUrl">
+          <a v-if="registerOrder[scope.$index].pptName!==''&&registerOrder[scope.$index].pptName!==null"
+             :href="baseURL+registerOrder[scope.$index].pptUrl">
             {{registerOrder[scope.$index].pptName}}下载
           </a>
           <span v-if="(registerOrder[scope.$index].pptName===''||registerOrder[scope.$index].pptName===null)
@@ -95,6 +96,14 @@
         this.$data.klassId=this.$route.query.klassId;
         this.$data.courseId=this.$route.query.courseId;
 
+        let h=this;
+        this.$axios({
+          method:'get',
+          url:'/seminar/'+h.$data.seminarId,
+        }).then(function (response) {
+          h.$data.maxMember=response.data.maxTeam;
+        });
+
         let _this=this;     //讨论课信息
         this.$axios({
           method:'get',
@@ -115,6 +124,7 @@
             url:'/seminar/'+ts.$data.seminarId+'/class/'+ts.$data.klassId,
           }).then(function(response){
             ts.$data.klassSeminarId = response.data.klassSeminarId;
+            ts.$data.processing=response.data.status;
 
             let tt=ts;
             ts.$axios({         //讨论课报名情况
@@ -123,12 +133,13 @@
             }).then(function (response) {
               tt.$data.enrollTeams=response.data;
               tt.$data.registerOrder=[];
-              let x;
-              for(x=0;x<6;x++)
+              let m;
+              for(m=0;m<6;m++)
               {
-                tt.$data.registerOrder.push({order:x+1,teamSerial:'',teamName:'',leader:'',pptName:'',pptPath:'',reportName:'',reportPath:''});
+                let mm=m;
+                tt.$data.registerOrder.push({order:mm+1,teamSerial:'',teamName:'',leader:'',pptName:'',pptPath:'',reportName:'',reportPath:''});
               }
-              let y;
+              let x,y;
               for(x=0;x<tt.$data.registerOrder.length;x++)
                 for(y=0;y<tt.$data.enrollTeams.length;y++)
                 {
@@ -168,6 +179,7 @@
             baseURL:'',
             doundID:1,
             state:-1,  //是否报名   0-未报名   1-已报名
+            processing:-1,   //上课状态
             courseId:-1,
             seminarId:-1,
             attendanceId:-1,
@@ -180,6 +192,7 @@
             report:[],
             pptFlag:false,
             reportFlag:false,
+            maxMember:-1,
 
         }
       },
