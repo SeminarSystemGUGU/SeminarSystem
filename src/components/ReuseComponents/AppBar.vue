@@ -29,7 +29,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="1">讨论课</el-dropdown-item>
               <el-dropdown-item command="2">新消息</el-dropdown-item>
-              <el-dropdown-item>设置</el-dropdown-item>
+              <el-dropdown-item command="3">设置</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -59,6 +59,8 @@
               this.linkToMessage();
             }else if(command==='1'){
               this.$data.dialogFormVisible=true;
+            }else{
+              this.$router.push('/MyAccount')
             }
           },
         loadAllCourses(){

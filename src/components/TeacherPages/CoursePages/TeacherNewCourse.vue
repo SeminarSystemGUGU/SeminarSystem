@@ -147,7 +147,7 @@ import AppBar from '../../ReuseComponents/AppBar'
         }
       };
       let validateTeam=(rule,value,callback)=>{
-        if(this.$data.formTeamRules.teamMaxNum<this.$data.formTeamRules.teamMinNum){
+        if(this.$data.formTeamRule.teamMaxNum<this.$data.formTeamRule.teamMinNum){
           callback(new Error('人数上限达能小于下限！'));
         }else{
           callback();
@@ -316,6 +316,37 @@ import AppBar from '../../ReuseComponents/AppBar'
         let form2 = false;
         let form3 = false;
 
+        let isOk=true;
+
+        for(let index=0;index<this.$data.formTeamRules.teamSelectNumber.length;index++){
+          if(this.$data.formTeamRules.teamSelectNumber[index].teamSelectMaxNum<this.$data.formTeamRules.teamSelectNumber[index].teamSelectMinNum){
+            isOk=false;
+            this.$message({
+              type:'error',
+              message:'人数上限不能小于下限！'
+            })
+          }
+          if(!this.$data.formTeamRules.teamSelectNumber[index].courseId){
+            this.$message({
+              type:'error',
+              message:'课程选择为空！'
+            })
+            isOk=false;
+          }
+        }
+
+        console.log(this.$data.formTeamRules.teamConflict);
+
+        for(let index=0;index<this.$data.formTeamRules.teamConflict.length;index++){
+          if(this.$data.formTeamRules.teamConflict[index].courseId.length===0){
+            isOk=false;
+            this.$message({
+              type:'error',
+              message:'冲突课程不能为空！'
+            })
+          }
+        }
+
         this.$refs['scoreRate'].validate((valid) => {
           if (valid) {
             form1=true
@@ -334,7 +365,7 @@ import AppBar from '../../ReuseComponents/AppBar'
         })
 
 
-        if (form1 === true && form3 === true) {
+        if (form1 === true && form3 === true && form2 === true &&isOk === true) {
           _this.$data.isLoading=true;
           //转换冲突课程数组
           let teamConflict=this.$data.formTeamRules.teamConflict;

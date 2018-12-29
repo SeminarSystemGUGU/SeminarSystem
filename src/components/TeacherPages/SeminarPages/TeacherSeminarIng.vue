@@ -556,7 +556,9 @@
                 _this.$data.quesTeamIndex++;
                 // _this.$data.quesTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
                 _this.choosePreTeam(_this.$data.quesTeamIndex,3);
+
               }
+            _this.$data.socket.send('5;'+_this.$data.quesTeams[quesTeamIndex].studentEntity.id);
             // }
           }).catch(function (error) {
             console.log(error.response);
@@ -566,6 +568,7 @@
                 type:'warning',
                 message:'当前已无提问！'
               })
+
             }
           })
 
