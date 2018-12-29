@@ -67,7 +67,9 @@
             <div class="button-panel">
               <mu-button color="error" @click="nextPreTeam" v-if="preTeamIndex===preTeams.length-1">结束讨论课</mu-button>
               <mu-button color="error" @click="nextPreTeam" v-else >打分并下组</mu-button>
-              <mu-button color="error" @click="webSocketSend" >抽取提问</mu-button>
+              <mu-button color="error" @click="webSocketSend" >抽取提问</mu-button><br/>
+              <div style="height: 20px;"></div>
+              <span>请先给提问打分再抽取提问哦~不然提问将一直展示</span>
             </div>
           </el-col>
           <el-col class="ques-list-col">
@@ -176,8 +178,9 @@
         this.$data.classSerial=this.$route.query.classSerial;
         this.$data.seminarName=this.$route.query.seminarName;
         this.$data.klassSeminarId=this.$route.query.klassSeminarId;
-        this.loadPreTeams();
+
         this.getWebSocketAddress();
+        this.loadPreTeams();
 
       },
       methods:{
@@ -388,6 +391,7 @@
 
               }
               _this.$data.preTeams.reverse();
+              _this.$data.socket.send('1;'+_this.$data.preTeams[_this.$data.chooseTeamIndex].id);
               _this.choosePreTeam(_this.$data.chooseTeamIndex, 0);
             }
           })
@@ -427,6 +431,7 @@
          */
         initWebSocket(){
           let _this=this;
+
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           console.log('1111');
           this.$data.socket.onopen=this.webSocketOnOpen();
@@ -439,9 +444,10 @@
                 type:'success',
                 message:'连接成功！正式开始上课！'
               })
+
             }else if(msg.data=='nextQuestion'){
               // console.log('发提问啊！！！');
-              _this.loadQuestion();
+              _this.loadNextQuestion();
             }else if(msg.data.slice(0,14)==='questionNumber'){
               console.log(msg.data.slice(15,msg.data.length));
               _this.$data.questionNumber=msg.data.slice(15,msg.data.length);
@@ -464,6 +470,7 @@
          * websocket发送消息
          */
         webSocketSend(){
+          // if(this.$data.quesTeams[this.$data.quesTeams.length]!==0)
           this.$data.socket.send("2");
 
         },
@@ -492,12 +499,14 @@
          */
 
         loadQuestion(){
-          if(this.$data.quesTeams.length!==0&&this.$data.chooseType===3) {
+          if(this.$data.quesTeams.length!==0) {
             console.log('提问打分');
             this.$data.quesTeams[this.$data.quesTeamIndex].status = 1;
             //提问打分
             let _this=this;
-
+            if(!this.$data.quesTeams[this.$data.quesTeamIndex].questionEntity.score){
+              this.$data.quesTeams[this.$data.quesTeamIndex].questionEntity.score=0;
+            }
             this.$axios({
               method:'put',
               url:'/course/'+this.$data.courseId+'/round/'+this.$data.roundId+'/team/'+this.$data.quesTeams[this.$data.quesTeamIndex].teamEntity.id+'/klassSeminar/'
@@ -507,7 +516,7 @@
               }
             }).then(function (response) {
               // _this.$data.quesTeamIndex++;
-              _this.loadNextQuestion();
+              // _this.loadNextQuestion();
             }).catch((function (error) {
               _this.$message({
                 type:'error',
@@ -517,11 +526,12 @@
               // console.log(error);
             }))
           }else {
-            this.loadNextQuestion();
+            // this.loadNextQuestion();
           }
         },
 
         loadNextQuestion(){
+          console.log('ddwwd');
           let _this=this;
           this.$axios({
             method:'get',
@@ -530,6 +540,7 @@
               attendanceId:this.$data.preTeams[this.$data.preTeamIndex].id
             }
           }).then(function (response) {
+            console.log('1111');
             response.data.questionEntity.score=0;   //抽取提问的时候设为0分
             _this.$data.quesTeams.push({
               questionEntity:response.data.questionEntity,
@@ -538,29 +549,37 @@
               teamClass:'pre-list-item-un',
               status:0,
             });
-
-            // _this.$data.chooseTeamIndex=_this.$data.quesTeamIndex;
-            // _this.$data.formModifyQuestion.quesScore=_this.$data.quesTeams[_this.$data.chooseTeamIndex].quesScore;
-            // _this.$data.chooseTeamName=_this.$data.classSerial+'-'+_this.$data.quesTeams[_this.$data.chooseTeamIndex].teamEntity.teamSerial;
-            // _this.$data.quesTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item';
-            // _this.$data.chooseType=3;
-
-            // if(_this.$data.chooseType==0) {
-            //   console.log(111);
-            //   _this.$data.preTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
+            _this.$data.socket.send('5;'+response.data.studentEntity.id);
+            // if(_this.$data.quesTeams.length===1){
+            //   _this.$data.choosePreTeam(_this.$data.quesTeamIndex,3);
+            //   _this.$data.socket.send('5;'+_this.$data.quesTeams[0].studentEntity.id);
             // }else{
-              if(_this.$data.quesTeams.length===1){
-                _this.choosePreTeam(_this.$data.quesTeamIndex,3);
-              }else {
-                console.log(777);
-                _this.$data.quesTeamIndex++;
-                // _this.$data.quesTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
-                _this.choosePreTeam(_this.$data.quesTeamIndex,3);
+            //   _this.$data.quesTeamIndex++;
+            //   _this.$data.socket.send('5;'+_this.$data.quesTeams[0].studentEntity.id);
+            //   _this.choosePreTeam(_this.$data.quesTeamIndex,3);
+            // }
 
-              }
-            _this.$data.socket.send('5;'+_this.$data.quesTeams[quesTeamIndex].studentEntity.id);
+
+
+              // if(_this.$data.quesTeams.length===1){
+              //   _this.choosePreTeam(_this.$data.quesTeamIndex,3);
+              //   let keyy='5'+_this.$data.quesTeams[quesTeamIndex].studentEntity.id;
+              //   console.log(keyy);
+              //   _this.$data.socket.send('5;'+_this.$data.quesTeams[quesTeamIndex].studentEntity.id);
+              // }else {
+              //   console.log(777);
+              //
+              //   _this.$data.quesTeamIndex++;
+              //   let keyy='5'+_this.$data.quesTeams[quesTeamIndex].studentEntity.id;
+              //   console.log(keyy);
+              //   // _this.$data.quesTeams[_this.$data.chooseTeamIndex].teamClass = 'pre-list-item-un';
+              //   _this.$data.socket.send('5;'+_this.$data.quesTeams[quesTeamIndex].studentEntity.id);
+              //   _this.choosePreTeam(_this.$data.quesTeamIndex,3);
+              // }
+
             // }
           }).catch(function (error) {
+            console.log('iwiwiwiiwiw');
             console.log(error.response);
             if(error.response.status===404){
               console.log('？？？？');

@@ -183,8 +183,8 @@
       left: 0;
       margin: 0;
       padding: 0;
-      background: url("../../assets/12.jpg")0 0 no-repeat ;
-      background-size: cover;
+      /*background: url("../../assets/12.jpg")0 0 no-repeat ;*/
+      /*background-size: cover;*/
       width: 100%;
       height: 100vh;
       /*height: 100%;*/

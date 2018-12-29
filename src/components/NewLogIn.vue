@@ -84,7 +84,7 @@
           }),
 
         }).then(function (response) {
-          console.log(response)
+          // console.log(response)
         }).catch(function (error) {
           console.log(error.response.header);
         })
