@@ -2,19 +2,19 @@
   <div >
     <back-bar titleName="创建队伍" :showMessages="true" :showBackBar="true" :backUrl="{path:'/StuMyTeam',query:{courseId:courseId}}"></back-bar>
 
-    <div class="back animated fadeInRight" align="left" >
+    <div class="back animated fadeInRight"  align="left" >
       <mu-form label-position="left" :model="newTeam" class="mu-demo-form">
         <mu-form-item  label="组名" prop="teamName">
           <mu-text-field v-model="newTeam.teamName"></mu-text-field>
         </mu-form-item>
         <mu-form-item label="班级" prop="klassId">
           <mu-select v-model="newTeam.klassId" >
-            <mu-option v-for="option,index in klasses" :key="index" :label="option.id" :value="option"></mu-option>
+            <mu-option v-for="option,index in klasses" :key="index" :label="option.klassSerial" :value="option"></mu-option>
           </mu-select>
         </mu-form-item>
       </mu-form>
 
-      <div class="newMember">
+      <div class="newMember" style="margin-bottom: 40px;">
         <mu-divider inset></mu-divider>
         <mu-list textline="two-line">
           <mu-sub-header inset>已有成员</mu-sub-header>

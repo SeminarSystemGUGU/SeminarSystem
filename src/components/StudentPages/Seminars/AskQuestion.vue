@@ -21,7 +21,7 @@
           <mu-button slot="actions" flat color="primary" @click="questionFlag=!questionFlag">Close</mu-button>
         </mu-dialog>
         <mu-dialog title="提问" width="360" :open.sync="questionAlert">
-          请{{teamEntity.teamSerial}}  {{studentEntity.studentName}}同学({{studentEntity.account}})<br/>
+          请 {{me.studentName}}同学({{me.account}})<br/>
           提问
           <mu-button slot="actions" flat color="primary" @click="questionAlert=!questionAlert">Close</mu-button>
         </mu-dialog>
@@ -46,6 +46,14 @@
       this.$data.klassId=this.$route.query.klassId;
 
       this.$data.loading2=true;
+
+      let da=this;
+      this.$axios({
+        method:'get',
+        url:'user/information',
+      }).then(function (response) {
+        da.$data.me=response.data;
+      });
 
       let h=this;
       this.$axios({
@@ -81,6 +89,7 @@
     },
       data() {
         return {
+          me:'',
           courseId:-1,
           seminarId:-1,
           klassId:-1,
@@ -95,19 +104,21 @@
           // myTeam:'',
           // teamState:-1,
           myTeamName:'',
+          // questionNumbers:'',
 
           loading2:false,
           webSocketAddress:'',
           socket:'',
           maxMember:-1,
 
-          questionEntity:'',
-          studentEntity:'',
-          teamEntity:'',
+          // questionEntity:'',
+          // studentEntity:'',
+          // teamEntity:'',
           questionAlert:false,
           endFlag:false,
           end:false,
           askLoading:false,
+          allQuestions:[],
         }
       },
       methods:{
@@ -212,19 +223,20 @@
             // 1-切换提问   2-切换展示
             if(event.data==='nextQuestion')
             {   //获取提问
-              let ts=_this;
-              _this.$axios({
-                method:'get',
-                url:'/question/nextQuestion',
-                params:{
-                  attendanceId:ts.currentAttendance.id,
-                }
-              }).then(function (response) {
-                ts.$data.questionEntity=response.data.questionEntity;
-                ts.$data.studentEntity=response.data.studentEntity;
-                ts.$data.teamEntity=response.data.teamEntity;
-                ts.$data.questionAlert=true;
-              });
+
+              // let ts=_this;
+              // _this.$axios({
+              //   method:'get',
+              //   url:'question/allquestion',
+              //   params:{
+              //     attendanceId:ts.currentAttendance.id,
+              //   }
+              // }).then(function (response) {
+              //   ts.$data.questionEntity=response.data.questionEntity;
+              //   ts.$data.studentEntity=response.data.studentEntity;
+              //   ts.$data.teamEntity=response.data.teamEntity;
+                _this.$data.questionAlert=true;
+              // });
             }
             else if(event.data==='nextPresentation'){  //切换展示小组
               _this.$data.currentIndex++;
