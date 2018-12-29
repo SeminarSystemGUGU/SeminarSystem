@@ -20,7 +20,7 @@
       </div>
 
 
-      <div class="coll" align="left" style="height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
+      <div class="coll" align="left" style="max-height: 300px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
         <el-collapse v-model="activeName" accordion >
           <el-collapse-item :title="option.teamName" :name="index" v-for="option,index in allTeams" :key="index">
             <span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>
@@ -95,7 +95,7 @@
       <div class="titlee" >
         未组队学生
       </div>
-      <div class="coll" align="left" style="height: 150px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
+      <div class="coll" align="left" style="max-height: 150px;overflow: scroll" v-loading="loading1" data-mu-loading-color="secondary" data-mu-loading-overlay-color="rgba(0, 0, 0, .7)">
         <el-collapse v-model="activeName" accordion >
           <el-collapse-item title="未组队学生" :name="index" >
             <!--<span v-if="option.status===0" style="margin-right:20%;float:right;color: darkred;">不合法</span>-->

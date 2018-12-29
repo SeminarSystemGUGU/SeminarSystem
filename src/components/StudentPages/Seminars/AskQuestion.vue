@@ -192,35 +192,54 @@
         initWebSocket(){
           this.$data.socket=new WebSocket(this.$data.webSocketAddress);
           this.$data.socket.onopen=this.webSocketOnOpen();
-          this.$data.socket.onclose=function (error) {
-            console.log("我出来了！");
-          };
+          // this.$data.socket.onclose=function (error) {
+          //   console.log("我出来了！");
+          // };
+          // let _this=this;
+          // this.$data.socket.onmessage=function (msg) {
+          //
+          //   console.log("ws建立连接！"+msg.data);
+          //  if(msg.data==='-1')       //重新连接
+          //  {
+          //    _this.$data.currentIndex=0;
+          //  }
+          //  else if(msg.data!=='-1')
+          //  {
+          //    let i;
+          //    for(i=0;i<_this.$data.enrollTeams.length;i++)
+          //    {
+          //      let x=i;
+          //     if( _this.$data.enrollTeams[x].id===msg.data) {
+          //       // _this.$data.currentIndex = parseInt(_this.$data.registerOrder[i].order.slice(1, 2)) - 1;
+          //       _this.$data.currentIndex=x;
+          //       _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+          //       _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
+          //     // console.log()
+          //     }
+          //    }
+          //  }
+          // };
           let _this=this;
-          this.$data.socket.onmessage=function (msg) {
-
-            console.log("ws建立连接！"+msg.data);
-           if(msg.data==='-1')       //重新连接
-           {
-             _this.$data.currentIndex=0;
-           }
-           else if(msg.data!=='-1')
-           {
-             let i;
-             for(i=0;i<_this.$data.enrollTeams.length;i++)
-             {
-               let x=i;
-              if( _this.$data.enrollTeams[x].id===msg.data) {
-                // _this.$data.currentIndex = parseInt(_this.$data.registerOrder[i].order.slice(1, 2)) - 1;
-                _this.$data.currentIndex=x;
-                _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
-                _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
-              }
-             }
-           }
-          };
-
           this.$data.socket.addEventListener("message", function(event) {
-            // 1-切换提问   2-切换展示
+            // let _this=this;
+              console.log("ws建立连接！"+event.data);
+              // if(event.data==='-1')       //重新连接
+              // {
+              //   _this.$data.currentIndex=0;
+              // }
+            // if(event.data!=='-1') {
+            //     let i;
+            //     for (i = 0; i < this.$data.enrollTeams.length; i++) {
+            //       let x = i;
+            //       if (this.$data.enrollTeams[x].id === event.data) {
+            //         // _this.$data.currentIndex = parseInt(_this.$data.registerOrder[i].order.slice(1, 2)) - 1;
+            //         this.$data.currentIndex = x;
+            //         this.$data.currentAttendance = this.$data.enrollTeams[this.$data.currentIndex];
+            //         this.$data.currentName = this.$data.currentAttendance.teamEntity.teamName;
+            //         // console.log()
+            //       }
+            //     }
+            //   }
             if(event.data==='nextQuestion')
             {   //获取提问
 
@@ -238,21 +257,50 @@
                 _this.$data.questionAlert=true;
               // });
             }
-            else if(event.data==='nextPresentation'){  //切换展示小组
-              _this.$data.currentIndex++;
-              _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+            else if(event.data.slice(0,16)==='nextPresentation'){  //切换展示小组
+
+              let id=parseInt(event.data.slice(16,event.data.length));
+              console.log(id);
+              let i;
+              for(i=0;i<_this.$data.enrollTeams.length;i++)
+              {
+                let x=i;
+                if( _this.$data.enrollTeams[x].id===id) {
+                  // _this.$data.currentIndex = parseInt(_this.$data.registerOrder[i].order.slice(1, 2)) - 1;
+                  _this.$data.currentIndex=x;
+                  _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
+                  _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
+                }
+              }
+
+              // _this.$data.currentIndex++;
+              // _this.$data.currentAttendance=_this.$data.enrollTeams[_this.$data.currentIndex];
               // while(_this.$data.currentAttendance.team==='')
               // {
               //   _this.$data.currentIndex++;
               //   _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];
               // }
               // _this.$data.currentAttendance=_this.$data.registerOrder[_this.$data.currentIndex];   //第一个展示的小组
-              _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
-              console.log(_this.$data.currentName);
+              // _this.$data.currentName=_this.$data.currentAttendance.teamEntity.teamName;
+              // console.log(_this.$data.currentName);
             }
             else if(event.data==='end'){
               _this.$data.endFlag=true;
             }
+            else {
+
+                let i;
+                for (i = 0; i < _this.$data.enrollTeams.length; i++) {
+                  let x = i;
+                  if (_this.$data.enrollTeams[x].id === event.data) {
+                    // _this.$data.currentIndex = parseInt(_this.$data.registerOrder[i].order.slice(1, 2)) - 1;
+                    _this.$data.currentIndex = x;
+                    _this.$data.currentAttendance = _this.$data.enrollTeams[_this.$data.currentIndex];
+                    _this.$data.currentName = _this.$data.currentAttendance.teamEntity.teamName;
+                    // console.log()
+                  }
+                }
+              }
           });
         },
         webSocketOnOpen(){
