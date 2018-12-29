@@ -1,6 +1,6 @@
 <template>
   <div id="MessageCard">
-    <el-card class="message-card" >
+    <el-card class="message-card" v-loading="isLoading">
       <div class="card-title">
         <el-badge value="未读" class="item" v-show="!beenRead">
           <span>{{item.mainTeacherName}}老师：共享组队</span>
@@ -37,6 +37,7 @@
     props:['item'],
     data(){
       return{
+        isLoading:false,
         subCourseName:'',
         subCourseId:'',
         type:2,
@@ -58,6 +59,7 @@
       },
       acceptMessage(){
         let _this=this;
+        _this.$data.isLoading=true;
         this.$axios({
           method:'put',
           url:'/request/'+this.$props.item.requestId+'/teamshare',
@@ -71,12 +73,14 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$data.isLoading=false;
             _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })
       },
       rejectMessage(){
         let _this=this;
+        _this.$data.isLoading=true;
         this.$axios({
           method:'put',
           url:'/request/'+this.$props.item.requestId+'/teamshare',
@@ -89,6 +93,7 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$data.isLoading=false;
             _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })

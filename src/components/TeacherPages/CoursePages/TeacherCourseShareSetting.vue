@@ -2,7 +2,7 @@
 	<div id="TeacherCourseShareSetting">
 		<app-bar titleName="共享设置" :showMessages="true" backPath="/TeacherMyCourses"></app-bar>
     <span v-show="noItem" class="no-item-message">当前暂没有共享~</span>
-		<div class="main-content" v-loading="isLoading" v-show="!noItem">
+		<div class="main-content" v-loading="isLoading" v-show="!noItem" >
 			<el-card class="course-share-card" v-for="(course,index) in shareCourse" :key="index">
 				<template slot="header">
 					<span class="share-course-title">{{course.courseName}}</span>

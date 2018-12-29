@@ -1,6 +1,6 @@
 <template>
   <div id="MessageCard">
-    <el-card class="message-card" >
+    <el-card class="message-card" v-loading="isLoading">
       <div class="card-title">
         <el-badge value="未读" class="item" v-show="!beenRead">
           <span>组队申请：{{item.teamName}}队</span>
@@ -43,7 +43,8 @@
         beenRead:false,
         messageVisible:false,
         requestType:'',
-        requestId:''
+        requestId:'',
+        isLoading:false,
       }
     },
     methods:{
@@ -53,6 +54,7 @@
       },
       acceptMessage(){
         let _this=this;
+        this.$data.isLoading=true;
         this.$axios({
           method:'put',
           url:'/request/'+this.$props.item.requestId+'/teamvalid',
@@ -65,12 +67,14 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$data.isLoading=false;
             _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })
       },
       rejectMessage(){
         let _this=this;
+        this.$data.isLoading=true;
         this.$axios({
           method:'put',
           url:'/request/'+this.$props.item.requestId+'/teamvalid',
@@ -83,6 +87,7 @@
               type:'success',
               message:'处理成功！'
             })
+            _this.$data.isLoading=false;
             _this.$router.push({path:'/TransitionPage',query:{courseId:_this.$data.courseId,paths:'/TeacherMyMessage'}});
           }
         })

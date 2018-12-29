@@ -50,6 +50,10 @@
 
     },
     created(){
+      this.$message({
+        type:'error',
+        message:'登录失败！请重新登录'
+      })
       this.$data.baseURL=this.$axios.defaults.baseURL;
       console.log(this.$data.baseURL);
     },

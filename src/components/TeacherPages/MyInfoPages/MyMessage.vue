@@ -42,7 +42,8 @@
             ],
             teamValid:[
 
-            ]
+            ],
+
           }
       },
       watch:{
