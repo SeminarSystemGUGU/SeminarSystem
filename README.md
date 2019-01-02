@@ -1,4 +1,16 @@
 ﻿# 咕咕鸟-课程管理系统前端
+ 
+## 集成注意事项：
+
+1、main.js中的baseURL改为你们的后端地址
+
+2、所有代码中凡是含有this.$axios的地方均为使用接口的地方
+
+3、LoginPC.vue已弃用
+
+4、NewLogin.vue中<form>标签的action属性要改为你们后端登录接口
+  
+5、项目下载使用方法：安装node.js，下载完后在项目目录下npm install安装依赖，npm run dev本地运行项目，npm run build打包nginx可用的项目
 
 ## 11月13号 王圣哲
 
